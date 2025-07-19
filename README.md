@@ -1,23 +1,14 @@
-# hackthe6ix project
-
 # Gemini AI Backend
 ## BACK END DESCRIPTION GOES HERE ##
 
 # GradeCalc Backend
+## Deploying on Vercel
 
-## Setup
-
-1. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-2. Start the server:
-   ```bash
-   npm start
-   ```
-
-The server will run on port 3001 by default.
+1. Push this repo to GitHub.
+2. Import your repo at https://vercel.com/import.
+3. Vercel will auto-deploy:
+   - `/public/mock-frontend.html` at your root URL
+   - `/api/*.js` as serverless API endpoints
 
 ## API Endpoints
 
