@@ -1,210 +1,90 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>GradeCalc</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CourseFlow</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/svg+xml" href="public/images/logo_full.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap" rel="stylesheet" />
 </head>
+
 <body>
-  <header style="background: linear-gradient(90deg, #2196f3 0%, #21cbf3 100%); padding: 2em 0 1em 0; text-align: center; color: #fff; box-shadow: 0 2px 8px #0002;">
-    <h1 style="font-size: 2.8em; margin: 0; letter-spacing: 2px; font-weight: 900;">GradeCalc</h1>
-    <p style="font-size: 1.2em; margin: 0.5em 0 0 0; font-weight: 400;">Your simple course grade tracker</p>
-  </header>
-  <div id="tabs" class="tabs"></div>
-  <div id="main" class="container">
-    <div style="text-align:center; margin-bottom:1.5em;">
-      <label for="file-upload" class="add-assessment-btn" style="display:inline-block; cursor:pointer;">
-        📁 Upload File
-        <input id="file-upload" type="file" style="display:none;" onchange="handleFileUpload(event)">
-      </label>
+  <div class="container">
+    <nav class="navbar">
+      <button class="nav-btn active">
+        <img src="public/images/dashboard_icon.png" alt="Dashboard" />
+        <span>Dashboard</span>
+      </button>
+      <button class="nav-btn">
+        <img src="public/images/mingcute_calendar-fill.png" alt="Calendar" />
+        <span>Calendar</span>
+      </button>
+      <button class="nav-btn">
+        <img src="public/images/mdi_pencil.png" alt="Performance" />
+        <span>Performance Analysis</span>
+      </button>
+    </nav>
+
+    <div class="main-section">
+      <header class="header">
+        <div class="header-left">
+          <img src="public/images/logo_full.svg" alt="Logo" class="logo" />
+          <span class="logo-text">CourseFlow</span>
+        </div>
+        <div class="header-right">
+          <img src="public/images/Frame 15.png" alt="Notifications" />
+        </div>
+      </header>
+
+      <div class="hi">
+        <p> Hi, Jennifer!</p>
+      </div>
+
+      <main class="main-content">
+        <section class="calendar-preview">
+          <h2>Calendar Preview</h2>
+          <div id="calendar">
+            <div class="calendar-header">
+              <span id="monthYear"></span>
+            </div>
+            <div class="calendar-grid" id="calendarGrid">
+              <!-- JS will populate dates here -->
+            </div>
+          </div>
+        </section>
+
+        <section class="upload-box">
+            <h2>Upload Files</h2>
+            <input type="file" id="fileUpload" multiple />
+            <ul id="fileList"></ul>
+          </section>
+          
+          <section class="grades-box">
+            <h2>Performance Summary</h2>
+            <div class="grade">
+              <span>Math</span>
+              <span>93%</span>
+            </div>
+            <div class="grade">
+              <span>Physics</span>
+              <span>88%</span>
+            </div>
+            <div class="grade">
+              <span>Computer Science</span>
+              <span>95%</span>
+            </div>
+          </section>
+          
+      </main>
+      
+
+      
     </div>
   </div>
 
-  <script>
-    const API = '';
-    let courses = [];
-    let activeCourseId = null;
-    let showAddAssessmentForm = false;
-
-    async function fetchCourses() {
-      const res = await fetch(`${API}/courses`);
-      courses = await res.json();
-      if (!Array.isArray(courses)) courses = [];
-      // If no courses, add a demo course for UI
-      if (courses.length === 0) {
-        courses = [{
-          id: 'demo',
-          name: 'Demo Course',
-          color: '#2196f3',
-          assessments: []
-        }];
-      }
-      if (!activeCourseId && courses.length) activeCourseId = courses[0].id;
-      renderTabs();
-      renderCoursePage();
-    }
-
-    function renderTabs() {
-      const tabsDiv = document.getElementById('tabs');
-      tabsDiv.innerHTML = '';
-      courses.forEach(course => {
-        const btn = document.createElement('button');
-        btn.className = 'tab' + (course.id === activeCourseId ? ' active' : '');
-        btn.innerText = course.name;
-        btn.onclick = () => {
-          activeCourseId = course.id;
-          showAddAssessmentForm = false;
-          renderTabs();
-          renderCoursePage();
-        };
-        tabsDiv.appendChild(btn);
-      });
-    }
-
-    async function fetchRequiredGrade(courseId) {
-      const res = await fetch(`/api/courses/${courseId}/required-grade`);
-      const data = await res.json();
-      if (res.ok) {
-        alert(
-          (data.message || 'Required grades:') +
-          (data.currentGrade !== undefined ? `\nCurrent Grade: ${data.currentGrade.toFixed(2)}` : '') +
-          (data.requiredGrades && data.requiredGrades.length ?
-            ('\nRequired Grades: ' + data.requiredGrades.map(rg => `${rg.title}: ${rg.requiredGrade.toFixed(2)}`).join(', ')) :
-            ''
-          )
-        );
-      } else {
-        alert(data.error || 'An error occurred.');
-      }
-    }
-
-    async function renderCoursePage() {
-      const main = document.getElementById('main');
-      const course = courses.find(c => c.id === activeCourseId);
-      if (!course) {
-        main.innerHTML = `<div style="text-align:center; margin-top:2em;">
-          <h1>Welcome to <span style='color:#2196f3'>GradeCalc</span>!</h1>
-          <p style="font-size:1.2em;">To get started, add a course or select a tab above.</p>
-          <button class="add-assessment-btn" onclick="toggleAddAssessmentForm()">➕ Add Assessment</button>
-        </div>`;
-        return;
-      }
-      // Fetch latest course data
-      const res = await fetch(`${API}/courses/${course.id}`);
-      const freshCourse = await res.json();
-      // Fetch grade summary
-      const summaryRes = await fetch(`${API}/courses/${course.id}/grade-summary`);
-      const summary = await summaryRes.json();
-      // Render course title and current grade
-      main.innerHTML = `
-        <div class="course-title">
-          <span class="course-dot" style="background:${freshCourse.color}"></span>
-          ${freshCourse.name}
-        </div>
-        <div class="current-grade">
-          ${summary.currentGrade !== null ? summary.currentGrade.toFixed(2) : 'N/A'}
-        </div>
-        <div class="summary-box">
-          <h3>Grade Summary</h3>
-          <b>Current Grade:</b> ${summary.currentGrade !== null ? summary.currentGrade.toFixed(2) : 'N/A'}<br>
-          <b>Required Avg for Goal:</b> ${summary.requiredAvg !== null ? summary.requiredAvg.toFixed(2) : 'N/A'}<br>
-          <b>Graded Weight:</b> ${summary.gradedWeight}<br>
-          <b>Total Weight:</b> ${summary.totalWeight}
-        </div>
-        <button class="add-assessment-btn" onclick="fetchRequiredGrade('${freshCourse.id}')">🔎 What do I need on my remaining assessments?</button>
-        <div class="assessments-list" id="assessments-list"></div>
-        <button class="add-assessment-btn" onclick="toggleAddAssessmentForm()">➕ ${showAddAssessmentForm ? 'Cancel' : 'Add Assessment'}</button>
-        <div id="add-assessment-form"></div>
-      `;
-      renderAssessments(freshCourse);
-      if (showAddAssessmentForm) renderAddAssessmentForm(freshCourse.id);
-    }
-
-    function renderAssessments(course) {
-      const listDiv = document.getElementById('assessments-list');
-      if (!course.assessments.length) {
-        listDiv.innerHTML = '<em>No assessments yet.</em>';
-        return;
-      }
-      listDiv.innerHTML = '';
-      course.assessments.forEach(a => {
-        const div = document.createElement('div');
-        div.className = 'assessment';
-        div.innerHTML = `
-          <div class="assessment-title">${a.title}</div>
-          <div class="assessment-meta">${a.type} | Due: ${a.dueDate || 'N/A'} | Weight: ${a.weight}%</div>
-          <div class="assessment-grade">Grade: ${a.grade !== null && a.grade !== undefined ? a.grade : 'N/A'}</div>
-          <form class="input-grade-form" onsubmit="inputGrade(event, '${course.id}', '${a.id}')">
-            <input type="number" min="0" max="100" name="grade" placeholder="Enter grade" required>
-            <button type="submit">Save Grade</button>
-          </form>
-        `;
-        listDiv.appendChild(div);
-      });
-    }
-
-    window.inputGrade = async (e, courseId, aid) => {
-      e.preventDefault();
-      const grade = parseFloat(e.target.grade.value);
-      await fetch(`${API}/courses/${courseId}/assessments/${aid}/grade`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ grade })
-      });
-      await fetchCourses();
-    };
-
-    window.toggleAddAssessmentForm = () => {
-      showAddAssessmentForm = !showAddAssessmentForm;
-      renderCoursePage();
-    };
-
-    function renderAddAssessmentForm(courseId) {
-      const div = document.getElementById('add-assessment-form');
-      div.innerHTML = `
-        <form class="add-assessment-form" onsubmit="addAssessment(event, '${courseId}')">
-          <input type="text" name="title" placeholder="Title" required>
-          <select name="type">
-            <option value="assignment">Assignment</option>
-            <option value="quiz">Quiz</option>
-            <option value="midterm">Midterm</option>
-            <option value="final">Final</option>
-            <option value="other">Other</option>
-          </select>
-          <input type="date" name="dueDate">
-          <input type="number" name="weight" min="0" max="100" placeholder="Weight (%)" required>
-          <button type="submit">Add</button>
-        </form>
-      `;
-    }
-
-    window.addAssessment = async (e, courseId) => {
-      e.preventDefault();
-      const form = e.target;
-      const title = form.title.value;
-      const type = form.type.value;
-      const dueDate = form.dueDate.value;
-      const weight = parseFloat(form.weight.value);
-      await fetch(`${API}/courses/${courseId}/assessments`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, type, dueDate, weight })
-      });
-      showAddAssessmentForm = false;
-      await fetchCourses();
-    };
-
-    window.handleFileUpload = function(event) {
-      const file = event.target.files[0];
-      if (file) {
-        console.log('Selected file:', file.name);
-        // Future: parse the file here
-      }
-    }
-
-    // Initial load
-    fetchCourses();
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>

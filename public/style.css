@@ -1,141 +1,186 @@
-body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background: #f4f6fa; }
-.tabs {
-  display: flex;
-  background: #222;
-  padding: 0.5em 1em;
-  gap: 1em;
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap');
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400;
+  background-color: #EFF6FF;
+  margin: 0;
 }
-.tab {
-  color: #fff;
-  background: #444;
-  border: none;
-  padding: 0.7em 1.5em;
-  border-radius: 1em 1em 0 0;
-  cursor: pointer;
-  font-size: 1.1em;
-  transition: background 0.2s;
-}
-.tab.active {
-  background: #fff;
-  color: #222;
-  font-weight: bold;
-  border-bottom: 2px solid #f4f6fa;
-}
+
 .container {
-  max-width: 600px;
-  margin: 2em auto;
-  background: #fff;
-  border-radius: 1em;
-  box-shadow: 0 2px 12px #0001;
-  padding: 2em 2em 3em 2em;
-}
-.course-title {
-  font-size: 2em;
-  font-weight: bold;
-  margin-bottom: 0.2em;
   display: flex;
-  align-items: center;
-  gap: 0.5em;
+  min-height: 100vh;
 }
-.course-dot {
-  width: 1.2em;
-  height: 1.2em;
-  border-radius: 50%;
-  display: inline-block;
-  border: 2px solid #eee;
-}
-.current-grade {
-  font-size: 2.5em;
-  font-weight: bold;
-  color: #4CAF50;
-  margin-bottom: 0.2em;
-  margin-top: 0.5em;
-  text-align: center;
-}
-.summary-box {
-  background: #e3f2fd;
-  border-left: 6px solid #2196f3;
-  padding: 1em 1.5em;
-  border-radius: 0.5em;
-  margin-bottom: 2em;
-  margin-top: 1em;
-}
-.summary-box h3 {
-  margin-top: 0;
-  color: #1976d2;
-}
-.assessments-list {
-  margin-bottom: 2em;
-}
-.assessment {
-  background: #f9f9f9;
-  border-radius: 0.5em;
-  padding: 1em;
-  margin-bottom: 1em;
-  box-shadow: 0 1px 4px #0001;
+
+.navbar {
   display: flex;
   flex-direction: column;
-  gap: 0.3em;
+  gap: 12px;
+  padding: 20px;
+  width: 220px;
+  background-color: transparent;
 }
-.assessment-title {
-  font-weight: bold;
-  font-size: 1.1em;
-}
-.assessment-meta {
-  color: #555;
-  font-size: 0.95em;
-}
-.assessment-grade {
-  font-size: 1.1em;
-  color: #1976d2;
-  font-weight: bold;
-}
-.add-assessment-btn {
-  background: linear-gradient(90deg, #21cbf3 0%, #2196f3 100%);
-  color: #fff;
-  border: none;
-  border-radius: 0.7em;
-  padding: 1em 2em;
-  font-size: 1.15em;
-  font-weight: bold;
-  cursor: pointer;
-  margin-bottom: 1em;
-  margin-top: 1em;
-  box-shadow: 0 2px 8px #2196f355;
-  transition: background 0.2s, transform 0.2s;
-  letter-spacing: 1px;
-}
-.add-assessment-btn:hover {
-  background: linear-gradient(90deg, #2196f3 0%, #21cbf3 100%);
-  transform: translateY(-2px) scale(1.04);
-  box-shadow: 0 4px 16px #2196f355;
-}
-.add-assessment-form, .input-grade-form {
-  margin-top: 0.5em;
+
+.nav-btn {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.5em 1em;
   align-items: center;
-}
-.add-assessment-form input, .add-assessment-form select, .input-grade-form input {
-  padding: 0.4em 0.7em;
-  border-radius: 0.3em;
-  border: 1px solid #bbb;
-  font-size: 1em;
-}
-.add-assessment-form button, .input-grade-form button {
-  background: #4CAF50;
-  color: #fff;
+  gap: 8px;
+  padding: 16px;
+  background-color: transparent;
   border: none;
-  border-radius: 0.3em;
-  padding: 0.5em 1.2em;
-  font-size: 1em;
+  border-radius: 20px;
+  font-size: 1rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  color: #333;
 }
-.add-assessment-form button:hover, .input-grade-form button:hover {
-  background: #357a38;
+
+.nav-btn img {
+  height: 1em;
+  width: auto;
 }
-@media (max-width: 700px) {
-  .container { padding: 1em 0.5em; }
-} 
+
+.nav-btn.active {
+  background-color: white;
+}
+
+.nav-btn:hover {
+  background-color: #ddeafc;
+  transform: translateY(-1px);
+}
+
+.main-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 30px;
+  background-color: #f2f6fc;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo {
+  height: 32px;
+}
+
+.logo-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.header-right img {
+  height: 24px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.header-right img:hover {
+  transform: scale(1.1);
+}
+
+/* .main-content {
+  padding: 30px;
+} */
+
+.hi {
+  font-size: 46px;
+}
+
+.calendar-preview {
+  margin: 30px;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.calendar-preview h2 {
+  font-size: 1.25rem;
+  margin-bottom: 16px;
+  color: #333;
+}
+
+#calendar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.calendar-header {
+  font-weight: bold;
+  font-size: 1.1rem;
+  text-align: center;
+  color: #222;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  text-align: center;
+}
+
+.calendar-grid div {
+  background-color: #f0f4ff;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.upload-box, .grades-box {
+  margin: 30px;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.upload-box h2,
+.grades-box h2 {
+  font-size: 1.25rem;
+  margin-bottom: 16px;
+  color: #333;
+}
+
+.upload-box input[type="file"] {
+  margin-top: 8px;
+}
+
+#fileList {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 12px;
+  color: #444;
+  font-size: 0.95rem;
+}
+
+.grade {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  font-size: 1rem;
+}
+
+.grade:last-child {
+  border-bottom: none;
+}

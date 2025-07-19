@@ -1,3 +1,4 @@
+
 module.exports = (req, res) => {
   const { id } = req.query;
   const course = db.courses.find((c) => c.id === id);
