@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Syllabus Analyzer</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .upload-area {
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 20px;
+            transition: border-color 0.3s;
+        }
+        .upload-area:hover {
+            border-color: #007bff;
+        }
+        .upload-area.dragover {
+            border-color: #007bff;
+            background-color: #f8f9fa;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        .upload-btn {
+            background: #007bff;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .upload-btn:hover {
+            background: #0056b3;
+        }
+        .upload-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            display: none;
+        }
+        .loading {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+        }
+        .error {
+            color: #dc3545;
+            background: #f8d7da;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📚 Syllabus Analyzer</h1>
+        <p style="text-align: center; color: #666; margin-bottom: 30px;">
+            Upload your syllabus PDF to extract assignments, exams, and office hours information
+        </p>
+        
+        <div class="upload-area" id="uploadArea">
+            <p>📄 Drag and drop your syllabus PDF here</p>
+            <p>or</p>
+            <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
+                Choose File
+            </button>
+            <input type="file" id="fileInput" accept=".pdf,.txt" onchange="handleFileSelect(event)">
+        </div>
+        
+        <div class="text-input-area" id="textInputArea" style="display: none;">
+            <h3>📝 Or paste your syllabus content directly:</h3>
+            <textarea id="syllabusText" placeholder="Paste your syllabus content here..." rows="10" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-family: Arial, sans-serif;"></textarea>
+            <button class="upload-btn" onclick="handleTextSubmit()" style="margin-top: 10px;">
+                Analyze Text
+            </button>
+        </div>
+        
+        <div style="text-align: center; margin: 20px 0;">
+            <button class="upload-btn" onclick="toggleInputMethod()" style="background: #28a745;">
+                Switch to Text Input
+            </button>
+        </div>
+        
+        <div class="error" id="error"></div>
+        
+        <div class="result" id="result">
+            <div class="loading" id="loading">🤖 Analyzing syllabus with AI...</div>
+            <div id="content"></div>
+        </div>
+    </div>
+
+    <script>
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const result = document.getElementById('result');
+        const loading = document.getElementById('loading');
+        const content = document.getElementById('content');
+        const error = document.getElementById('error');
+
+        // Drag and drop functionality
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        });
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                handleFile(file);
+            }
+        }
+
+        function handleFile(file) {
+            if (!file.type.includes('pdf')) {
+                showError('Please select a PDF file.');
+                return;
+            }
+
+            // Show loading state
+            result.style.display = 'block';
+            loading.style.display = 'block';
+            content.innerHTML = '';
+            error.style.display = 'none';
+
+            // Create FormData and send to server
+            const formData = new FormData();
+            formData.append('syllabus', file);
+
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                loading.style.display = 'none';
+                if (data.success) {
+                    content.innerHTML = data.extractedInfo.replace(/\n/g, '<br>');
+                } else {
+                    showError(data.error || 'Failed to process syllabus');
+                }
+            })
+            .catch(err => {
+                loading.style.display = 'none';
+                showError('Error uploading file: ' + err.message);
+            });
+        }
+
+        function showError(message) {
+            error.textContent = message;
+            error.style.display = 'block';
+            result.style.display = 'none';
+        }
+        
+        function toggleInputMethod() {
+            const uploadArea = document.getElementById('uploadArea');
+            const textInputArea = document.getElementById('textInputArea');
+            const toggleBtn = document.querySelector('button[onclick="toggleInputMethod()"]');
+            
+            if (uploadArea.style.display !== 'none') {
+                uploadArea.style.display = 'none';
+                textInputArea.style.display = 'block';
+                toggleBtn.textContent = 'Switch to File Upload';
+                toggleBtn.style.background = '#007bff';
+            } else {
+                uploadArea.style.display = 'block';
+                textInputArea.style.display = 'none';
+                toggleBtn.textContent = 'Switch to Text Input';
+                toggleBtn.style.background = '#28a745';
+            }
+        }
+        
+        function handleTextSubmit() {
+            const text = document.getElementById('syllabusText').value.trim();
+            if (!text) {
+                showError('Please enter syllabus content.');
+                return;
+            }
+            
+            // Show loading state
+            result.style.display = 'block';
+            loading.style.display = 'block';
+            content.innerHTML = '';
+            error.style.display = 'none';
+            
+            // Send text to server
+            fetch('/analyze-text', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ text: text })
+            })
+            .then(response => response.json())
+            .then(data => {
+                loading.style.display = 'none';
+                if (data.success) {
+                    content.innerHTML = data.extractedInfo.replace(/\n/g, '<br>');
+                } else {
+                    showError(data.error || 'Failed to analyze syllabus');
+                }
+            })
+            .catch(err => {
+                loading.style.display = 'none';
+                showError('Error analyzing text: ' + err.message);
+            });
+        }
+    </script>
+</body>
+</html> 
