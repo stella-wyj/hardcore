@@ -1,0 +1,30 @@
+{
+  "name": "syllabus-analyzer",
+  "version": "1.0.0",
+  "description": "A tool to extract and organize information from academic syllabi using Gemini AI",
+  "type": "module",
+  "main": "gemini.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test.js",
+    "setup": "node setup.js",
+    "process": "node gemini.js"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.2.1",
+    "dotenv": "^16.6.1",
+    "express": "^4.21.2",
+    "gl-matrix": "^3.4.3",
+    "multer": "^1.4.5-lts.1",
+    "pdfjs-dist": "^4.0.379"
+  },
+  "keywords": [
+    "syllabus",
+    "pdf",
+    "gemini",
+    "ai",
+    "academic"
+  ],
+  "author": "",
+  "license": "MIT"
+}

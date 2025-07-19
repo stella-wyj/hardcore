@@ -223,3 +223,25 @@ body {
 .grade:last-child {
   border-bottom: none;
 }
+
+.upload-btn {
+  background: linear-gradient(90deg, #21cbf3 0%, #2196f3 100%);
+  color: #fff;
+  border: none;
+  border-radius: 1.2em;
+  padding: 0.7em 1.5em;
+  font-size: 1em;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 1em;
+  margin-top: 1em;
+  box-shadow: 0 1px 4px #2196f333;
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+  letter-spacing: 1px;
+  outline: none;
+}
+.upload-btn:hover, .upload-btn:focus {
+  background: linear-gradient(90deg, #2196f3 0%, #21cbf3 100%);
+  transform: translateY(-1px) scale(1.03);
+  box-shadow: 0 2px 8px #2196f333;
+}
