@@ -3,152 +3,26 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>GradeCalc Mock Frontend</title>
-  <style>
-    body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background: #f4f6fa; }
-    .tabs {
-      display: flex;
-      background: #222;
-      padding: 0.5em 1em;
-      gap: 1em;
-    }
-    .tab {
-      color: #fff;
-      background: #444;
-      border: none;
-      padding: 0.7em 1.5em;
-      border-radius: 1em 1em 0 0;
-      cursor: pointer;
-      font-size: 1.1em;
-      transition: background 0.2s;
-    }
-    .tab.active {
-      background: #fff;
-      color: #222;
-      font-weight: bold;
-      border-bottom: 2px solid #f4f6fa;
-    }
-    .container {
-      max-width: 600px;
-      margin: 2em auto;
-      background: #fff;
-      border-radius: 1em;
-      box-shadow: 0 2px 12px #0001;
-      padding: 2em 2em 3em 2em;
-    }
-    .course-title {
-      font-size: 2em;
-      font-weight: bold;
-      margin-bottom: 0.2em;
-      display: flex;
-      align-items: center;
-      gap: 0.5em;
-    }
-    .course-dot {
-      width: 1.2em;
-      height: 1.2em;
-      border-radius: 50%;
-      display: inline-block;
-      border: 2px solid #eee;
-    }
-    .current-grade {
-      font-size: 2.5em;
-      font-weight: bold;
-      color: #4CAF50;
-      margin-bottom: 0.2em;
-      margin-top: 0.5em;
-      text-align: center;
-    }
-    .summary-box {
-      background: #e3f2fd;
-      border-left: 6px solid #2196f3;
-      padding: 1em 1.5em;
-      border-radius: 0.5em;
-      margin-bottom: 2em;
-      margin-top: 1em;
-    }
-    .summary-box h3 {
-      margin-top: 0;
-      color: #1976d2;
-    }
-    .assessments-list {
-      margin-bottom: 2em;
-    }
-    .assessment {
-      background: #f9f9f9;
-      border-radius: 0.5em;
-      padding: 1em;
-      margin-bottom: 1em;
-      box-shadow: 0 1px 4px #0001;
-      display: flex;
-      flex-direction: column;
-      gap: 0.3em;
-    }
-    .assessment-title {
-      font-weight: bold;
-      font-size: 1.1em;
-    }
-    .assessment-meta {
-      color: #555;
-      font-size: 0.95em;
-    }
-    .assessment-grade {
-      font-size: 1.1em;
-      color: #1976d2;
-      font-weight: bold;
-    }
-    .add-assessment-btn {
-      background: #2196f3;
-      color: #fff;
-      border: none;
-      border-radius: 0.5em;
-      padding: 0.7em 1.5em;
-      font-size: 1em;
-      cursor: pointer;
-      margin-bottom: 1em;
-      margin-top: 1em;
-      transition: background 0.2s;
-    }
-    .add-assessment-btn:hover {
-      background: #1769aa;
-    }
-    .add-assessment-form, .input-grade-form {
-      margin-top: 0.5em;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5em 1em;
-      align-items: center;
-    }
-    .add-assessment-form input, .add-assessment-form select, .input-grade-form input {
-      padding: 0.4em 0.7em;
-      border-radius: 0.3em;
-      border: 1px solid #bbb;
-      font-size: 1em;
-    }
-    .add-assessment-form button, .input-grade-form button {
-      background: #4CAF50;
-      color: #fff;
-      border: none;
-      border-radius: 0.3em;
-      padding: 0.5em 1.2em;
-      font-size: 1em;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .add-assessment-form button:hover, .input-grade-form button:hover {
-      background: #357a38;
-    }
-    @media (max-width: 700px) {
-      .container { padding: 1em 0.5em; }
-    }
-  </style>
+  <title>GradeCalc</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <header style="background: linear-gradient(90deg, #2196f3 0%, #21cbf3 100%); padding: 2em 0 1em 0; text-align: center; color: #fff; box-shadow: 0 2px 8px #0002;">
+    <h1 style="font-size: 2.8em; margin: 0; letter-spacing: 2px; font-weight: 900;">GradeCalc</h1>
+    <p style="font-size: 1.2em; margin: 0.5em 0 0 0; font-weight: 400;">Your simple course grade tracker</p>
+  </header>
   <div id="tabs" class="tabs"></div>
-  <div id="main" class="container"></div>
+  <div id="main" class="container">
+    <div style="text-align:center; margin-bottom:1.5em;">
+      <label for="file-upload" class="add-assessment-btn" style="display:inline-block; cursor:pointer;">
+        📁 Upload File
+        <input id="file-upload" type="file" style="display:none;" onchange="handleFileUpload(event)">
+      </label>
+    </div>
+  </div>
 
   <script>
-    const API = 'http://localhost:3001';
+    const API = '';
     let courses = [];
     let activeCourseId = null;
     let showAddAssessmentForm = false;
@@ -156,6 +30,16 @@
     async function fetchCourses() {
       const res = await fetch(`${API}/courses`);
       courses = await res.json();
+      if (!Array.isArray(courses)) courses = [];
+      // If no courses, add a demo course for UI
+      if (courses.length === 0) {
+        courses = [{
+          id: 'demo',
+          name: 'Demo Course',
+          color: '#2196f3',
+          assessments: []
+        }];
+      }
       if (!activeCourseId && courses.length) activeCourseId = courses[0].id;
       renderTabs();
       renderCoursePage();
@@ -178,11 +62,32 @@
       });
     }
 
+    async function fetchRequiredGrade(courseId) {
+      const res = await fetch(`/api/courses/${courseId}/required-grade`);
+      const data = await res.json();
+      if (res.ok) {
+        alert(
+          (data.message || 'Required grades:') +
+          (data.currentGrade !== undefined ? `\nCurrent Grade: ${data.currentGrade.toFixed(2)}` : '') +
+          (data.requiredGrades && data.requiredGrades.length ?
+            ('\nRequired Grades: ' + data.requiredGrades.map(rg => `${rg.title}: ${rg.requiredGrade.toFixed(2)}`).join(', ')) :
+            ''
+          )
+        );
+      } else {
+        alert(data.error || 'An error occurred.');
+      }
+    }
+
     async function renderCoursePage() {
       const main = document.getElementById('main');
       const course = courses.find(c => c.id === activeCourseId);
       if (!course) {
-        main.innerHTML = '<p>No course selected.</p>';
+        main.innerHTML = `<div style="text-align:center; margin-top:2em;">
+          <h1>Welcome to <span style='color:#2196f3'>GradeCalc</span>!</h1>
+          <p style="font-size:1.2em;">To get started, add a course or select a tab above.</p>
+          <button class="add-assessment-btn" onclick="toggleAddAssessmentForm()">➕ Add Assessment</button>
+        </div>`;
         return;
       }
       // Fetch latest course data
@@ -207,8 +112,9 @@
           <b>Graded Weight:</b> ${summary.gradedWeight}<br>
           <b>Total Weight:</b> ${summary.totalWeight}
         </div>
+        <button class="add-assessment-btn" onclick="fetchRequiredGrade('${freshCourse.id}')">🔎 What do I need on my remaining assessments?</button>
         <div class="assessments-list" id="assessments-list"></div>
-        <button class="add-assessment-btn" onclick="toggleAddAssessmentForm()">${showAddAssessmentForm ? 'Cancel' : 'Add Assessment'}</button>
+        <button class="add-assessment-btn" onclick="toggleAddAssessmentForm()">➕ ${showAddAssessmentForm ? 'Cancel' : 'Add Assessment'}</button>
         <div id="add-assessment-form"></div>
       `;
       renderAssessments(freshCourse);
@@ -288,6 +194,14 @@
       showAddAssessmentForm = false;
       await fetchCourses();
     };
+
+    window.handleFileUpload = function(event) {
+      const file = event.target.files[0];
+      if (file) {
+        console.log('Selected file:', file.name);
+        // Future: parse the file here
+      }
+    }
 
     // Initial load
     fetchCourses();
