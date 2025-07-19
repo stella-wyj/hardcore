@@ -2,7 +2,7 @@ import express from 'express';
 import multer from 'multer';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { processSyllabus, processAndStoreSyllabus, extractSyllabusInfo } from './api/gemini.js';
+import fs from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -10,32 +10,37 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Configure multer for file uploads
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/');
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, file.fieldname + '-' + uniqueSuffix + '.pdf');
-  }
-});
+// Check if we're on Vercel (serverless environment)
+const isVercel = process.env.VERCEL === '1';
 
-const upload = multer({ 
-  storage: storage,
-  fileFilter: (req, file, cb) => {
-    if (file.mimetype === 'application/pdf') {
-      cb(null, true);
-    } else {
-      cb(new Error('Only PDF files are allowed!'), false);
+// Configure multer for file uploads (only if not on Vercel)
+let upload;
+if (!isVercel) {
+  const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'uploads/');
+    },
+    filename: function (req, file, cb) {
+      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+      cb(null, file.fieldname + '-' + uniqueSuffix + '.pdf');
     }
-  }
-});
+  });
 
-// Create uploads directory if it doesn't exist
-import fs from 'fs';
-if (!fs.existsSync('uploads')) {
-  fs.mkdirSync('uploads');
+  upload = multer({ 
+    storage: storage,
+    fileFilter: (req, file, cb) => {
+      if (file.mimetype === 'application/pdf') {
+        cb(null, true);
+      } else {
+        cb(new Error('Only PDF files are allowed!'), false);
+      }
+    }
+  });
+
+  // Create uploads directory if it doesn't exist (only if not on Vercel)
+  if (!fs.existsSync('uploads')) {
+    fs.mkdirSync('uploads');
+  }
 }
 
 // Serve static files from the public directory
@@ -46,12 +51,17 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// API Routes
+// API Routes with Vercel compatibility
 app.get('/api/courses', async (req, res) => {
   try {
+    if (isVercel) {
+      // On Vercel, return empty array or mock data
+      res.json([]);
+      return;
+    }
+    
+    // Only import and use file system operations if not on Vercel
     const { getCourseById } = await import('./api/syllabusParser.js');
-    // Get all course IDs and return full course data including assessments
-    const fs = await import('fs');
     const dbData = JSON.parse(fs.readFileSync('database.json', 'utf8'));
     const courses = dbData.courses.map(course => ({
       ...course,
@@ -60,11 +70,16 @@ app.get('/api/courses', async (req, res) => {
     res.json(courses);
   } catch (error) {
     console.error('Error fetching courses:', error);
-    res.status(500).json({ error: 'Failed to fetch courses' });
+    res.json([]); // Return empty array on error
   }
 });
 
+// Simplified routes for Vercel deployment
 app.get('/api/courses/:id', async (req, res) => {
+  if (isVercel) {
+    res.status(404).json({ error: 'Not available on Vercel' });
+    return;
+  }
   try {
     const { getCourseById, calculateGradeSummary } = await import('./api/syllabusParser.js');
     const course = getCourseById(req.params.id);
@@ -85,6 +100,10 @@ app.get('/api/courses/:id', async (req, res) => {
 });
 
 app.put('/api/courses/:id', express.json(), async (req, res) => {
+  if (isVercel) {
+    res.status(404).json({ error: 'Not available on Vercel' });
+    return;
+  }
   try {
     const { updateCourseGoalGrade, getCourseById } = await import('./api/syllabusParser.js');
     const { goalGrade } = req.body;
@@ -109,6 +128,10 @@ app.put('/api/courses/:id', express.json(), async (req, res) => {
 });
 
 app.post('/api/courses/:id/assessments/:aid/grade', express.json(), async (req, res) => {
+  if (isVercel) {
+    res.status(404).json({ error: 'Not available on Vercel' });
+    return;
+  }
   try {
     const { updateAssessmentGrade } = await import('./api/syllabusParser.js');
     const { grade } = req.body;
@@ -138,6 +161,10 @@ app.post('/api/courses/:id/assessments/:aid/grade', express.json(), async (req, 
 });
 
 app.delete('/api/courses/:id/assessments/:aid/grade', async (req, res) => {
+  if (isVercel) {
+    res.status(404).json({ error: 'Not available on Vercel' });
+    return;
+  }
   try {
     const { updateAssessmentGrade } = await import('./api/syllabusParser.js');
     
@@ -157,7 +184,13 @@ app.delete('/api/courses/:id/assessments/:aid/grade', async (req, res) => {
   }
 });
 
-app.post('/upload', upload.single('syllabus'), async (req, res) => {
+app.post('/upload', upload ? upload.single('syllabus') : (req, res) => {
+  res.status(404).json({ error: 'File upload not available on Vercel' });
+}, async (req, res) => {
+  if (isVercel) {
+    res.status(404).json({ error: 'File upload not available on Vercel' });
+    return;
+  }
   try {
     if (!req.file) {
       return res.status(400).json({ 
@@ -167,6 +200,9 @@ app.post('/upload', upload.single('syllabus'), async (req, res) => {
     }
 
     console.log(`📄 Processing uploaded file: ${req.file.filename}`);
+    
+    // Import the function only if not on Vercel
+    const { processAndStoreSyllabus } = await import('./api/gemini.js');
     
     // Process the syllabus and store in database
     const result = await processAndStoreSyllabus(req.file.path);
@@ -199,6 +235,10 @@ app.post('/upload', upload.single('syllabus'), async (req, res) => {
 });
 
 app.post('/analyze-text', express.json(), async (req, res) => {
+  if (isVercel) {
+    res.status(404).json({ error: 'Text analysis not available on Vercel' });
+    return;
+  }
   try {
     const { text } = req.body;
     
@@ -211,11 +251,12 @@ app.post('/analyze-text', express.json(), async (req, res) => {
 
     console.log('📝 Processing text input');
     
+    // Import the functions only if not on Vercel
+    const { extractSyllabusInfo } = await import('./api/gemini.js');
+    const { parseGeminiResponse, saveSyllabusToDatabase } = await import('./api/syllabusParser.js');
+    
     // Process the text and store in database
     const extractedInfo = await extractSyllabusInfo(text, 'text-input.txt');
-    
-    // Import and use the parser
-    const { parseGeminiResponse, saveSyllabusToDatabase } = await import('./api/syllabusParser.js');
     
     // Parse the Gemini response
     console.log('Parsing Gemini response...');
@@ -253,7 +294,13 @@ app.use((error, req, res, next) => {
   });
 });
 
-app.listen(port, () => {
-  console.log(`🚀 CourseFlow server running on http://localhost:${port}`);
-  console.log(`📁 Upload directory: ${path.join(__dirname, 'uploads')}`);
-}); 
+// Only start the server if not on Vercel
+if (!isVercel) {
+  app.listen(port, () => {
+    console.log(`🚀 CourseFlow server running on http://localhost:${port}`);
+    console.log(`📁 Upload directory: ${path.join(__dirname, 'uploads')}`);
+  });
+}
+
+// Export for Vercel
+export default app; 
