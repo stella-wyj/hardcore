@@ -1,0 +1,299 @@
+<!--
+This file is currently hidden. To restore the mock frontend, remove the surrounding comment block.
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GradeCalc Mock Frontend</title>
+  <style>
+    body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background: #f4f6fa; }
+    .tabs {
+      display: flex;
+      background: #222;
+      padding: 0.5em 1em;
+      gap: 1em;
+    }
+    .tab {
+      color: #fff;
+      background: #444;
+      border: none;
+      padding: 0.7em 1.5em;
+      border-radius: 1em 1em 0 0;
+      cursor: pointer;
+      font-size: 1.1em;
+      transition: background 0.2s;
+    }
+    .tab.active {
+      background: #fff;
+      color: #222;
+      font-weight: bold;
+      border-bottom: 2px solid #f4f6fa;
+    }
+    .container {
+      max-width: 600px;
+      margin: 2em auto;
+      background: #fff;
+      border-radius: 1em;
+      box-shadow: 0 2px 12px #0001;
+      padding: 2em 2em 3em 2em;
+    }
+    .course-title {
+      font-size: 2em;
+      font-weight: bold;
+      margin-bottom: 0.2em;
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+    }
+    .course-dot {
+      width: 1.2em;
+      height: 1.2em;
+      border-radius: 50%;
+      display: inline-block;
+      border: 2px solid #eee;
+    }
+    .current-grade {
+      font-size: 2.5em;
+      font-weight: bold;
+      color: #4CAF50;
+      margin-bottom: 0.2em;
+      margin-top: 0.5em;
+      text-align: center;
+    }
+    .summary-box {
+      background: #e3f2fd;
+      border-left: 6px solid #2196f3;
+      padding: 1em 1.5em;
+      border-radius: 0.5em;
+      margin-bottom: 2em;
+      margin-top: 1em;
+    }
+    .summary-box h3 {
+      margin-top: 0;
+      color: #1976d2;
+    }
+    .assessments-list {
+      margin-bottom: 2em;
+    }
+    .assessment {
+      background: #f9f9f9;
+      border-radius: 0.5em;
+      padding: 1em;
+      margin-bottom: 1em;
+      box-shadow: 0 1px 4px #0001;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3em;
+    }
+    .assessment-title {
+      font-weight: bold;
+      font-size: 1.1em;
+    }
+    .assessment-meta {
+      color: #555;
+      font-size: 0.95em;
+    }
+    .assessment-grade {
+      font-size: 1.1em;
+      color: #1976d2;
+      font-weight: bold;
+    }
+    .add-assessment-btn {
+      background: #2196f3;
+      color: #fff;
+      border: none;
+      border-radius: 0.5em;
+      padding: 0.7em 1.5em;
+      font-size: 1em;
+      cursor: pointer;
+      margin-bottom: 1em;
+      margin-top: 1em;
+      transition: background 0.2s;
+    }
+    .add-assessment-btn:hover {
+      background: #1769aa;
+    }
+    .add-assessment-form, .input-grade-form {
+      margin-top: 0.5em;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5em 1em;
+      align-items: center;
+    }
+    .add-assessment-form input, .add-assessment-form select, .input-grade-form input {
+      padding: 0.4em 0.7em;
+      border-radius: 0.3em;
+      border: 1px solid #bbb;
+      font-size: 1em;
+    }
+    .add-assessment-form button, .input-grade-form button {
+      background: #4CAF50;
+      color: #fff;
+      border: none;
+      border-radius: 0.3em;
+      padding: 0.5em 1.2em;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .add-assessment-form button:hover, .input-grade-form button:hover {
+      background: #357a38;
+    }
+    @media (max-width: 700px) {
+      .container { padding: 1em 0.5em; }
+    }
+  </style>
+</head>
+<body>
+  <div id="tabs" class="tabs"></div>
+  <div id="main" class="container"></div>
+
+  <script>
+    const API = 'http://localhost:3001';
+    let courses = [];
+    let activeCourseId = null;
+    let showAddAssessmentForm = false;
+
+    async function fetchCourses() {
+      const res = await fetch(`${API}/courses`);
+      courses = await res.json();
+      if (!activeCourseId && courses.length) activeCourseId = courses[0].id;
+      renderTabs();
+      renderCoursePage();
+    }
+
+    function renderTabs() {
+      const tabsDiv = document.getElementById('tabs');
+      tabsDiv.innerHTML = '';
+      courses.forEach(course => {
+        const btn = document.createElement('button');
+        btn.className = 'tab' + (course.id === activeCourseId ? ' active' : '');
+        btn.innerText = course.name;
+        btn.onclick = () => {
+          activeCourseId = course.id;
+          showAddAssessmentForm = false;
+          renderTabs();
+          renderCoursePage();
+        };
+        tabsDiv.appendChild(btn);
+      });
+    }
+
+    async function renderCoursePage() {
+      const main = document.getElementById('main');
+      const course = courses.find(c => c.id === activeCourseId);
+      if (!course) {
+        main.innerHTML = '<p>No course selected.</p>';
+        return;
+      }
+      // Fetch latest course data
+      const res = await fetch(`${API}/courses/${course.id}`);
+      const freshCourse = await res.json();
+      // Fetch grade summary
+      const summaryRes = await fetch(`${API}/courses/${course.id}/grade-summary`);
+      const summary = await summaryRes.json();
+      // Render course title and current grade
+      main.innerHTML = `
+        <div class="course-title">
+          <span class="course-dot" style="background:${freshCourse.color}"></span>
+          ${freshCourse.name}
+        </div>
+        <div class="current-grade">
+          ${summary.currentGrade !== null ? summary.currentGrade.toFixed(2) : 'N/A'}
+        </div>
+        <div class="summary-box">
+          <h3>Grade Summary</h3>
+          <b>Current Grade:</b> ${summary.currentGrade !== null ? summary.currentGrade.toFixed(2) : 'N/A'}<br>
+          <b>Required Avg for Goal:</b> ${summary.requiredAvg !== null ? summary.requiredAvg.toFixed(2) : 'N/A'}<br>
+          <b>Graded Weight:</b> ${summary.gradedWeight}<br>
+          <b>Total Weight:</b> ${summary.totalWeight}
+        </div>
+        <div class="assessments-list" id="assessments-list"></div>
+        <button class="add-assessment-btn" onclick="toggleAddAssessmentForm()">${showAddAssessmentForm ? 'Cancel' : 'Add Assessment'}</button>
+        <div id="add-assessment-form"></div>
+      `;
+      renderAssessments(freshCourse);
+      if (showAddAssessmentForm) renderAddAssessmentForm(freshCourse.id);
+    }
+
+    function renderAssessments(course) {
+      const listDiv = document.getElementById('assessments-list');
+      if (!course.assessments.length) {
+        listDiv.innerHTML = '<em>No assessments yet.</em>';
+        return;
+      }
+      listDiv.innerHTML = '';
+      course.assessments.forEach(a => {
+        const div = document.createElement('div');
+        div.className = 'assessment';
+        div.innerHTML = `
+          <div class="assessment-title">${a.title}</div>
+          <div class="assessment-meta">${a.type} | Due: ${a.dueDate || 'N/A'} | Weight: ${a.weight}%</div>
+          <div class="assessment-grade">Grade: ${a.grade !== null && a.grade !== undefined ? a.grade : 'N/A'}</div>
+          <form class="input-grade-form" onsubmit="inputGrade(event, '${course.id}', '${a.id}')">
+            <input type="number" min="0" max="100" name="grade" placeholder="Enter grade" required>
+            <button type="submit">Save Grade</button>
+          </form>
+        `;
+        listDiv.appendChild(div);
+      });
+    }
+
+    window.inputGrade = async (e, courseId, aid) => {
+      e.preventDefault();
+      const grade = parseFloat(e.target.grade.value);
+      await fetch(`${API}/courses/${courseId}/assessments/${aid}/grade`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ grade })
+      });
+      await fetchCourses();
+    };
+
+    window.toggleAddAssessmentForm = () => {
+      showAddAssessmentForm = !showAddAssessmentForm;
+      renderCoursePage();
+    };
+
+    function renderAddAssessmentForm(courseId) {
+      const div = document.getElementById('add-assessment-form');
+      div.innerHTML = `
+        <form class="add-assessment-form" onsubmit="addAssessment(event, '${courseId}')">
+          <input type="text" name="title" placeholder="Title" required>
+          <select name="type">
+            <option value="assignment">Assignment</option>
+            <option value="quiz">Quiz</option>
+            <option value="midterm">Midterm</option>
+            <option value="final">Final</option>
+            <option value="other">Other</option>
+          </select>
+          <input type="date" name="dueDate">
+          <input type="number" name="weight" min="0" max="100" placeholder="Weight (%)" required>
+          <button type="submit">Add</button>
+        </form>
+      `;
+    }
+
+    window.addAssessment = async (e, courseId) => {
+      e.preventDefault();
+      const form = e.target;
+      const title = form.title.value;
+      const type = form.type.value;
+      const dueDate = form.dueDate.value;
+      const weight = parseFloat(form.weight.value);
+      await fetch(`${API}/courses/${courseId}/assessments`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, type, dueDate, weight })
+      });
+      showAddAssessmentForm = false;
+      await fetchCourses();
+    };
+
+    // Initial load
+    fetchCourses();
+  </script>
+</body>
+</html>
+--> 
