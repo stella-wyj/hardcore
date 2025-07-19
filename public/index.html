@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CourseFlow</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/svg+xml" href="images/logo_full.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+  <div class="container">
+    <nav class="navbar">
+      <button class="nav-btn active">
+        <img src="images/dashboard_icon.png" alt="Dashboard" />
+        <span>Dashboard</span>
+      </button>
+      <button class="nav-btn">
+        <img src="images/mingcute_calendar-fill.png" alt="Calendar" />
+        <span>Calendar</span>
+      </button>
+      <button class="nav-btn">
+        <img src="images/mdi_pencil.png" alt="Performance" />
+        <span>Performance Analysis</span>
+      </button>
+    </nav>
+
+    <div class="main-section">
+      <header class="header">
+        <div class="header-left">
+          <img src="images/logo_full.svg" alt="Logo" class="logo" />
+          <span class="logo-text">CourseFlow</span>
+        </div>
+        <div class="header-right">
+          <img src="images/Frame 15.png" alt="Notifications" />
+        </div>
+      </header>
+
+      <div class="hi">
+        <p> Hi, Jennifer!</p>
+      </div>
+
+      <main class="main-content">
+        <section class="calendar-preview">
+          <h2>Calendar Preview</h2>
+          <div id="calendar">
+            <div class="calendar-header">
+              <span id="monthYear"></span>
+            </div>
+            <div class="calendar-grid" id="calendarGrid">
+              <!-- JS will populate dates here -->
+            </div>
+          </div>
+        </section>
+
+        <section class="upload-box">
+          <h2>Upload Syllabus PDF</h2>
+          <div class="upload-area" id="uploadArea">
+            <p style="color:#666;margin-bottom:1em;">Drag and drop your file here</p>
+            <button class="upload-btn" onclick="document.getElementById('fileInput').click()">Choose File</button>
+            <input type="file" id="fileInput" accept=".pdf,.txt" style="display:none;" />
+          </div>
+          <div class="error" id="error" style="display:none;"></div>
+        </section>
+        <section class="backend-results-box" id="backend-results" style="margin:30px;background:#fff;padding:20px;border-radius:20px;box-shadow:0 2px 6px rgba(0,0,0,0.05);display:none;">
+          <h2>Backend Extraction Results</h2>
+          <div id="backendResultsContent"></div>
+        </section>
+          
+          <section class="grades-box">
+            <h2>Performance Summary</h2>
+            <div class="grade">
+              <span>Math</span>
+              <span>93%</span>
+            </div>
+            <div class="grade">
+              <span>Physics</span>
+              <span>88%</span>
+            </div>
+            <div class="grade">
+              <span>Computer Science</span>
+              <span>95%</span>
+            </div>
+          </section>
+          
+      </main>
+      
+
+      
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
