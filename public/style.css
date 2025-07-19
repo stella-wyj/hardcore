@@ -1,0 +1,186 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap');
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400;
+  background-color: #EFF6FF;
+  margin: 0;
+}
+
+.container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.navbar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px;
+  width: 220px;
+  background-color: transparent;
+}
+
+.nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px;
+  background-color: transparent;
+  border: none;
+  border-radius: 20px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  color: #333;
+}
+
+.nav-btn img {
+  height: 1em;
+  width: auto;
+}
+
+.nav-btn.active {
+  background-color: white;
+}
+
+.nav-btn:hover {
+  background-color: #ddeafc;
+  transform: translateY(-1px);
+}
+
+.main-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 30px;
+  background-color: #f2f6fc;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo {
+  height: 32px;
+}
+
+.logo-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.header-right img {
+  height: 24px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.header-right img:hover {
+  transform: scale(1.1);
+}
+
+/* .main-content {
+  padding: 30px;
+} */
+
+.hi {
+  font-size: 46px;
+}
+
+.calendar-preview {
+  margin: 30px;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.calendar-preview h2 {
+  font-size: 1.25rem;
+  margin-bottom: 16px;
+  color: #333;
+}
+
+#calendar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.calendar-header {
+  font-weight: bold;
+  font-size: 1.1rem;
+  text-align: center;
+  color: #222;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  text-align: center;
+}
+
+.calendar-grid div {
+  background-color: #f0f4ff;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.upload-box, .grades-box {
+  margin: 30px;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.upload-box h2,
+.grades-box h2 {
+  font-size: 1.25rem;
+  margin-bottom: 16px;
+  color: #333;
+}
+
+.upload-box input[type="file"] {
+  margin-top: 8px;
+}
+
+#fileList {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 12px;
+  color: #444;
+  font-size: 0.95rem;
+}
+
+.grade {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  font-size: 1rem;
+}
+
+.grade:last-child {
+  border-bottom: none;
+}
