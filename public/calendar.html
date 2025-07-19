@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CourseFlow</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/svg+xml" href="images/logo_full.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+  <div class="container">
+    <div class="navbar">
+      <a href="index.html" class="nav-btn dashboard-btn">
+        <img src="images/dashboard_icon.png" alt="Dashboard" />
+        <span>Dashboard</span>
+      </a>
+      <a href="calendar.html" class="nav-btn calendar-btn active">
+        <img src="images/mingcute_calendar-fill.png" alt="Calendar" />
+        <span>Calendar</span>
+      </a>
+      <a href="grades.html" class="nav-btn grades-btn">
+        <img src="images/mdi_pencil.png" alt="Grades" />
+        <span>Grades</span>
+      </a>
+      <img src="images/cat.png">
+
+    </div>
+
+    <div class="main-section">
+      <header class="header">
+        <div class="header-left">
+          <img src="images/logo_full.svg" alt="Logo" class="logo" />
+          <span class="logo-text">CourseFlow</span>
+        </div>
+        <div class="header-right">
+          <img src="images/Frame 15.png" alt="Notifications" />
+        </div>
+      </header>
+
+      <div class="hi">
+        <p><b>Hi, Jennifer!</b><br><span>Welcome to CourseFlow</span></p>
+      </div>
+
+      <main class="main-content">
+        <section class="calendar-preview">
+          <div class="box-header">
+            <img src="images/mingcute_calendar-fill.png" alt="Calendar Icon">
+            <h2>Calendar</h2>
+          </div>
+          <div id="calendar">
+            <div class="calendar-header">
+              <span id="monthYear"></span>
+            </div>
+            <div class="calendar-grid" id="calendarGrid">
+              <iframe src="https://calendar.google.com/calendar/embed?src=snow.studyinspo%40gmail.com&ctz=UTC" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+            </div>
+          </div>
+        </section>
+
+        
+      
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

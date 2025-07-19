@@ -13,20 +13,22 @@
 
 <body>
   <div class="container">
-    <nav class="navbar">
-      <button class="nav-btn active">
+    <div class="navbar">
+      <a href="index.html" class="nav-btn dashboard-btn active">
         <img src="images/dashboard_icon.png" alt="Dashboard" />
         <span>Dashboard</span>
-      </button>
-      <button class="nav-btn">
+      </a>
+      <a href="calendar.html" class="nav-btn calendar-btn">
         <img src="images/mingcute_calendar-fill.png" alt="Calendar" />
         <span>Calendar</span>
-      </button>
-      <button class="nav-btn">
-        <img src="images/mdi_pencil.png" alt="Performance" />
-        <span>Performance Analysis</span>
-      </button>
-    </nav>
+      </a>
+      <a href="grades.html" class="nav-btn grades-btn">
+        <img src="images/mdi_pencil.png" alt="Grades" />
+        <span>Grades</span>
+      </a>
+      <img src="images/cat.png">
+
+    </div>
 
     <div class="main-section">
       <header class="header">
@@ -40,43 +42,67 @@
       </header>
 
       <div class="hi">
-        <p> <b>Hi, Jennifer!</b></p>
+        <p><b>Hi, Jennifer!</b><br><span>Welcome to CourseFlow</span></p>
       </div>
 
       <main class="main-content">
-        <section class="calendar-preview">
-          <h2>Calendar Preview</h2>
-          <div id="calendar">
-            <div class="calendar-header">
-              <span id="monthYear"></span>
+        <div class="main-grid">
+          <section class="calendar-preview">
+            <div class="box-header">
+              <img src="images/mingcute_calendar-fill.png" alt="Calendar Icon">
+              <h2>Calendar</h2>
             </div>
-            <div class="calendar-grid" id="calendarGrid">
-              <!-- JS will populate dates here -->
+            <div id="calendar">
+              <div class="calendar-header">
+                <span id="monthYear"></span>
+              </div>
+              <iframe 
+                src="https://calendar.google.com/calendar/embed?src=jessicafu1108%40gmail.com&ctz=America%2FToronto" 
+                style="border-radius: 20px; width: 100%; height: 100%;" 
+                frameborder="0" 
+                scrolling="no">
+              </iframe>
             </div>
-          </div>
-        </section>
+          </section>
 
-        <section class="upload-box">
+          <div class="right-column">
+            <section class="grades-box">
+              <div class="box-header">
+                <img src="images/tabler_presentation-filled.png" alt="Calendar Icon">
+                <h2>Performance Summary</h2>
+              </div>
+              <div class="grade">
+                <span>Math</span>
+                <span>93%</span>
+              </div>
+              <div class="grade">
+                <span>Physics</span>
+                <span>88%</span>
+              </div>
+              <div class="grade">
+                <span>Computer Science</span>
+                <span>95%</span>
+              </div>
+              
+              <a href="calendar.html" class="nav-btn calendar-btn">
+                <img src="images/mingcute_calendar-fill.png" alt="Calendar" />
+                <span>Use Calculator</span>
+              </a>
+            </section>
+
+            <section class="upload-box">
             <h2>Upload Files</h2>
             <input type="file" id="fileUpload" multiple />
             <ul id="fileList"></ul>
-          </section>
+            </section>
+
+          </div>
+
+        </div>
+
+        
           
-          <section class="grades-box">
-            <h2>Performance Summary</h2>
-            <div class="grade">
-              <span>Math</span>
-              <span>93%</span>
-            </div>
-            <div class="grade">
-              <span>Physics</span>
-              <span>88%</span>
-            </div>
-            <div class="grade">
-              <span>Computer Science</span>
-              <span>95%</span>
-            </div>
-          </section>
+  
           
       </main>
       

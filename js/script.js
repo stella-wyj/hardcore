@@ -1,9 +1,13 @@
-document.querySelectorAll('.nav-btn').forEach(button => {
-    button.addEventListener('click', () => {
-      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-      button.classList.add('active');
-    });
-  });
+const path = window.location.pathname;
+
+  if (path.includes("dashboard")) {
+    document.querySelector(".dashboard-btn").classList.add("active");
+  } else if (path.includes("calendar")) {
+    document.querySelector(".calendar-btn").classList.add("active");
+  } else if (path.includes("grades")) {
+    document.querySelector(".grades-btn").classList.add("active");
+  }
+
 
   // File upload preview logic
 document.getElementById("fileUpload").addEventListener("change", function () {
