@@ -38,12 +38,12 @@ if (!fs.existsSync('uploads')) {
   fs.mkdirSync('uploads');
 }
 
-// Serve static files
-app.use(express.static(__dirname));
+// Serve static files from the public directory
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Routes
+// Root route serves public/index.html
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 app.post('/upload', upload.single('syllabus'), async (req, res) => {
@@ -124,6 +124,6 @@ app.use((error, req, res, next) => {
 });
 
 app.listen(port, () => {
-  console.log(`🚀 Syllabus Analyzer server running on http://localhost:${port}`);
+  console.log(`🚀 CourseFlow server running on http://localhost:${port}`);
   console.log(`📁 Upload directory: ${path.join(__dirname, 'uploads')}`);
 }); 
