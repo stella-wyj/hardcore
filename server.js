@@ -49,10 +49,17 @@ app.get('/', (req, res) => {
 // API Routes
 app.get('/api/courses', async (req, res) => {
   try {
-    const { getAllCourses } = await import('./api/syllabusParser.js');
-    const courses = getAllCourses();
+    const { getCourseById } = await import('./api/syllabusParser.js');
+    // Get all course IDs and return full course data including assessments
+    const fs = await import('fs');
+    const dbData = JSON.parse(fs.readFileSync('database.json', 'utf8'));
+    const courses = dbData.courses.map(course => ({
+      ...course,
+      assessments: dbData.assessments.filter(a => a.courseId === course.id)
+    }));
     res.json(courses);
   } catch (error) {
+    console.error('Error fetching courses:', error);
     res.status(500).json({ error: 'Failed to fetch courses' });
   }
 });
@@ -127,6 +134,26 @@ app.post('/api/courses/:id/assessments/:aid/grade', express.json(), async (req, 
     });
   } catch (error) {
     res.status(500).json({ error: 'Failed to update grade' });
+  }
+});
+
+app.delete('/api/courses/:id/assessments/:aid/grade', async (req, res) => {
+  try {
+    const { updateAssessmentGrade } = await import('./api/syllabusParser.js');
+    
+    // Set grade to null to delete it
+    const success = updateAssessmentGrade(parseInt(req.params.id), parseInt(req.params.aid), null);
+    if (!success) {
+      return res.status(404).json({ error: 'Course or assessment not found' });
+    }
+
+    res.json({
+      message: 'Grade deleted successfully',
+      courseId: parseInt(req.params.id),
+      assessmentId: parseInt(req.params.aid)
+    });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to delete grade' });
   }
 });
 

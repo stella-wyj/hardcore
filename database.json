@@ -1,0 +1,540 @@
+{
+  "courses": [
+    {
+      "id": 1,
+      "name": "Computer Science 101",
+      "instructor": "Dr. Sarah Johnson",
+      "color": "#4CAF50",
+      "goalGrade": 60,
+      "assessments": [
+        {
+          "id": 1,
+          "courseId": 1,
+          "title": "Assignment 1 - Basic Programming",
+          "type": "assignment",
+          "dueDate": "2024-09-15",
+          "weight": 15,
+          "grade": 92,
+          "description": "Basic programming concepts and problem solving",
+          "createdAt": "2024-09-01T10:00:00.000Z"
+        },
+        {
+          "id": 2,
+          "courseId": 1,
+          "title": "Quiz 1 - Variables and Loops",
+          "type": "quiz",
+          "dueDate": "2024-09-20",
+          "weight": 10,
+          "grade": 88,
+          "description": "Understanding variables, data types, and loop structures",
+          "createdAt": "2024-09-01T10:00:00.000Z"
+        },
+        {
+          "id": 3,
+          "courseId": 1,
+          "title": "Assignment 2 - Functions",
+          "type": "assignment",
+          "dueDate": "2024-09-30",
+          "weight": 20,
+          "grade": null,
+          "description": "Function implementation and modular programming",
+          "createdAt": "2024-09-01T10:00:00.000Z"
+        },
+        {
+          "id": 4,
+          "courseId": 1,
+          "title": "Midterm Exam",
+          "type": "midterm",
+          "dueDate": "2024-10-15",
+          "weight": 25,
+          "grade": null,
+          "description": "Comprehensive exam covering first half of course",
+          "createdAt": "2024-09-01T10:00:00.000Z"
+        },
+        {
+          "id": 5,
+          "courseId": 1,
+          "title": "Final Project",
+          "type": "final",
+          "dueDate": "2024-12-10",
+          "weight": 30,
+          "grade": null,
+          "description": "Complete programming project demonstrating all concepts",
+          "createdAt": "2024-09-01T10:00:00.000Z"
+        }
+      ],
+      "officeHours": [
+        "Monday/Wednesday, 2:00pm - 4:00pm, Room 301",
+        "Friday, 10:00am - 12:00pm, Room 301"
+      ],
+      "textbooks": [
+        "Introduction to Programming with Python",
+        "Computer Science: An Overview"
+      ],
+      "otherInfo": [
+        "All assignments must be submitted through the course portal",
+        "Late submissions will receive a 10% penalty per day",
+        "Office hours are available both in-person and online"
+      ],
+      "createdAt": "2024-09-01T10:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "name": "Mathematics 201",
+      "instructor": "Prof. Michael Chen",
+      "color": "#2196F3",
+      "goalGrade": 70,
+      "assessments": [
+        {
+          "id": 6,
+          "courseId": 2,
+          "title": "Homework 1 - Linear Algebra",
+          "type": "assignment",
+          "dueDate": "2024-09-10",
+          "weight": 12,
+          "grade": 95,
+          "description": "Vector operations and matrix calculations",
+          "createdAt": "2024-09-01T10:00:00.000Z"
+        },
+        {
+          "id": 7,
+          "courseId": 2,
+          "title": "Quiz 1 - Matrix Operations",
+          "type": "quiz",
+          "dueDate": "2024-09-18",
+          "weight": 8,
+          "grade": 87,
+          "description": "Matrix multiplication and determinants",
+          "createdAt": "2024-09-01T10:00:00.000Z"
+        },
+        {
+          "id": 8,
+          "courseId": 2,
+          "title": "Homework 2 - Eigenvalues",
+          "type": "assignment",
+          "dueDate": "2024-09-25",
+          "weight": 12,
+          "grade": 91,
+          "description": "Eigenvalue and eigenvector calculations",
+          "createdAt": "2024-09-01T10:00:00.000Z"
+        },
+        {
+          "id": 9,
+          "courseId": 2,
+          "title": "Midterm Exam",
+          "type": "midterm",
+          "dueDate": "2024-10-20",
+          "weight": 30,
+          "grade": null,
+          "description": "Comprehensive exam on linear algebra concepts",
+          "createdAt": "2024-09-01T10:00:00.000Z"
+        },
+        {
+          "id": 10,
+          "courseId": 2,
+          "title": "Final Exam",
+          "type": "final",
+          "dueDate": "2024-12-15",
+          "weight": 38,
+          "grade": null,
+          "description": "Final comprehensive exam covering all course material",
+          "createdAt": "2024-09-01T10:00:00.000Z"
+        }
+      ],
+      "officeHours": [
+        "Tuesday/Thursday, 1:00pm - 3:00pm, Room 205",
+        "Wednesday, 4:00pm - 6:00pm, Room 205"
+      ],
+      "textbooks": [
+        "Linear Algebra and Its Applications",
+        "Mathematics for Computer Science"
+      ],
+      "otherInfo": [
+        "Calculators are allowed on all exams",
+        "Homework must be handwritten and scanned",
+        "Collaboration on homework is encouraged but write-ups must be individual"
+      ],
+      "createdAt": "2024-09-01T10:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "name": "Physics 101",
+      "instructor": "Dr. Emily Rodriguez",
+      "color": "#FF9800",
+      "goalGrade": 75,
+      "assessments": [
+        {
+          "id": 11,
+          "courseId": 3,
+          "title": "Lab Report 1 - Motion",
+          "type": "assignment",
+          "dueDate": "2024-09-12",
+          "weight": 10,
+          "grade": 78,
+          "description": "Analysis of motion experiments and data collection",
+          "createdAt": "2024-09-01T10:00:00.000Z"
+        },
+        {
+          "id": 12,
+          "courseId": 3,
+          "title": "Quiz 1 - Mechanics",
+          "type": "quiz",
+          "dueDate": "2024-09-22",
+          "weight": 15,
+          "grade": 72,
+          "description": "Basic mechanics and Newton's laws",
+          "createdAt": "2024-09-01T10:00:00.000Z"
+        },
+        {
+          "id": 13,
+          "courseId": 3,
+          "title": "Lab Report 2 - Forces",
+          "type": "assignment",
+          "dueDate": "2024-09-28",
+          "weight": 10,
+          "grade": null,
+          "description": "Force analysis and free body diagrams",
+          "createdAt": "2024-09-01T10:00:00.000Z"
+        },
+        {
+          "id": 14,
+          "courseId": 3,
+          "title": "Midterm Exam",
+          "type": "midterm",
+          "dueDate": "2024-10-25",
+          "weight": 25,
+          "grade": null,
+          "description": "Exam covering mechanics and motion",
+          "createdAt": "2024-09-01T10:00:00.000Z"
+        },
+        {
+          "id": 15,
+          "courseId": 3,
+          "title": "Final Exam",
+          "type": "final",
+          "dueDate": "2024-12-20",
+          "weight": 40,
+          "grade": null,
+          "description": "Comprehensive final exam",
+          "createdAt": "2024-09-01T10:00:00.000Z"
+        }
+      ],
+      "officeHours": [
+        "Monday/Friday, 11:00am - 1:00pm, Lab 102",
+        "Wednesday, 3:00pm - 5:00pm, Lab 102"
+      ],
+      "textbooks": [
+        "Physics for Scientists and Engineers",
+        "Laboratory Manual for Physics 101"
+      ],
+      "otherInfo": [
+        "Lab attendance is mandatory",
+        "Safety goggles must be worn in all lab sessions",
+        "Lab reports must be submitted within one week of the experiment"
+      ],
+      "createdAt": "2024-09-01T10:00:00.000Z"
+    },
+    {
+      "id": 4,
+      "name": "English Literature 201",
+      "instructor": "Prof. James Wilson",
+      "color": "#9C27B0",
+      "goalGrade": 88,
+      "assessments": [
+        {
+          "id": 16,
+          "courseId": 4,
+          "title": "Essay 1 - Shakespeare Analysis",
+          "type": "assignment",
+          "dueDate": "2024-09-20",
+          "weight": 20,
+          "grade": 89,
+          "description": "Critical analysis of selected Shakespeare works",
+          "createdAt": "2024-09-01T10:00:00.000Z"
+        },
+        {
+          "id": 17,
+          "courseId": 4,
+          "title": "Participation Grade",
+          "type": "quiz",
+          "dueDate": null,
+          "weight": 10,
+          "grade": 85,
+          "description": "Class participation and discussion contributions",
+          "createdAt": "2024-09-01T10:00:00.000Z"
+        },
+        {
+          "id": 18,
+          "courseId": 4,
+          "title": "Essay 2 - Modern Literature",
+          "type": "assignment",
+          "dueDate": "2024-10-15",
+          "weight": 25,
+          "grade": null,
+          "description": "Analysis of 20th century literature",
+          "createdAt": "2024-09-01T10:00:00.000Z"
+        },
+        {
+          "id": 19,
+          "courseId": 4,
+          "title": "Midterm Paper",
+          "type": "midterm",
+          "dueDate": "2024-11-01",
+          "weight": 20,
+          "grade": null,
+          "description": "Comprehensive analysis paper",
+          "createdAt": "2024-09-01T10:00:00.000Z"
+        },
+        {
+          "id": 20,
+          "courseId": 4,
+          "title": "Final Research Paper",
+          "type": "final",
+          "dueDate": "2024-12-10",
+          "weight": 25,
+          "grade": null,
+          "description": "Final research paper on chosen literary topic",
+          "createdAt": "2024-09-01T10:00:00.000Z"
+        }
+      ],
+      "officeHours": [
+        "Tuesday/Thursday, 2:00pm - 4:00pm, Office 401",
+        "Friday, 10:00am - 12:00pm, Office 401"
+      ],
+      "textbooks": [
+        "The Norton Anthology of English Literature",
+        "Critical Theory Today: A User-Friendly Guide"
+      ],
+      "otherInfo": [
+        "Essays must be double-spaced with 12pt font",
+        "Late papers will lose 5% per day",
+        "Office hours are available for paper consultations"
+      ],
+      "createdAt": "2024-09-01T10:00:00.000Z"
+    }
+  ],
+  "assessments": [
+    {
+      "id": 1,
+      "courseId": 1,
+      "title": "Assignment 1 - Basic Programming",
+      "type": "assignment",
+      "dueDate": "2024-09-15",
+      "weight": 15,
+      "grade": 92,
+      "description": "Basic programming concepts and problem solving",
+      "createdAt": "2024-09-01T10:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "courseId": 1,
+      "title": "Quiz 1 - Variables and Loops",
+      "type": "quiz",
+      "dueDate": "2024-09-20",
+      "weight": 10,
+      "grade": null,
+      "description": "Understanding variables, data types, and loop structures",
+      "createdAt": "2024-09-01T10:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "courseId": 1,
+      "title": "Assignment 2 - Functions",
+      "type": "assignment",
+      "dueDate": "2024-09-30",
+      "weight": 20,
+      "grade": null,
+      "description": "Function implementation and modular programming",
+      "createdAt": "2024-09-01T10:00:00.000Z"
+    },
+    {
+      "id": 4,
+      "courseId": 1,
+      "title": "Midterm Exam",
+      "type": "midterm",
+      "dueDate": "2024-10-15",
+      "weight": 25,
+      "grade": null,
+      "description": "Comprehensive exam covering first half of course",
+      "createdAt": "2024-09-01T10:00:00.000Z"
+    },
+    {
+      "id": 5,
+      "courseId": 1,
+      "title": "Final Project",
+      "type": "final",
+      "dueDate": "2024-12-10",
+      "weight": 30,
+      "grade": null,
+      "description": "Complete programming project demonstrating all concepts",
+      "createdAt": "2024-09-01T10:00:00.000Z"
+    },
+    {
+      "id": 6,
+      "courseId": 2,
+      "title": "Homework 1 - Linear Algebra",
+      "type": "assignment",
+      "dueDate": "2024-09-10",
+      "weight": 12,
+      "grade": 60,
+      "description": "Vector operations and matrix calculations",
+      "createdAt": "2024-09-01T10:00:00.000Z"
+    },
+    {
+      "id": 7,
+      "courseId": 2,
+      "title": "Quiz 1 - Matrix Operations",
+      "type": "quiz",
+      "dueDate": "2024-09-18",
+      "weight": 8,
+      "grade": 87,
+      "description": "Matrix multiplication and determinants",
+      "createdAt": "2024-09-01T10:00:00.000Z"
+    },
+    {
+      "id": 8,
+      "courseId": 2,
+      "title": "Homework 2 - Eigenvalues",
+      "type": "assignment",
+      "dueDate": "2024-09-25",
+      "weight": 12,
+      "grade": 91,
+      "description": "Eigenvalue and eigenvector calculations",
+      "createdAt": "2024-09-01T10:00:00.000Z"
+    },
+    {
+      "id": 9,
+      "courseId": 2,
+      "title": "Midterm Exam",
+      "type": "midterm",
+      "dueDate": "2024-10-20",
+      "weight": 30,
+      "grade": 66.1,
+      "description": "Comprehensive exam on linear algebra concepts",
+      "createdAt": "2024-09-01T10:00:00.000Z"
+    },
+    {
+      "id": 10,
+      "courseId": 2,
+      "title": "Final Exam",
+      "type": "final",
+      "dueDate": "2024-12-15",
+      "weight": 38,
+      "grade": 66.1,
+      "description": "Final comprehensive exam covering all course material",
+      "createdAt": "2024-09-01T10:00:00.000Z"
+    },
+    {
+      "id": 11,
+      "courseId": 3,
+      "title": "Lab Report 1 - Motion",
+      "type": "assignment",
+      "dueDate": "2024-09-12",
+      "weight": 10,
+      "grade": 78,
+      "description": "Analysis of motion experiments and data collection",
+      "createdAt": "2024-09-01T10:00:00.000Z"
+    },
+    {
+      "id": 12,
+      "courseId": 3,
+      "title": "Quiz 1 - Mechanics",
+      "type": "quiz",
+      "dueDate": "2024-09-22",
+      "weight": 15,
+      "grade": 72,
+      "description": "Basic mechanics and Newton's laws",
+      "createdAt": "2024-09-01T10:00:00.000Z"
+    },
+    {
+      "id": 13,
+      "courseId": 3,
+      "title": "Lab Report 2 - Forces",
+      "type": "assignment",
+      "dueDate": "2024-09-28",
+      "weight": 10,
+      "grade": null,
+      "description": "Force analysis and free body diagrams",
+      "createdAt": "2024-09-01T10:00:00.000Z"
+    },
+    {
+      "id": 14,
+      "courseId": 3,
+      "title": "Midterm Exam",
+      "type": "midterm",
+      "dueDate": "2024-10-25",
+      "weight": 25,
+      "grade": null,
+      "description": "Exam covering mechanics and motion",
+      "createdAt": "2024-09-01T10:00:00.000Z"
+    },
+    {
+      "id": 15,
+      "courseId": 3,
+      "title": "Final Exam",
+      "type": "final",
+      "dueDate": "2024-12-20",
+      "weight": 40,
+      "grade": null,
+      "description": "Comprehensive final exam",
+      "createdAt": "2024-09-01T10:00:00.000Z"
+    },
+    {
+      "id": 16,
+      "courseId": 4,
+      "title": "Essay 1 - Shakespeare Analysis",
+      "type": "assignment",
+      "dueDate": "2024-09-20",
+      "weight": 20,
+      "grade": 89,
+      "description": "Critical analysis of selected Shakespeare works",
+      "createdAt": "2024-09-01T10:00:00.000Z"
+    },
+    {
+      "id": 17,
+      "courseId": 4,
+      "title": "Participation Grade",
+      "type": "quiz",
+      "dueDate": null,
+      "weight": 10,
+      "grade": 85,
+      "description": "Class participation and discussion contributions",
+      "createdAt": "2024-09-01T10:00:00.000Z"
+    },
+    {
+      "id": 18,
+      "courseId": 4,
+      "title": "Essay 2 - Modern Literature",
+      "type": "assignment",
+      "dueDate": "2024-10-15",
+      "weight": 25,
+      "grade": null,
+      "description": "Analysis of 20th century literature",
+      "createdAt": "2024-09-01T10:00:00.000Z"
+    },
+    {
+      "id": 19,
+      "courseId": 4,
+      "title": "Midterm Paper",
+      "type": "midterm",
+      "dueDate": "2024-11-01",
+      "weight": 20,
+      "grade": null,
+      "description": "Comprehensive analysis paper",
+      "createdAt": "2024-09-01T10:00:00.000Z"
+    },
+    {
+      "id": 20,
+      "courseId": 4,
+      "title": "Final Research Paper",
+      "type": "final",
+      "dueDate": "2024-12-10",
+      "weight": 25,
+      "grade": null,
+      "description": "Final research paper on chosen literary topic",
+      "createdAt": "2024-09-01T10:00:00.000Z"
+    }
+  ],
+  "nextCourseId": 5,
+  "nextAssessmentId": 21
+}

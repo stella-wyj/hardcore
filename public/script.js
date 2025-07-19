@@ -134,8 +134,10 @@ function handleFile(file) {
 }
 
 function showError(message) {
-  error.textContent = message;
-  error.style.display = message ? 'block' : 'none';
+  if (error) {
+    error.textContent = message;
+    error.style.display = message ? 'block' : 'none';
+  }
 }
 
 function toggleInputMethod() {
@@ -196,196 +198,388 @@ function handleTextSubmit() {
 }
 // --- End Syllabus Analyzer Functionality ---
 
-document.querySelectorAll('.nav-btn').forEach(button => {
-    button.addEventListener('click', () => {
-      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-      button.classList.add('active');
-    });
-  });
+// --- Navigation and Section Management ---
+function showSection(sectionName) {
+  // Hide all sections
+  document.getElementById('dashboard-section').style.display = 'none';
+  document.getElementById('calendar-section').style.display = 'none';
+  document.getElementById('gradecalc-section').style.display = 'none';
+  
+  // Show selected section
+  document.getElementById(sectionName + '-section').style.display = 'flex';
+  
+  // Update navigation active state
+  document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelector('.' + sectionName + '-btn').classList.add('active');
+  
+  // Load data for grade calculator section
+  if (sectionName === 'gradecalc') {
+    loadGradeCalculatorData();
+  }
+}
 
-  // File upload preview logic
-document.getElementById("fileUpload").addEventListener("change", function () {
-    const fileList = document.getElementById("fileList");
-    fileList.innerHTML = "";
+// --- Grade Calculator Functionality ---
+let currentCourses = [];
+let selectedCourseId = null;
+
+// Load grade calculator data
+async function loadGradeCalculatorData() {
+  try {
+    const response = await fetch('/api/courses');
+    const courses = await response.json();
+    currentCourses = courses;
+    
+    if (courses.length === 0) {
+      showNoCoursesMessage();
+    } else {
+      renderCourseTabs(courses);
+      if (!selectedCourseId) {
+        selectCourse(courses[0].id);
+      } else {
+        selectCourse(selectedCourseId);
+      }
+    }
+  } catch (error) {
+    console.error('Error loading courses:', error);
+    showNoCoursesMessage();
+  }
+}
+
+// Show no courses message
+function showNoCoursesMessage() {
+  document.getElementById('noCoursesMessage').style.display = 'block';
+  document.getElementById('courseContent').style.display = 'none';
+  document.getElementById('courseTabs').innerHTML = '';
+}
+
+// Render course tabs
+function renderCourseTabs(courses) {
+  const courseTabs = document.getElementById('courseTabs');
+  courseTabs.innerHTML = courses.map(course => {
+    const currentGrade = calculateCurrentGrade(course);
+    const gradeClass = getGradeClass(currentGrade);
+    return `
+      <div class="course-tab ${selectedCourseId === course.id ? 'active' : ''}" onclick="selectCourse(${course.id})">
+        <div class="course-name">${course.name}</div>
+        <div class="course-grade ${gradeClass}">${currentGrade ? currentGrade.toFixed(1) + '%' : '--'}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+// Select a course
+async function selectCourse(courseId) {
+  selectedCourseId = courseId;
+  const course = currentCourses.find(c => c.id === courseId);
   
-    Array.from(this.files).forEach(file => {
-      const listItem = document.createElement("li");
-      listItem.textContent = file.name;
-      fileList.appendChild(listItem);
+  if (!course) return;
+  
+  // Update tab selection
+  renderCourseTabs(currentCourses);
+  
+  // Show course content
+  document.getElementById('noCoursesMessage').style.display = 'none';
+  document.getElementById('courseContent').style.display = 'block';
+  
+  // Update course info
+  document.getElementById('currentCourseName').textContent = course.name;
+  
+  // Load goal grade
+  const goalGradeInput = document.getElementById('goalGradeInput');
+  goalGradeInput.value = course.goalGrade || '';
+  
+  // Render assessments
+  renderAssessments(course);
+  
+  // Update grade calculations
+  updateGradeCalculations(course);
+}
+
+// Render assessments for a course
+function renderAssessments(course) {
+  const assessmentsList = document.getElementById('assessmentsList');
+  
+  if (!course.assessments || course.assessments.length === 0) {
+    assessmentsList.innerHTML = '<p style="color: #666; text-align: center;">No assessments found for this course</p>';
+    return;
+  }
+  
+  assessmentsList.innerHTML = course.assessments.map(assessment => `
+    <div class="assessment-item">
+      <div class="assessment-header">
+        <div class="assessment-title">${assessment.title}</div>
+        <div class="assessment-weight">${assessment.weight || 0}%</div>
+      </div>
+      <div class="assessment-details">
+        <div class="assessment-detail">
+          <strong>Type:</strong> 
+          <span class="type-badge">${assessment.type}</span>
+        </div>
+        <div class="assessment-detail">
+          <strong>Due:</strong> ${assessment.dueDate || 'Not specified'}
+        </div>
+      </div>
+      <div class="grade-input-section">
+        <label>Grade:</label>
+        <input type="number" id="grade-${assessment.id}" placeholder="Enter grade" min="0" max="100" value="${assessment.grade || ''}" />
+        <button onclick="updateAssessmentGrade(${course.id}, ${assessment.id})">Save</button>
+        ${assessment.grade ? `
+          <span class="grade-display">${assessment.grade}%</span>
+          <button onclick="deleteAssessmentGrade(${course.id}, ${assessment.id})" class="delete-grade-btn">Delete Grade</button>
+        ` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+// Update assessment grade
+async function updateAssessmentGrade(courseId, assessmentId) {
+  const gradeInput = document.getElementById(`grade-${assessmentId}`);
+  const grade = parseFloat(gradeInput.value);
+  
+  if (isNaN(grade) || grade < 0 || grade > 100) {
+    alert('Please enter a valid grade between 0 and 100');
+    return;
+  }
+  
+  try {
+    const response = await fetch(`/api/courses/${courseId}/assessments/${assessmentId}/grade`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ grade })
     });
-  });
+    
+    if (response.ok) {
+      // Update local data
+      const course = currentCourses.find(c => c.id === courseId);
+      const assessment = course.assessments.find(a => a.id === assessmentId);
+      assessment.grade = grade;
+      
+      // Re-render to show updated grade
+      renderAssessments(course);
+      renderCourseTabs(currentCourses);
+      updateGradeCalculations(course);
+      
+      // Show success message
+      gradeInput.style.borderColor = '#4CAF50';
+      setTimeout(() => {
+        gradeInput.style.borderColor = '#ddd';
+      }, 2000);
+    } else {
+      alert('Error updating grade');
+    }
+  } catch (error) {
+    console.error('Error updating grade:', error);
+    alert('Error updating grade');
+  }
+}
+
+// Delete assessment grade
+async function deleteAssessmentGrade(courseId, assessmentId) {
+  if (!confirm('Are you sure you want to delete this assessment grade?')) {
+    return;
+  }
+
+  try {
+    const response = await fetch(`/api/courses/${courseId}/assessments/${assessmentId}/grade`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' }
+    });
+
+    if (response.ok) {
+      // Update local data
+      const course = currentCourses.find(c => c.id === courseId);
+      const assessment = course.assessments.find(a => a.id === assessmentId);
+      assessment.grade = null; // Set grade to null to indicate it's not graded
+      
+      // Re-render to show updated grade
+      renderAssessments(course);
+      renderCourseTabs(currentCourses);
+      updateGradeCalculations(course);
+      
+      // Show success message
+      alert('Assessment grade deleted successfully!');
+    } else {
+      alert('Error deleting assessment grade');
+    }
+  } catch (error) {
+    console.error('Error deleting assessment grade:', error);
+    alert('Error deleting assessment grade');
+  }
+}
+
+// Update goal grade
+async function updateGoalGrade() {
+  const goalGradeInput = document.getElementById('goalGradeInput');
+  const goalGrade = parseFloat(goalGradeInput.value);
   
-// Fetch and display courses and grades in Performance Summary
+  if (isNaN(goalGrade) || goalGrade < 0 || goalGrade > 100) {
+    alert('Please enter a valid goal grade between 0 and 100');
+    return;
+  }
+  
+  try {
+    const response = await fetch(`/api/courses/${selectedCourseId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ goalGrade })
+    });
+    
+    if (response.ok) {
+      // Update local data
+      const course = currentCourses.find(c => c.id === selectedCourseId);
+      course.goalGrade = goalGrade;
+      
+      // Update grade calculations
+      updateGradeCalculations(course);
+      
+      // Show success message
+      goalGradeInput.style.borderColor = '#4CAF50';
+      setTimeout(() => {
+        goalGradeInput.style.borderColor = '#ddd';
+      }, 2000);
+    } else {
+      alert('Error updating goal grade');
+    }
+  } catch (error) {
+    console.error('Error updating goal grade:', error);
+    alert('Error updating goal grade');
+  }
+}
+
+// Calculate current grade for a course
+function calculateCurrentGrade(course) {
+  if (!course.assessments || course.assessments.length === 0) return null;
+  
+  const gradedAssessments = course.assessments.filter(a => a.grade !== null && a.grade !== undefined);
+  if (gradedAssessments.length === 0) return null;
+  
+  const totalWeightedGrade = gradedAssessments.reduce((sum, a) => sum + (a.grade * (a.weight || 0)), 0);
+  const totalWeight = gradedAssessments.reduce((sum, a) => sum + (a.weight || 0), 0);
+  
+  return totalWeight > 0 ? totalWeightedGrade / totalWeight : null;
+}
+
+// Calculate required grade to reach goal
+function calculateRequiredGrade(course) {
+  if (!course.goalGrade || !course.assessments) return null;
+  
+  const gradedAssessments = course.assessments.filter(a => a.grade !== null && a.grade !== undefined);
+  const ungradedAssessments = course.assessments.filter(a => a.grade === null || a.grade === undefined);
+  
+  if (ungradedAssessments.length === 0) return null;
+  
+  const currentWeightedGrade = gradedAssessments.reduce((sum, a) => sum + (a.grade * (a.weight || 0)), 0);
+  const totalWeight = course.assessments.reduce((sum, a) => sum + (a.weight || 0), 0);
+  const ungradedWeight = ungradedAssessments.reduce((sum, a) => sum + (a.weight || 0), 0);
+  
+  const requiredWeightedGrade = (course.goalGrade * totalWeight) - currentWeightedGrade;
+  const requiredGrade = requiredWeightedGrade / ungradedWeight;
+  
+  return requiredGrade > 0 ? requiredGrade : 0;
+}
+
+// Update grade calculations display
+function updateGradeCalculations(course) {
+  const currentGrade = calculateCurrentGrade(course);
+  const requiredGrade = calculateRequiredGrade(course);
+  
+  // Update current grade display
+  const currentGradeElement = document.getElementById('currentGrade');
+  if (currentGrade !== null) {
+    currentGradeElement.textContent = currentGrade.toFixed(1) + '%';
+    currentGradeElement.className = 'stat-value ' + getGradeClass(currentGrade);
+  } else {
+    currentGradeElement.textContent = '--';
+    currentGradeElement.className = 'stat-value';
+  }
+  
+  // Update required grade display
+  const requiredGradeStat = document.getElementById('requiredGradeStat');
+  const requiredGradeElement = document.getElementById('requiredGrade');
+  
+  if (requiredGrade !== null) {
+    requiredGradeStat.style.display = 'flex';
+    requiredGradeElement.textContent = requiredGrade.toFixed(1) + '%';
+    requiredGradeElement.className = 'stat-value ' + getGradeClass(requiredGrade);
+  } else {
+    requiredGradeStat.style.display = 'none';
+  }
+}
+
+// Get CSS class for grade color
+function getGradeClass(grade) {
+  if (grade === null || grade === undefined) return '';
+  if (grade >= 80) return 'highlight';
+  if (grade >= 70) return 'warning';
+  return 'danger';
+}
+
+// --- File Upload and Navigation ---
+document.querySelectorAll('.nav-btn').forEach(button => {
+  button.addEventListener('click', () => {
+    document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+    button.classList.add('active');
+  });
+});
+
+// File upload preview logic
+document.getElementById("fileUpload").addEventListener("change", function () {
+  const fileList = document.getElementById("fileList");
+  fileList.innerHTML = "";
+
+  Array.from(this.files).forEach(file => {
+    const listItem = document.createElement("li");
+    listItem.textContent = file.name;
+    fileList.appendChild(listItem);
+  });
+});
+
+// Fetch and display courses and grades in Performance Summary (Dashboard)
 async function loadCoursesAndGrades() {
   const gradesBox = document.querySelector('.grades-box');
-  gradesBox.innerHTML = '<h2>Performance Summary</h2>';
+  if (!gradesBox) return;
+  
+  const performanceSummary = document.getElementById('performance-summary');
+  if (!performanceSummary) return;
+  
+  performanceSummary.innerHTML = '';
+  
   try {
     const res = await fetch('/api/courses');
     const courses = await res.json();
     if (Array.isArray(courses) && courses.length > 0) {
       courses.forEach(course => {
+        const currentGrade = calculateCurrentGrade(course);
         const gradeDiv = document.createElement('div');
         gradeDiv.className = 'grade';
         gradeDiv.innerHTML = `
           <span>${course.name}</span>
-          <button class="nav-btn" style="font-size:0.95em; padding:6px 14px; margin-left:10px;" onclick="fetchRequiredGrade(${course.id}, '${course.name}')">Required Grade</button>
+          <span>${currentGrade ? currentGrade.toFixed(1) + '%' : '--'}</span>
         `;
-        gradesBox.appendChild(gradeDiv);
+        performanceSummary.appendChild(gradeDiv);
       });
     } else {
-      gradesBox.innerHTML += '<div style="color:#888;">No courses found.</div>';
+      performanceSummary.innerHTML = '<div style="color:#888;">No courses found.</div>';
     }
   } catch (e) {
-    gradesBox.innerHTML += '<div style="color:#c00;">Error loading courses.</div>';
+    performanceSummary.innerHTML = '<div style="color:#c00;">Error loading courses.</div>';
   }
 }
 
-window.fetchRequiredGrade = async function(courseId, courseName) {
-  try {
-    const res = await fetch(`/api/courses/${courseId}/required-grade`);
-    const data = await res.json();
-    if (res.ok) {
-      alert(
-        `Course: ${courseName}\n` +
-        (data.message || 'Required grades:') +
-        (data.currentGrade !== undefined ? `\nCurrent Grade: ${data.currentGrade.toFixed(2)}` : '') +
-        (data.requiredGrades && data.requiredGrades.length ?
-          ('\nRequired Grades: ' + data.requiredGrades.map(rg => `${rg.title}: ${rg.requiredGrade.toFixed(2)}`).join(', ')) :
-          ''
-        )
-      );
-    } else {
-      alert(data.error || 'An error occurred.');
-    }
-  } catch (e) {
-    alert('Failed to fetch required grade.');
-  }
-}
-
-// File upload and analysis logic for syllabus
-const uploadForm = document.getElementById('uploadForm');
-
-if (uploadForm) {
-  uploadForm.addEventListener('submit', function (e) {
-    e.preventDefault();
-    const file = fileInput.files[0];
-    if (!file) {
-      showError('Please select a PDF or TXT file.');
-      return;
-    }
-    // Show loading
-    backendResults.style.display = 'block';
-    backendResultsContent.innerHTML = '<div class="loading">🤖 Analyzing syllabus with AI...</div>';
-    showError('');
-    backendResults.style.display = 'none';
-    backendResultsContent.innerHTML = '';
-
-    const formData = new FormData();
-    formData.append('syllabus', file);
-
-    fetch('/api/upload', {
-      method: 'POST',
-      body: formData
-    })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success && data.extractedInfo) {
-          let html = '';
-          html += '<h3>Extracted Syllabus Information</h3>';
-          html += '<div style="margin-bottom:1em;white-space:pre-line;">' + (data.extractedInfo ? data.extractedInfo.replace(/\n/g, '<br>') : '') + '</div>';
-          html += '<h4>Numbers Found</h4>';
-          html += '<ul>' + (data.numbers && data.numbers.length ? data.numbers.map(n => `<li>${n}</li>`).join('') : '<li>None</li>') + '</ul>';
-          html += '<h4>Words Found</h4>';
-          html += '<ul style="max-height:150px;overflow:auto;">' + (data.words && data.words.length ? data.words.map(w => `<li>${w}</li>`).join('') : '<li>None</li>') + '</ul>';
-          html += '<h3>Raw Backend Response</h3>';
-          html += '<pre style="background:#f8f8f8;padding:10px;border-radius:8px;overflow:auto;">' + JSON.stringify(data, null, 2) + '</pre>';
-          backendResultsContent.innerHTML = html;
-        } else if (data.success && data.data) {
-          backendResultsContent.innerHTML = data.data;
-        } else {
-          showError(data.error || 'Failed to process syllabus');
-        }
-      })
-      .catch(err => {
-        showError('Error uploading file: ' + err.message);
-      });
-  });
-}
-
-// Call on page load
-loadCoursesAndGrades();
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+  loadCoursesAndGrades();
   
-// jens code
-const path = window.location.pathname;
-
+  // Set up navigation based on current path
+  const path = window.location.pathname;
   if (path.includes("dashboard")) {
     document.querySelector(".dashboard-btn").classList.add("active");
   } else if (path.includes("calendar")) {
     document.querySelector(".calendar-btn").classList.add("active");
   } else if (path.includes("grades")) {
-    document.querySelector(".grades-btn").classList.add("active");
+    document.querySelector(".gradecalc-btn").classList.add("active");
   }
-
-
-  // File upload preview logic
-document.getElementById("fileUpload").addEventListener("change", function () {
-    const fileList = document.getElementById("fileList");
-    fileList.innerHTML = "";
+});
   
-    Array.from(this.files).forEach(file => {
-      const listItem = document.createElement("li");
-      listItem.textContent = file.name;
-      fileList.appendChild(listItem);
-    });
-  });
-  
-// Fetch and display courses and grades in Performance Summary
-async function loadCoursesAndGrades() {
-  const gradesBox = document.querySelector('.grades-box');
-  gradesBox.innerHTML = '<h2>Performance Summary</h2>';
-  try {
-    const res = await fetch('/api/courses');
-    const courses = await res.json();
-    if (Array.isArray(courses) && courses.length > 0) {
-      courses.forEach(course => {
-        const gradeDiv = document.createElement('div');
-        gradeDiv.className = 'grade';
-        gradeDiv.innerHTML = `
-          <span>${course.name}</span>
-          <button class="nav-btn" style="font-size:0.95em; padding:6px 14px; margin-left:10px;" onclick="fetchRequiredGrade(${course.id}, '${course.name}')">Required Grade</button>
-        `;
-        gradesBox.appendChild(gradeDiv);
-      });
-    } else {
-      gradesBox.innerHTML += '<div style="color:#888;">No courses found.</div>';
-    }
-  } catch (e) {
-    gradesBox.innerHTML += '<div style="color:#c00;">Error loading courses.</div>';
-  }
-}
-
-window.fetchRequiredGrade = async function(courseId, courseName) {
-  try {
-    const res = await fetch(`/api/courses/${courseId}/required-grade`);
-    const data = await res.json();
-    if (res.ok) {
-      alert(
-        `Course: ${courseName}\n` +
-        (data.message || 'Required grades:') +
-        (data.currentGrade !== undefined ? `\nCurrent Grade: ${data.currentGrade.toFixed(2)}` : '') +
-        (data.requiredGrades && data.requiredGrades.length ?
-          ('\nRequired Grades: ' + data.requiredGrades.map(rg => `${rg.title}: ${rg.requiredGrade.toFixed(2)}`).join(', ')) :
-          ''
-        )
-      );
-    } else {
-      alert(data.error || 'An error occurred.');
-    }
-  } catch (e) {
-    alert('Failed to fetch required grade.');
-  }
-}
-
-// Call on page load
-loadCoursesAndGrades();
   
