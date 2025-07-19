@@ -1,4 +1,4 @@
-import { extractSyllabusInfo } from './gemini.js';
+import { extractSyllabusInfo } from './api/gemini.js';
 
 // Sample syllabus text for testing
 const sampleSyllabus1 = `

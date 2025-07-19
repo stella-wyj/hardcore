@@ -2,7 +2,7 @@ import express from 'express';
 import multer from 'multer';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { processSyllabus, extractSyllabusInfo } from './gemini.js';
+import { processSyllabus, extractSyllabusInfo } from '/Users/stellawang/Documents/VSC/hackthe6ix/api/gemini.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

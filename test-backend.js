@@ -1,4 +1,4 @@
-import { processSyllabus } from './gemini.js';
+import { processSyllabus } from './api/gemini.js';
 
 // Test with the existing syllabus.pdf file
 const testBackend = async () => {

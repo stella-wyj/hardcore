@@ -57,10 +57,18 @@
         </section>
 
         <section class="upload-box">
-            <h2>Upload Files</h2>
-            <input type="file" id="fileUpload" multiple />
-            <ul id="fileList"></ul>
-          </section>
+          <h2>Upload Syllabus PDF</h2>
+          <div class="upload-area" id="uploadArea">
+            <p style="color:#666;margin-bottom:1em;">Drag and drop your file here</p>
+            <button class="upload-btn" onclick="document.getElementById('fileInput').click()">Choose File</button>
+            <input type="file" id="fileInput" accept=".pdf,.txt" style="display:none;" />
+          </div>
+          <div class="error" id="error" style="display:none;"></div>
+        </section>
+        <section class="backend-results-box" id="backend-results" style="margin:30px;background:#fff;padding:20px;border-radius:20px;box-shadow:0 2px 6px rgba(0,0,0,0.05);display:none;">
+          <h2>Backend Extraction Results</h2>
+          <div id="backendResultsContent"></div>
+        </section>
           
           <section class="grades-box">
             <h2>Performance Summary</h2>

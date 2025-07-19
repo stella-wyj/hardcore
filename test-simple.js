@@ -1,4 +1,4 @@
-import { processSyllabus } from './gemini.js';
+import { processSyllabus } from './api/gemini.js';
 
 console.log('Testing backend PDF processing...');
 
