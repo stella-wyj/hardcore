@@ -10,7 +10,128 @@ app.use(express.json());
 
 // In-memory data model
 const db = {
-  courses: []
+  courses: [
+    {
+      id: "math101",
+      name: "Math 101",
+      color: "#FF5733",
+      goalGrade: 90,
+      assessments: [
+        {
+          id: "math101-assignment1",
+          title: "Assignment 1",
+          type: "assignment",
+          dueDate: "2024-09-10",
+          weight: 10,
+          grade: 92
+        },
+        {
+          id: "math101-quiz1",
+          title: "Quiz 1",
+          type: "quiz",
+          dueDate: "2024-09-15",
+          weight: 5,
+          grade: 80
+        },
+        {
+          id: "math101-midterm",
+          title: "Midterm",
+          type: "midterm",
+          dueDate: "2024-10-01",
+          weight: 25,
+          grade: null
+        },
+        {
+          id: "math101-final",
+          title: "Final Exam",
+          type: "final",
+          dueDate: "2024-12-10",
+          weight: 60,
+          grade: null
+        }
+      ]
+    },
+    {
+      id: "cs102",
+      name: "CS 102",
+      color: "#33A1FF",
+      goalGrade: 85,
+      assessments: [
+        {
+          id: "cs102-assignment1",
+          title: "Assignment 1",
+          type: "assignment",
+          dueDate: "2024-09-12",
+          weight: 15,
+          grade: 88
+        },
+        {
+          id: "cs102-assignment2",
+          title: "Assignment 2",
+          type: "assignment",
+          dueDate: "2024-09-26",
+          weight: 15,
+          grade: null
+        },
+        {
+          id: "cs102-midterm",
+          title: "Midterm",
+          type: "midterm",
+          dueDate: "2024-10-15",
+          weight: 30,
+          grade: null
+        },
+        {
+          id: "cs102-final",
+          title: "Final Exam",
+          type: "final",
+          dueDate: "2024-12-12",
+          weight: 40,
+          grade: null
+        }
+      ]
+    },
+    {
+      id: "bio201",
+      name: "Biology 201",
+      color: "#4CAF50",
+      goalGrade: 78,
+      assessments: [
+        {
+          id: "bio201-lab1",
+          title: "Lab 1",
+          type: "assignment",
+          dueDate: "2024-09-08",
+          weight: 10,
+          grade: 75
+        },
+        {
+          id: "bio201-lab2",
+          title: "Lab 2",
+          type: "assignment",
+          dueDate: "2024-09-22",
+          weight: 10,
+          grade: null
+        },
+        {
+          id: "bio201-midterm",
+          title: "Midterm",
+          type: "midterm",
+          dueDate: "2024-10-10",
+          weight: 30,
+          grade: null
+        },
+        {
+          id: "bio201-final",
+          title: "Final Exam",
+          type: "final",
+          dueDate: "2024-12-15",
+          weight: 50,
+          grade: null
+        }
+      ]
+    }
+  ]
 };
 
 // --- Course Endpoints ---
