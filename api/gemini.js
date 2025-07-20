@@ -27,47 +27,67 @@ const readPDF = async (filePath) => {
       // Read text file directly
       return fs.readFileSync(filePath, 'utf8');
     } else if (fileExtension === '.pdf') {
-      // Use pdfjs-dist to extract text from PDF
-      console.log('📄 Using pdfjs-dist for PDF extraction...');
+      // Use OCR approach: Convert PDF to images, then extract text with Tesseract
+      console.log('📄 Using OCR for PDF extraction...');
       
       try {
-        const dataBuffer = fs.readFileSync(filePath);
+        const { exec } = await import('child_process');
+        const { promisify } = await import('util');
+        const execAsync = promisify(exec);
         
-        // Import pdfjs-dist dynamically
-        const pdfjsLib = await import('pdfjs-dist');
+        // Create temporary directory for images
+        const tempDir = path.join(os.tmpdir(), `pdf-ocr-${Date.now()}`);
+        fs.mkdirSync(tempDir, { recursive: true });
         
-        // Set up the worker - use a simpler approach for Node.js
-        pdfjsLib.GlobalWorkerOptions.workerSrc = false;
-        
-        // Load the PDF document
-        const loadingTask = pdfjsLib.getDocument({ data: dataBuffer });
-        const pdf = await loadingTask.promise;
-        
-        console.log(`📄 PDF loaded successfully with ${pdf.numPages} pages`);
-        
-        let fullText = '';
-        
-        // Extract text from each page
-        for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
-          console.log(`📄 Processing page ${pageNum}/${pdf.numPages}...`);
-          const page = await pdf.getPage(pageNum);
-          const textContent = await page.getTextContent();
+        try {
+          // Convert PDF pages to images using pdftoppm
+          console.log('🔄 Converting PDF pages to images...');
+          await execAsync(`pdftoppm -png "${filePath}" "${tempDir}/page"`);
           
-          // Combine text items
-          const pageText = textContent.items
-            .map(item => item.str)
-            .join(' ');
+          // Get list of generated image files
+          const imageFiles = fs.readdirSync(tempDir)
+            .filter(file => file.endsWith('.png'))
+            .sort((a, b) => {
+              const numA = parseInt(a.match(/page-(\d+)\.png/)?.[1] || '0');
+              const numB = parseInt(b.match(/page-(\d+)\.png/)?.[1] || '0');
+              return numA - numB;
+            });
           
-          fullText += pageText + '\n\n';
-        }
-        
-        if (fullText.trim().length > 50) {
-          console.log('✅ PDF text extraction successful');
-          console.log(`📝 Extracted ${fullText.length} characters`);
-          console.log(`📋 Sample text: ${fullText.substring(0, 200)}...`);
-          return fullText;
-        } else {
-          throw new Error('PDF text extraction resulted in very little text');
+          console.log(`📄 Found ${imageFiles.length} pages to process`);
+          
+          let fullText = '';
+          
+          // Process each page with Tesseract OCR
+          for (const imageFile of imageFiles) {
+            const imagePath = path.join(tempDir, imageFile);
+            console.log(`🔍 Processing ${imageFile} with OCR...`);
+            
+            try {
+              const { stdout } = await execAsync(`tesseract "${imagePath}" stdout -l eng`);
+              fullText += stdout.trim() + '\n\n';
+            } catch (ocrError) {
+              console.warn(`⚠️ OCR failed for ${imageFile}:`, ocrError.message);
+            }
+          }
+          
+          // Clean up temporary files
+          fs.rmSync(tempDir, { recursive: true, force: true });
+          
+          if (fullText.trim().length > 50) {
+            console.log('✅ OCR extraction successful');
+            console.log(`📝 Extracted ${fullText.length} characters`);
+            console.log(`📋 Sample text: ${fullText.substring(0, 200)}...`);
+            return fullText;
+          } else {
+            throw new Error('OCR extracted very little text');
+          }
+          
+        } catch (conversionError) {
+          // Clean up on error
+          if (fs.existsSync(tempDir)) {
+            fs.rmSync(tempDir, { recursive: true, force: true });
+          }
+          throw conversionError;
         }
         
       } catch (pdfError) {
