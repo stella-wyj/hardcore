@@ -302,6 +302,11 @@ function showSection(sectionName) {
   if (sectionName === 'gradecalc') {
     loadGradeCalculatorData();
   }
+  
+  // Load data for dashboard section
+  if (sectionName === 'dashboard') {
+    loadCoursesAndGrades();
+  }
 }
 
 // --- Grade Calculator Functionality ---
