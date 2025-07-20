@@ -542,11 +542,14 @@ async function updateAssessmentGrade(courseId, assessmentId) {
   }
 }
 
-// Delete assessment grade
+// Delete assessment
 async function deleteAssessmentGrade(courseId, assessmentId) {
+  if (!confirm('Are you sure you want to delete this assessment? This action cannot be undone.')) {
+    return;
+  }
 
   try {
-    const response = await fetch(`/api/courses/${courseId}/assessments/${assessmentId}/grade`, {
+    const response = await fetch(`/api/courses/${courseId}/assessments/${assessmentId}`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' }
     });
@@ -554,26 +557,32 @@ async function deleteAssessmentGrade(courseId, assessmentId) {
     if (response.ok) {
       // Update local data
       const course = currentCourses.find(c => c.id === courseId);
-      const assessment = course.assessments.find(a => a.id === assessmentId);
-      assessment.grade = null; // Set grade to null to indicate it's not graded
+      const assessmentIndex = course.assessments.findIndex(a => a.id === assessmentId);
       
-      // Re-render to show updated grade
-      renderAssessments(course);
-      renderCourseTabs(currentCourses);
-      updateGradeCalculations(course);
-      
-      // Refresh performance summary if on dashboard
-      if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
-        loadCoursesAndGrades();
+      if (assessmentIndex !== -1) {
+        course.assessments.splice(assessmentIndex, 1);
+        
+        // Re-render to show updated assessments
+        renderAssessments(course);
+        renderCourseTabs(currentCourses);
+        updateGradeCalculations(course);
+        
+        // Refresh performance summary if on dashboard
+        if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
+          loadCoursesAndGrades();
+        }
+        
+        // Refresh calendar events
+        if (typeof loadAllEvents === 'function') {
+          loadAllEvents();
+        }
       }
-      
-
     } else {
-      alert('Error deleting assessment grade');
+      alert('Error deleting assessment');
     }
   } catch (error) {
-    console.error('Error deleting assessment grade:', error);
-    alert('Error deleting assessment grade');
+    console.error('Error deleting assessment:', error);
+    alert('Error deleting assessment');
   }
 }
 

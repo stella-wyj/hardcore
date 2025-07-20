@@ -249,7 +249,7 @@ const extractSyllabusInfo = async (pdfText, fileName) => {
 
     IMPORTANT DATE AND ASSIGNMENT PARSING RULES:
     1. ANY date that mentions a month (January, Feb, March, etc.) or weekday (Monday, Tuesday, etc.) followed by a day number is likely a DUE DATE for an assignment, quiz, or exam.
-    2. Assessment names should be SHORT and SPECIFIC (1-3 words max). Examples: "Assignment 1", "Quiz 2", "Midterm", "Final", "Project"
+    2. Assessment names should be SHORT and SPECIFIC (1-3 words max, or up to 6 words for project-related items). Include all but not limited to: "Assignment 1", "Quiz 2", "Midterm", "Final", "Project", "Project Proposal", "Group Project"
     3. If an item is longer than 3 words, it's likely a DESCRIPTION and should NOT be included as an assessment
     4. Convert all dates to YYYY-MM-DD format. If the year is not specified don't include it
     5. If multiple assignments are mentioned with the same date, list them as separate items with distinct names.
@@ -258,7 +258,7 @@ const extractSyllabusInfo = async (pdfText, fileName) => {
     8. Ensure each assessment has a clear weight percentage. If not specified, use "Not specified" for the weight.
     9. DO NOT include the course description in the course name
     10. DO NOT include the assignment date in the assignment name 
-    11. Actual assessments should begin with capital letters, look for: "Assignment", "Test", "Quiz", "Midterm", "Final", "Project", "Lab"
+    11. Actual assessments should begin with capital letters, look for: "Assignment", "Test", "Quiz", "Midterm", "Final", "Project", "Lab", "Participation"
     12. Descriptions should be on separate lines with dashes, NOT as part of the assessment name
     
   
