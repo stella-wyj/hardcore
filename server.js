@@ -185,6 +185,90 @@ app.delete('/api/courses/:id/assessments/:aid/grade', async (req, res) => {
   }
 });
 
+// Calendar API endpoints
+app.get('/api/calendar/events', async (req, res) => {
+  if (isVercel) {
+    res.status(404).json({ error: 'Not available on Vercel' });
+    return;
+  }
+  try {
+    const { generateCalendarViewData, getUpcomingEvents } = await import('./api/calendar.js');
+    const dbData = JSON.parse(fs.readFileSync('database.json', 'utf8'));
+    const courses = dbData.courses.map(course => ({
+      ...course,
+      assessments: dbData.assessments.filter(a => a.courseId === course.id)
+    }));
+    
+    const allEvents = generateCalendarViewData(courses);
+    const upcomingEvents = getUpcomingEvents(courses, 30);
+    
+    res.json({
+      allEvents,
+      upcomingEvents
+    });
+  } catch (error) {
+    console.error('Error fetching calendar events:', error);
+    res.status(500).json({ error: 'Failed to fetch calendar events' });
+  }
+});
+
+app.get('/api/calendar/download/:courseId', async (req, res) => {
+  if (isVercel) {
+    res.status(404).json({ error: 'Not available on Vercel' });
+    return;
+  }
+  try {
+    const { generateICalForCourse, saveICalFile } = await import('./api/calendar.js');
+    const dbData = JSON.parse(fs.readFileSync('database.json', 'utf8'));
+    
+    const course = dbData.courses.find(c => c.id === parseInt(req.params.courseId));
+    if (!course) {
+      return res.status(404).json({ error: 'Course not found' });
+    }
+    
+    // Add assessments to course object
+    course.assessments = dbData.assessments.filter(a => a.courseId === course.id);
+    
+    const icalContent = generateICalForCourse(course);
+    const filename = `${course.name.replace(/[^a-zA-Z0-9]/g, '_')}_calendar.ics`;
+    const filepath = saveICalFile(icalContent, filename);
+    
+    res.setHeader('Content-Type', 'text/calendar');
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.send(icalContent);
+  } catch (error) {
+    console.error('Error generating calendar file:', error);
+    res.status(500).json({ error: 'Failed to generate calendar file' });
+  }
+});
+
+app.get('/api/calendar/download-all', async (req, res) => {
+  if (isVercel) {
+    res.status(404).json({ error: 'Not available on Vercel' });
+    return;
+  }
+  try {
+    const { generateICalForAllCourses, saveICalFile } = await import('./api/calendar.js');
+    const dbData = JSON.parse(fs.readFileSync('database.json', 'utf8'));
+    
+    const courses = dbData.courses.map(course => ({
+      ...course,
+      assessments: dbData.assessments.filter(a => a.courseId === course.id)
+    }));
+    
+    const icalContent = generateICalForAllCourses(courses);
+    const filename = 'all_courses_calendar.ics';
+    const filepath = saveICalFile(icalContent, filename);
+    
+    res.setHeader('Content-Type', 'text/calendar');
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.send(icalContent);
+  } catch (error) {
+    console.error('Error generating calendar file:', error);
+    res.status(500).json({ error: 'Failed to generate calendar file' });
+  }
+});
+
 app.post('/upload', upload ? upload.single('syllabus') : (req, res) => {
   res.status(404).json({ error: 'File upload not available on Vercel' });
 }, async (req, res) => {

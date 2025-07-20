@@ -5,6 +5,64 @@ const error = document.getElementById('error');
 const backendResults = document.getElementById('backend-results');
 const backendResultsContent = document.getElementById('backendResultsContent');
 
+// Load all events on page load
+document.addEventListener('DOMContentLoaded', function() {
+  loadAllEvents();
+});
+
+// Load all events for dashboard preview
+async function loadAllEvents() {
+  try {
+    const response = await fetch('/api/calendar/events');
+    const data = await response.json();
+    
+    const previewContainer = document.getElementById('upcomingEventsPreview');
+    if (previewContainer) {
+      displayAllEventsPreview(data.allEvents);
+    }
+  } catch (error) {
+    console.error('Error loading all events:', error);
+    const previewContainer = document.getElementById('upcomingEventsPreview');
+    if (previewContainer) {
+      previewContainer.innerHTML = '<div style="text-align: center; color: #666;">Error loading events</div>';
+    }
+  }
+}
+
+function displayAllEventsPreview(events) {
+  const container = document.getElementById('upcomingEventsPreview');
+  
+  if (!events || events.length === 0) {
+    container.innerHTML = '<div style="text-align: center; color: #666; padding: 20px;">No events found</div>';
+    return;
+  }
+
+  // Show all events (they will be scrollable)
+  const previewEvents = events;
+  
+  const eventsHTML = previewEvents.map(event => {
+    const date = new Date(event.date);
+    const day = date.getDate();
+    const month = date.toLocaleDateString('en-US', { month: 'short' });
+    
+    return `
+      <div style="display: flex; align-items: center; padding: 10px; margin-bottom: 8px; background: #f8f9fa; border-radius: 8px; border-left: 3px solid ${event.color};">
+        <div style="min-width: 50px; text-align: center; margin-right: 10px;">
+          <div style="font-size: 1.2rem; font-weight: 700; color: #333;">${day}</div>
+          <div style="font-size: 0.7rem; color: #666; text-transform: uppercase;">${month}</div>
+        </div>
+        <div style="flex: 1;">
+          <div style="font-weight: 600; color: #333; margin-bottom: 2px;">${event.title}</div>
+          <div style="font-size: 0.8rem; color: #666;">${event.course} • ${event.type}</div>
+        </div>
+        <div style="background: #e3f2fd; color: #1976d2; padding: 3px 6px; border-radius: 8px; font-size: 0.7rem; font-weight: 600;">${event.weight}%</div>
+      </div>
+    `;
+  }).join('');
+
+  container.innerHTML = eventsHTML;
+}
+
 // Drag and drop functionality
 if (uploadArea) {
   uploadArea.addEventListener('dragover', (e) => {

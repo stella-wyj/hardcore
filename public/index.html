@@ -50,18 +50,13 @@
           <section class="calendar-preview">
             <div class="box-header">
               <img src="images/mingcute_calendar-fill.png" alt="Calendar Icon">
-              <h2>Calendar</h2>
+              <h2>All Events</h2>
+              <a href="calendar.html" style="margin-left: auto; color: #4285f4; text-decoration: none; font-size: 0.9rem;">View All →</a>
             </div>
             <div id="calendar">
-              <div class="calendar-header">
-                <span id="monthYear"></span>
+              <div id="upcomingEventsPreview" style="padding: 20px; max-height: 400px; overflow-y: auto;">
+                <div style="text-align: center; color: #666;">Loading all events...</div>
               </div>
-              <iframe 
-                src="https://calendar.google.com/calendar/embed?src=snow.studyinspo%40gmail.com&ctz=UTC" 
-                style="border-radius: 20px; width: 100%; height: 100%;" 
-                frameborder="0" 
-                scrolling="no">
-              </iframe>
             </div>
           </section>
 
