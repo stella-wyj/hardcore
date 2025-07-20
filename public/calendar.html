@@ -330,6 +330,76 @@
       border-radius: 8px;
       background: #f8f9fa;
       border-left: 3px solid;
+      transition: all 0.3s ease;
+    }
+    
+    .event-checkbox {
+      margin-left: 12px;
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    
+    .event-checkbox input[type="checkbox"] {
+      appearance: none;
+      width: 22px;
+      height: 22px;
+      border: 2px solid #4285f4;
+      border-radius: 6px;
+      background: white;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .event-checkbox input[type="checkbox"]:checked {
+      background: linear-gradient(135deg, #4285f4, #3367d6);
+      border-color: #4285f4;
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(66, 133, 244, 0.4);
+    }
+    
+    .event-checkbox input[type="checkbox"]:checked::after {
+      content: '✓';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+    
+    .event-checkbox input[type="checkbox"]:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3);
+      border-color: #3367d6;
+    }
+    
+    .event-checkbox input[type="checkbox"]:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.2);
+    }
+    
+    .month-event-details.completed {
+      opacity: 0.6;
+    }
+    
+    .month-event-details.completed .month-event-title {
+      text-decoration: line-through;
+      color: #666;
+    }
+    
+    .month-event-details.completed .month-event-course {
+      text-decoration: line-through;
+      color: #999;
+    }
+    
+    .month-event.completed {
+      background: #f0f8ff;
+      border-left-color: #90caf9 !important;
     }
     
     .month-event-date {
@@ -605,16 +675,20 @@
           const date = new Date(event.date);
           const day = date.getDate();
           
-          return `
-            <div class="month-event" style="border-left-color: ${event.color}">
-              <div class="month-event-date">${day}</div>
-              <div class="month-event-details">
-                <div class="month-event-title">${event.title}</div>
-                <div class="month-event-course">${event.course} • ${event.type}</div>
-              </div>
-              <div class="event-weight">${event.weight}%</div>
+                  return `
+          <div class="month-event" style="border-left-color: ${event.color}" data-event-id="${event.id}">
+            <div class="month-event-date">${day}</div>
+            <div class="month-event-details ${event.completed ? 'completed' : ''}">
+              <div class="month-event-title">${event.title}</div>
+              <div class="month-event-course">${event.course} • ${event.type}</div>
             </div>
-          `;
+            <div class="event-weight">${event.weight}%</div>
+            <div class="event-checkbox">
+              <input type="checkbox" id="check-${event.id}" onchange="toggleEventComplete(${event.id})" ${event.completed ? 'checked' : ''}>
+              <label for="check-${event.id}"></label>
+            </div>
+          </div>
+        `;
         }).join('');
 
         return `
@@ -734,6 +808,43 @@
       if (prevBtn && nextBtn) {
         prevBtn.disabled = availableMonths.length === 0;
         nextBtn.disabled = availableMonths.length === 0;
+      }
+    }
+    
+    function toggleEventComplete(eventId) {
+      // Find the event in allEvents array
+      const event = allEvents.find(e => e.id === eventId);
+      if (event) {
+        event.completed = !event.completed;
+        
+        // Update the event in the database
+        updateEventCompletion(eventId, event.completed);
+        
+        // Re-display events to show the visual changes
+        displayAllEvents(allEvents);
+        displayUpcomingEvents(allEvents.filter(e => {
+          const eventDate = new Date(e.date);
+          const today = new Date();
+          const thirtyDaysFromNow = new Date(today.getTime() + (30 * 24 * 60 * 60 * 1000));
+          return eventDate >= today && eventDate <= thirtyDaysFromNow;
+        }));
+      }
+    }
+    
+    async function updateEventCompletion(eventId, completed) {
+      try {
+        await fetch('/api/calendar/complete-event', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            eventId: eventId,
+            completed: completed
+          })
+        });
+      } catch (error) {
+        console.error('Error updating event completion:', error);
       }
     }
 

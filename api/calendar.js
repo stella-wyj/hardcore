@@ -109,7 +109,8 @@ function generateCalendarViewData(courses) {
           date: assessment.dueDate,
           color: course.color,
           instructor: course.instructor,
-          grade: assessment.grade
+          grade: assessment.grade,
+          completed: assessment.completed || false
         });
       }
     });
@@ -156,11 +157,27 @@ function saveICalFile(content, filename) {
   return filepath;
 }
 
+// Update event completion status
+function updateEventCompletion(courses, eventId, completed) {
+  const [courseId, assessmentId] = eventId.split('-');
+  
+  const course = courses.find(c => c.id.toString() === courseId);
+  if (course) {
+    const assessment = course.assessments.find(a => a.id.toString() === assessmentId);
+    if (assessment) {
+      assessment.completed = completed;
+      return true;
+    }
+  }
+  return false;
+}
+
 export {
   generateICalForCourse,
   generateICalForAllCourses,
   generateCalendarViewData,
   getUpcomingEvents,
   getEventsByMonth,
-  saveICalFile
+  saveICalFile,
+  updateEventCompletion
 }; 
