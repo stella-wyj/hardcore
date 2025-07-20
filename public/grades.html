@@ -45,65 +45,66 @@
       </div>
 
       <main class="main-content">
-        <div class="gradecalc-container">
-          <div class="gradecalc-header">
-            <h2>Grade Calculator</h2>
-            <p>Track your grades and see what you need to achieve your goals</p>
+        <!-- Grade Calculator Section -->
+        <section class="grade-calculator">
+          <div class="grade-calculator-header">
+            <h2>📊 Grade Calculator</h2>
+            <p>Track your grades and set goals for each course</p>
           </div>
-
-          <!-- Course Tabs -->
-          <div class="course-tabs" id="courseTabs">
-            <!-- Course tabs will be dynamically generated here -->
-          </div>
-
-          <!-- Grade Calculator Content -->
-          <div class="gradecalc-content">
-            <div id="noCoursesMessage" class="no-courses-message">
-              <h3>No Courses Found</h3>
-              <p>Upload syllabus files to see your courses here</p>
-              <a href="index.html" class="upload-btn">Go to Dashboard</a>
+          
+          <div class="grade-calculator-content">
+            <!-- Course Tabs -->
+            <div class="course-tabs" id="courseTabs">
+              <!-- Course tabs will be dynamically generated here -->
             </div>
-
-            <div id="courseContent" class="course-content" style="display: none;">
-              <!-- Course Info -->
-              <div class="course-info">
-                <h3 id="currentCourseName">Course Name</h3>
-                <div class="course-stats">
-                  <div class="stat">
-                    <span class="stat-label">Current Grade:</span>
-                    <span class="stat-value" id="currentGrade">--</span>
-                  </div>
-                  <div class="stat">
-                    <span class="stat-label">Goal Grade:</span>
-                    <div class="goal-input">
-                      <input type="number" id="goalGradeInput" placeholder="Set goal" min="0" max="100" />
-                      <button onclick="updateGoalGrade()">Update</button>
-                    </div>
-                  </div>
-                  <div class="stat" id="requiredGradeStat" style="display: none;">
-                    <span class="stat-label">Required Average:</span>
-                    <span class="stat-value" id="requiredGrade">--</span>
+            
+            <!-- No Courses Message -->
+            <div id="noCoursesMessage" style="display: none; text-align: center; padding: 40px; color: #666;">
+              <h3>No courses found</h3>
+              <p>Upload a syllabus to get started with grade tracking!</p>
+            </div>
+            
+            <!-- Course Content -->
+            <div id="courseContent" style="display: none;">
+              <!-- Current Course Info -->
+              <div class="current-course-info">
+                <h3>Current Course: <span id="currentCourseName"></span></h3>
+              </div>
+              
+              <!-- Assessments and Grade Input -->
+              <div class="assessments-section">
+                <div class="assessments-header">
+                  <h3>Assessments</h3>
+                  <div class="goal-grade-section">
+                    <label for="goalGradeInput">Goal Grade:</label>
+                    <input type="number" id="goalGradeInput" placeholder="Enter goal %" min="0" max="100" />
+                    <button onclick="updateGoalGrade()">Set Goal</button>
                   </div>
                 </div>
-              </div>
-
-              <!-- Assessments List -->
-              <div class="assessments-section">
-                <h4>Assessments</h4>
-                <div id="assessmentsList" class="assessments-list">
+                
+                <div class="assessments-list" id="assessmentsList">
                   <!-- Assessments will be dynamically generated here -->
                 </div>
+                
+                <!-- Grade Summary -->
+                <div class="grade-summary" id="gradeSummary">
+                  <!-- Grade summary will be dynamically generated here -->
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </section>
       </main>
+        
+
+        
+      
     </div>
   </div>
 
   <script src="script.js"></script>
   <script>
-    // Initialize grade calculator when page loads
+    // Initialize grade calculator when grades page loads
     document.addEventListener('DOMContentLoaded', function() {
       loadGradeCalculatorData();
     });
