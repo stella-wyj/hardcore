@@ -171,7 +171,22 @@ function handleFile(file) {
     .catch(err => {
       updateProgress(100, 'Error!', '❌ Error uploading file: ' + err.message);
       setTimeout(() => {
-        showError('Error uploading file: ' + err.message);
+        let errorMessage = 'Error uploading file: ' + err.message;
+        
+        // Check if it's a Gemini API rate limit error
+        if (err.message.includes('429') || err.message.includes('quota') || err.message.includes('Too Many Requests')) {
+          errorMessage = 'PDF could not be parsed automatically due to API rate limits. Please use the text input option to manually enter the syllabus information.';
+          
+          // Show the text input option
+          const uploadArea = document.getElementById('uploadArea');
+          const textInputArea = document.getElementById('textInputArea');
+          if (uploadArea && textInputArea) {
+            uploadArea.style.display = 'none';
+            textInputArea.style.display = 'block';
+          }
+        }
+        
+        showError(errorMessage);
         backendResults.style.display = 'none';
       }, 2000);
     });
