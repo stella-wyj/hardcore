@@ -1,6 +1,414 @@
 {
-  "courses": [],
-  "assessments": [],
-  "nextCourseId": 1,
-  "nextAssessmentId": 1
+  "courses": [
+    {
+      "id": 1,
+      "name": "Computer Science and Information Systems",
+      "instructor": "Not specified",
+      "color": "#e67c73",
+      "goalGrade": null,
+      "assessments": [
+        {
+          "id": 1,
+          "courseId": 1,
+          "title": "Syllabus Quiz",
+          "type": "quiz",
+          "dueDate": "2025-09-10",
+          "weight": 2,
+          "grade": null,
+          "description": "2025-09-10: Syllabus Quiz - 2%",
+          "createdAt": "2025-07-20T05:57:36.187Z"
+        },
+        {
+          "id": 2,
+          "courseId": 1,
+          "title": "Quiz 1",
+          "type": "quiz",
+          "dueDate": "2025-09-24",
+          "weight": 3,
+          "grade": null,
+          "description": "2025-09-24: Quiz 1 - 3%",
+          "createdAt": "2025-07-20T05:57:36.187Z"
+        },
+        {
+          "id": 3,
+          "courseId": 1,
+          "title": "Quiz 2",
+          "type": "quiz",
+          "dueDate": "2025-10-29",
+          "weight": 4,
+          "grade": null,
+          "description": "2025-10-29: Quiz 2 - 4%",
+          "createdAt": "2025-07-20T05:57:36.187Z"
+        },
+        {
+          "id": 4,
+          "courseId": 1,
+          "title": "Assignment 1",
+          "type": "assignment",
+          "dueDate": "2025-09-18",
+          "weight": 5,
+          "grade": null,
+          "description": "2025-09-18: Assignment 1 - 5%",
+          "createdAt": "2025-07-20T05:57:36.187Z"
+        },
+        {
+          "id": 5,
+          "courseId": 1,
+          "title": "Assignment 2",
+          "type": "assignment",
+          "dueDate": "2025-10-02",
+          "weight": 6,
+          "grade": null,
+          "description": "2025-10-02: Assignment 2 - 6%",
+          "createdAt": "2025-07-20T05:57:36.187Z"
+        },
+        {
+          "id": 6,
+          "courseId": 1,
+          "title": "Assignment 3",
+          "type": "assignment",
+          "dueDate": "2025-10-23",
+          "weight": 6,
+          "grade": null,
+          "description": "2025-10-23: Assignment 3 - 6%",
+          "createdAt": "2025-07-20T05:57:36.187Z"
+        },
+        {
+          "id": 7,
+          "courseId": 1,
+          "title": "Assignment 4",
+          "type": "assignment",
+          "dueDate": "2025-11-13",
+          "weight": 6,
+          "grade": null,
+          "description": "2025-11-13: Assignment 4 - 6%",
+          "createdAt": "2025-07-20T05:57:36.187Z"
+        },
+        {
+          "id": 8,
+          "courseId": 1,
+          "title": "Midterm 1",
+          "type": "midterm",
+          "dueDate": "2025-10-14",
+          "weight": 18,
+          "grade": null,
+          "description": "2025-10-14: Midterm 1 - 18%",
+          "createdAt": "2025-07-20T05:57:36.187Z"
+        },
+        {
+          "id": 9,
+          "courseId": 1,
+          "title": "Final Exam",
+          "type": "final",
+          "dueDate": "2025-12-16",
+          "weight": 15,
+          "grade": null,
+          "description": "2025-12-16: Final Exam - 15%",
+          "createdAt": "2025-07-20T05:57:36.187Z"
+        }
+      ],
+      "officeHours": [
+        "Not specified"
+      ],
+      "textbooks": [
+        "Not specified"
+      ],
+      "otherInfo": [
+        "Bring a non-programmable calculator and your cheat sheet to Midterm 1.",
+        "Project Proposal (2025-11-05, 5%): Submit a short write-up (1-2 pages) proposing your idea for the final group project, including your team members and project goals.",
+        "Group Project (2025-12-03, 12%): Work in groups to create a more complex application of your choice, then present your project in class. Evaluation is based on functionality, creativity, and teamwork.",
+        "Participation (Ongoing, 10%): Marks are awarded for regular attendance, in-class engagement, and contributions to group activities."
+      ],
+      "createdAt": "2025-07-20T05:57:36.187Z"
+    },
+    {
+      "id": 2,
+      "name": "Introduction to Macroeconomics",
+      "instructor": "Dr. Ken Jackson",
+      "color": "#4285f4",
+      "goalGrade": null,
+      "assessments": [
+        {
+          "id": 10,
+          "courseId": 2,
+          "title": "Learning Curve Part 1",
+          "type": "quiz",
+          "dueDate": null,
+          "weight": 4,
+          "grade": null,
+          "description": "Not specified: Learning Curve Part 1 - 4%",
+          "createdAt": "2025-07-20T05:58:31.810Z"
+        },
+        {
+          "id": 11,
+          "courseId": 2,
+          "title": "Learning Curve Part 2",
+          "type": "quiz",
+          "dueDate": null,
+          "weight": 4,
+          "grade": null,
+          "description": "Not specified: Learning Curve Part 2 - 4%",
+          "createdAt": "2025-07-20T05:58:31.810Z"
+        },
+        {
+          "id": 12,
+          "courseId": 2,
+          "title": "Learning Curve Part 3",
+          "type": "quiz",
+          "dueDate": null,
+          "weight": 4,
+          "grade": null,
+          "description": "Not specified: Learning Curve Part 3 - 4%",
+          "createdAt": "2025-07-20T05:58:31.810Z"
+        },
+        {
+          "id": 13,
+          "courseId": 2,
+          "title": "Learning Curve Part 4",
+          "type": "quiz",
+          "dueDate": null,
+          "weight": 4,
+          "grade": null,
+          "description": "Not specified: Learning Curve Part 4 - 4%",
+          "createdAt": "2025-07-20T05:58:31.810Z"
+        },
+        {
+          "id": 14,
+          "courseId": 2,
+          "title": "Homework Assignments - ",
+          "type": "assignment",
+          "dueDate": null,
+          "weight": null,
+          "grade": null,
+          "description": "Not specified: Homework Assignments - Not specified%",
+          "createdAt": "2025-07-20T05:58:31.810Z"
+        },
+        {
+          "id": 15,
+          "courseId": 2,
+          "title": "Midterm",
+          "type": "midterm",
+          "dueDate": "2025-02-01",
+          "weight": null,
+          "grade": null,
+          "description": "2025-02-01: Midterm Test #1 - Not specified%",
+          "createdAt": "2025-07-20T05:58:31.810Z"
+        },
+        {
+          "id": 16,
+          "courseId": 2,
+          "title": "Final",
+          "type": "final",
+          "dueDate": "2025-04-09",
+          "weight": null,
+          "grade": null,
+          "description": "2025-04-09 to 2025-04-27: Final Exam - Not specified%",
+          "createdAt": "2025-07-20T05:58:31.810Z"
+        }
+      ],
+      "officeHours": [
+        "Monday, 12:30pm to 2:00pm, LH3008",
+        "Wednesday, 12:30pm to 2:00pm, LH3008",
+        "Tuesday, 10:00am to 11:00am, LH3008",
+        "Thursday, 10:00am to 11:00am, LH3008",
+        "Tuesday, 2:00pm to 3:00pm, LH3008",
+        "Thursday, 2:00pm to 3:00pm, LH3008"
+      ],
+      "textbooks": [
+        "Principles of Macroeconomics 1st Canadian Edition (2023) by Milligan, Oreopoulos, Stevenson and Wolfers",
+        "E-text with Achieve: $74.99 (includes Achieve and iClicker access)",
+        "E-text, Achieve with Looseleaf Print: $116.00 (includes Achieve and iClicker access)"
+      ],
+      "otherInfo": [
+        "All assessments are subject to change. Changes will be posted to the EC140 MyLearningSpace page.",
+        "Late submissions will not be accepted for minor assessments. Only the best 12 of at least 15 minor assessment grades in each of the four parts count towards the overall grade.",
+        "Students missing a midterm due to religious observance, academic conflict, or varsity athletics should notify the instructor as soon as possible.  Grade weight may be shifted to the final exam for other absences.",
+        "Students missing the final exam for an acceptable reason may apply for a deferred exam.",
+        "Class sessions may be recorded.  Students consent to recording by attending class.",
+        "Recording lectures without permission is prohibited.",
+        "The course content is cumulative."
+      ],
+      "createdAt": "2025-07-20T05:58:31.810Z"
+    }
+  ],
+  "assessments": [
+    {
+      "id": 1,
+      "courseId": 1,
+      "title": "Syllabus Quiz",
+      "type": "quiz",
+      "dueDate": "2025-09-10",
+      "weight": 2,
+      "grade": null,
+      "description": "2025-09-10: Syllabus Quiz - 2%",
+      "createdAt": "2025-07-20T05:57:36.187Z"
+    },
+    {
+      "id": 2,
+      "courseId": 1,
+      "title": "Quiz 1",
+      "type": "quiz",
+      "dueDate": "2025-09-24",
+      "weight": 3,
+      "grade": null,
+      "description": "2025-09-24: Quiz 1 - 3%",
+      "createdAt": "2025-07-20T05:57:36.187Z"
+    },
+    {
+      "id": 3,
+      "courseId": 1,
+      "title": "Quiz 2",
+      "type": "quiz",
+      "dueDate": "2025-10-29",
+      "weight": 4,
+      "grade": null,
+      "description": "2025-10-29: Quiz 2 - 4%",
+      "createdAt": "2025-07-20T05:57:36.187Z"
+    },
+    {
+      "id": 4,
+      "courseId": 1,
+      "title": "Assignment 1",
+      "type": "assignment",
+      "dueDate": "2025-09-18",
+      "weight": 5,
+      "grade": null,
+      "description": "2025-09-18: Assignment 1 - 5%",
+      "createdAt": "2025-07-20T05:57:36.187Z"
+    },
+    {
+      "id": 5,
+      "courseId": 1,
+      "title": "Assignment 2",
+      "type": "assignment",
+      "dueDate": "2025-10-02",
+      "weight": 6,
+      "grade": null,
+      "description": "2025-10-02: Assignment 2 - 6%",
+      "createdAt": "2025-07-20T05:57:36.187Z"
+    },
+    {
+      "id": 6,
+      "courseId": 1,
+      "title": "Assignment 3",
+      "type": "assignment",
+      "dueDate": "2025-10-23",
+      "weight": 6,
+      "grade": null,
+      "description": "2025-10-23: Assignment 3 - 6%",
+      "createdAt": "2025-07-20T05:57:36.187Z"
+    },
+    {
+      "id": 7,
+      "courseId": 1,
+      "title": "Assignment 4",
+      "type": "assignment",
+      "dueDate": "2025-11-13",
+      "weight": 6,
+      "grade": null,
+      "description": "2025-11-13: Assignment 4 - 6%",
+      "createdAt": "2025-07-20T05:57:36.187Z"
+    },
+    {
+      "id": 8,
+      "courseId": 1,
+      "title": "Midterm 1",
+      "type": "midterm",
+      "dueDate": "2025-10-14",
+      "weight": 18,
+      "grade": null,
+      "description": "2025-10-14: Midterm 1 - 18%",
+      "createdAt": "2025-07-20T05:57:36.187Z"
+    },
+    {
+      "id": 9,
+      "courseId": 1,
+      "title": "Final Exam",
+      "type": "final",
+      "dueDate": "2025-12-16",
+      "weight": 15,
+      "grade": null,
+      "description": "2025-12-16: Final Exam - 15%",
+      "createdAt": "2025-07-20T05:57:36.187Z"
+    },
+    {
+      "id": 10,
+      "courseId": 2,
+      "title": "Learning Curve Part 1",
+      "type": "quiz",
+      "dueDate": null,
+      "weight": 4,
+      "grade": null,
+      "description": "Not specified: Learning Curve Part 1 - 4%",
+      "createdAt": "2025-07-20T05:58:31.810Z"
+    },
+    {
+      "id": 11,
+      "courseId": 2,
+      "title": "Learning Curve Part 2",
+      "type": "quiz",
+      "dueDate": null,
+      "weight": 4,
+      "grade": null,
+      "description": "Not specified: Learning Curve Part 2 - 4%",
+      "createdAt": "2025-07-20T05:58:31.810Z"
+    },
+    {
+      "id": 12,
+      "courseId": 2,
+      "title": "Learning Curve Part 3",
+      "type": "quiz",
+      "dueDate": null,
+      "weight": 4,
+      "grade": null,
+      "description": "Not specified: Learning Curve Part 3 - 4%",
+      "createdAt": "2025-07-20T05:58:31.810Z"
+    },
+    {
+      "id": 13,
+      "courseId": 2,
+      "title": "Learning Curve Part 4",
+      "type": "quiz",
+      "dueDate": null,
+      "weight": 4,
+      "grade": null,
+      "description": "Not specified: Learning Curve Part 4 - 4%",
+      "createdAt": "2025-07-20T05:58:31.810Z"
+    },
+    {
+      "id": 14,
+      "courseId": 2,
+      "title": "Homework Assignments - ",
+      "type": "assignment",
+      "dueDate": null,
+      "weight": null,
+      "grade": null,
+      "description": "Not specified: Homework Assignments - Not specified%",
+      "createdAt": "2025-07-20T05:58:31.810Z"
+    },
+    {
+      "id": 15,
+      "courseId": 2,
+      "title": "Midterm",
+      "type": "midterm",
+      "dueDate": "2025-02-01",
+      "weight": null,
+      "grade": null,
+      "description": "2025-02-01: Midterm Test #1 - Not specified%",
+      "createdAt": "2025-07-20T05:58:31.810Z"
+    },
+    {
+      "id": 16,
+      "courseId": 2,
+      "title": "Final",
+      "type": "final",
+      "dueDate": "2025-04-09",
+      "weight": null,
+      "grade": null,
+      "description": "2025-04-09 to 2025-04-27: Final Exam - Not specified%",
+      "createdAt": "2025-07-20T05:58:31.810Z"
+    }
+  ],
+  "nextCourseId": 3,
+  "nextAssessmentId": 17
 }

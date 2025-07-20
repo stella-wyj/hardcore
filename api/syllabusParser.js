@@ -24,6 +24,9 @@ try {
       if (DEBUG_MODE) {
         console.log('📊 Loaded existing database with', db.courses.length, 'courses and', db.assessments.length, 'assessments');
       }
+      
+      // Fix any duplicate colors in existing courses
+      fixDuplicateColors();
     } else {
       console.log('Database file exists but is empty or invalid, starting fresh');
     }
@@ -453,13 +456,88 @@ function saveSyllabusToDatabase(parsedData) {
   }
 }
 
-// Generate random color for course
+// Generate unique color for course
 function generateRandomColor() {
   const colors = [
     '#4285f4', '#ea4335', '#fbbc04', '#34a853', '#ff6d01',
-    '#46bdc6', '#7b1fa2', '#e67c73', '#d50000', '#e65100'
+    '#46bdc6', '#7b1fa2', '#e67c73', '#d50000', '#e65100',
+    '#9c27b0', '#3f51b5', '#2196f3', '#00bcd4', '#009688',
+    '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ff9800',
+    '#ff5722', '#795548', '#9e9e9e', '#607d8b', '#f44336'
   ];
-  return colors[Math.floor(Math.random() * colors.length)];
+  
+  // Get all currently used colors
+  const usedColors = db.courses.map(course => course.color);
+  
+  // Find available colors (not currently used)
+  const availableColors = colors.filter(color => !usedColors.includes(color));
+  
+  // If we have available colors, use one of them
+  if (availableColors.length > 0) {
+    return availableColors[Math.floor(Math.random() * availableColors.length)];
+  }
+  
+  // If all colors are used, generate a completely random color
+  const letters = '0123456789ABCDEF';
+  let color = '#';
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
+
+// Fix duplicate colors in existing courses
+function fixDuplicateColors() {
+  const usedColors = new Set();
+  const colors = [
+    '#4285f4', '#ea4335', '#fbbc04', '#34a853', '#ff6d01',
+    '#46bdc6', '#7b1fa2', '#e67c73', '#d50000', '#e65100',
+    '#9c27b0', '#3f51b5', '#2196f3', '#00bcd4', '#009688',
+    '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ff9800',
+    '#ff5722', '#795548', '#9e9e9e', '#607d8b', '#f44336'
+  ];
+  
+  let colorIndex = 0;
+  let hasChanges = false;
+  
+  for (const course of db.courses) {
+    if (usedColors.has(course.color)) {
+      // This color is already used, assign a new one
+      while (colorIndex < colors.length && usedColors.has(colors[colorIndex])) {
+        colorIndex++;
+      }
+      
+      if (colorIndex < colors.length) {
+        course.color = colors[colorIndex];
+        usedColors.add(colors[colorIndex]);
+        colorIndex++;
+        hasChanges = true;
+      } else {
+        // Generate a random color if we've used all predefined colors
+        const letters = '0123456789ABCDEF';
+        let newColor = '#';
+        do {
+          newColor = '#';
+          for (let i = 0; i < 6; i++) {
+            newColor += letters[Math.floor(Math.random() * 16)];
+          }
+        } while (usedColors.has(newColor));
+        
+        course.color = newColor;
+        usedColors.add(newColor);
+        hasChanges = true;
+      }
+    } else {
+      usedColors.add(course.color);
+    }
+  }
+  
+  if (hasChanges) {
+    saveDatabase();
+    console.log('🎨 Fixed duplicate colors in existing courses');
+  }
+  
+  return hasChanges;
 }
 
 // Get all courses
@@ -730,5 +808,7 @@ export {
   deleteAssessment,
   clearAllCourses,
   calculateGradeSummary,
-  syncAllCoursesToGradeCalc
+  syncAllCoursesToGradeCalc,
+  generateRandomColor,
+  fixDuplicateColors
 }; 
