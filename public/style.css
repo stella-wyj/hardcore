@@ -116,7 +116,7 @@ body {
   width: 100%;
   display: flex;
   gap: 20px;
-  padding: 20px;
+  padding: 20px 0; /* Remove horizontal padding, keep vertical padding */
 }
 
 .box-header {
@@ -134,6 +134,7 @@ body {
   flex: 3;
   background: #ffffff;
   padding: 20px;
+  margin: 0 20px; /* Add horizontal margin instead of relying on parent padding */
   border-radius: 20px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   display: flex;

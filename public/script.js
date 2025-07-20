@@ -386,7 +386,42 @@ async function selectCourse(courseId) {
   updateGradeCalculations(course);
 }
 
-
+// Render assessments for a course
+function renderAssessments(course) {
+  const assessmentsList = document.getElementById('assessmentsList');
+  
+  if (!course.assessments || course.assessments.length === 0) {
+    assessmentsList.innerHTML = '<p style="color: #666; text-align: center;">No assessments found for this course</p>';
+    return;
+  }
+  
+  assessmentsList.innerHTML = course.assessments.map(assessment => `
+    <div class="assessment-item">
+      <div class="assessment-header">
+        <div class="assessment-title">${assessment.title}</div>
+        <div class="assessment-weight">${assessment.weight || 0}%</div>
+      </div>
+      <div class="assessment-details">
+        <div class="assessment-detail">
+          <strong>Type:</strong> 
+          <span class="type-badge">${assessment.type}</span>
+        </div>
+        <div class="assessment-detail">
+          <strong>Due:</strong> ${assessment.dueDate || 'Not specified'}
+        </div>
+      </div>
+      <div class="grade-input-section">
+        <label>Grade:</label>
+        <input type="number" id="grade-${assessment.id}" placeholder="Enter grade" min="0" max="100" value="${assessment.grade || ''}" />
+        <button onclick="updateAssessmentGrade(${course.id}, ${assessment.id})">Save</button>
+        ${assessment.grade ? `
+          <span class="grade-display">${assessment.grade}%</span>
+          <button onclick="deleteAssessmentGrade(${course.id}, ${assessment.id})" class="delete-grade-btn">Delete Grade</button>
+        ` : ''}
+      </div>
+    </div>
+  `).join('');
+}
 
 // Update assessment grade
 async function updateAssessmentGrade(courseId, assessmentId) {
@@ -637,274 +672,5 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelector(".gradecalc-btn").classList.add("active");
   }
 });
-
-// --- Modal Functions ---
-function showAddCourseModal() {
-  document.getElementById('addCourseModal').style.display = 'flex';
-}
-
-function showAddAssessmentModal() {
-  document.getElementById('addAssessmentModal').style.display = 'flex';
-}
-
-function closeModal(modalId) {
-  document.getElementById(modalId).style.display = 'none';
-}
-
-// Close modal when clicking outside
-window.onclick = function(event) {
-  if (event.target.classList.contains('modal')) {
-    event.target.style.display = 'none';
-  }
-}
-
-// --- Add Course Functionality ---
-document.getElementById('addCourseForm').addEventListener('submit', async function(e) {
-  e.preventDefault();
-  
-  const courseName = document.getElementById('courseName').value;
-  const courseInstructor = document.getElementById('courseInstructor').value;
-  const courseColor = document.getElementById('courseColor').value;
-  
-  try {
-    const response = await fetch('/api/courses', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name: courseName,
-        instructor: courseInstructor,
-        color: courseColor,
-        assessments: []
-      })
-    });
-    
-    if (response.ok) {
-      const newCourse = await response.json();
-      
-      // Add to local data
-      currentCourses.push(newCourse);
-      
-      // Re-render course tabs
-      renderCourseTabs(currentCourses);
-      
-      // Select the new course
-      selectCourse(newCourse.id);
-      
-      // Close modal and reset form
-      closeModal('addCourseModal');
-      document.getElementById('addCourseForm').reset();
-      
-      alert('Course added successfully!');
-    } else {
-      alert('Error adding course');
-    }
-  } catch (error) {
-    console.error('Error adding course:', error);
-    alert('Error adding course');
-  }
-});
-
-// --- Add Assessment Functionality ---
-document.getElementById('addAssessmentForm').addEventListener('submit', async function(e) {
-  e.preventDefault();
-  
-  const assessmentTitle = document.getElementById('assessmentTitle').value;
-  const assessmentType = document.getElementById('assessmentType').value;
-  const assessmentWeight = parseFloat(document.getElementById('assessmentWeight').value);
-  const assessmentDueDate = document.getElementById('assessmentDueDate').value;
-  
-  if (!selectedCourseId) {
-    alert('Please select a course first');
-    return;
-  }
-  
-  try {
-    const response = await fetch(`/api/courses/${selectedCourseId}/assessments`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        title: assessmentTitle,
-        type: assessmentType,
-        weight: assessmentWeight,
-        dueDate: assessmentDueDate || null,
-        grade: null
-      })
-    });
-    
-    if (response.ok) {
-      const newAssessment = await response.json();
-      
-      // Add to local data
-      const course = currentCourses.find(c => c.id === selectedCourseId);
-      course.assessments.push(newAssessment);
-      
-      // Re-render assessments
-      renderAssessments(course);
-      
-      // Update grade calculations
-      updateGradeCalculations(course);
-      
-      // Close modal and reset form
-      closeModal('addAssessmentModal');
-      document.getElementById('addAssessmentForm').reset();
-      
-      alert('Assessment added successfully!');
-    } else {
-      alert('Error adding assessment');
-    }
-  } catch (error) {
-    console.error('Error adding assessment:', error);
-    alert('Error adding assessment');
-  }
-});
-
-// --- Remove Course Functionality ---
-async function removeCourse(courseId) {
-  if (!confirm('Are you sure you want to remove this course? This action cannot be undone.')) {
-    return;
-  }
-  
-  try {
-    const response = await fetch(`/api/courses/${courseId}`, {
-      method: 'DELETE'
-    });
-    
-    if (response.ok) {
-      // Remove from local data
-      currentCourses = currentCourses.filter(c => c.id !== courseId);
-      
-      // Re-render course tabs
-      renderCourseTabs(currentCourses);
-      
-      // If no courses left, show no courses message
-      if (currentCourses.length === 0) {
-        showNoCoursesMessage();
-      } else {
-        // Select the first available course
-        selectCourse(currentCourses[0].id);
-      }
-      
-      alert('Course removed successfully!');
-    } else {
-      alert('Error removing course');
-    }
-  } catch (error) {
-    console.error('Error removing course:', error);
-    alert('Error removing course');
-  }
-}
-
-// --- Remove Assessment Functionality ---
-async function removeAssessment(courseId, assessmentId) {
-  if (!confirm('Are you sure you want to remove this assessment? This action cannot be undone.')) {
-    return;
-  }
-  
-  try {
-    const response = await fetch(`/api/courses/${courseId}/assessments/${assessmentId}`, {
-      method: 'DELETE'
-    });
-    
-    if (response.ok) {
-      // Remove from local data
-      const course = currentCourses.find(c => c.id === courseId);
-      course.assessments = course.assessments.filter(a => a.id !== assessmentId);
-      
-      // Re-render assessments
-      renderAssessments(course);
-      
-      // Update grade calculations
-      updateGradeCalculations(course);
-      
-      alert('Assessment removed successfully!');
-    } else {
-      alert('Error removing assessment');
-    }
-  } catch (error) {
-    console.error('Error removing assessment:', error);
-    alert('Error removing assessment');
-  }
-}
-
-// Update renderAssessments to include remove buttons
-function renderAssessments(course) {
-  const assessmentsList = document.getElementById('assessmentsList');
-  if (!assessmentsList) return;
-  
-  assessmentsList.innerHTML = '';
-  
-  if (!course.assessments || course.assessments.length === 0) {
-    assessmentsList.innerHTML = '<p style="color: #666; text-align: center; padding: 20px;">No assessments found for this course.</p>';
-    return;
-  }
-  
-  course.assessments.forEach(assessment => {
-    const assessmentDiv = document.createElement('div');
-    assessmentDiv.className = 'assessment-item';
-    
-    const currentGrade = assessment.grade !== null ? assessment.grade : '--';
-    const gradeClass = assessment.grade !== null ? getGradeClass(assessment.grade) : '';
-    
-    assessmentDiv.innerHTML = `
-      <div class="assessment-header">
-        <div class="assessment-title">${assessment.title}</div>
-        <div class="assessment-weight">${assessment.weight}%</div>
-      </div>
-      <div class="assessment-details">
-        <div class="assessment-detail">
-          <strong>Type:</strong> <span class="type-badge">${assessment.type}</span>
-        </div>
-        <div class="assessment-detail">
-          <strong>Due Date:</strong> ${assessment.dueDate || 'Not specified'}
-        </div>
-      </div>
-      <div class="grade-input-section">
-        <label>Grade:</label>
-        <input type="number" 
-               id="grade-${assessment.id}" 
-               placeholder="Enter grade" 
-               min="0" 
-               max="100" 
-               value="${assessment.grade || ''}"
-               onchange="updateAssessmentGrade(${course.id}, ${assessment.id})">
-        <button onclick="updateAssessmentGrade(${course.id}, ${assessment.id})">Update</button>
-        ${assessment.grade !== null ? 
-          `<button class="delete-grade-btn" onclick="deleteAssessmentGrade(${course.id}, ${assessment.id})">Delete Grade</button>` : 
-          ''
-        }
-        <button class="remove-assessment-btn" onclick="removeAssessment(${course.id}, ${assessment.id})">Remove</button>
-      </div>
-    `;
-    
-    assessmentsList.appendChild(assessmentDiv);
-  });
-}
-
-// Update renderCourseTabs to include remove buttons
-function renderCourseTabs(courses) {
-  const courseTabs = document.getElementById('courseTabs');
-  if (!courseTabs) return;
-  
-  courseTabs.innerHTML = '';
-  
-  courses.forEach(course => {
-    const currentGrade = calculateCurrentGrade(course);
-    const gradeDisplay = currentGrade ? currentGrade.toFixed(1) + '%' : '--';
-    const gradeClass = currentGrade ? getGradeClass(currentGrade) : '';
-    
-    const tabDiv = document.createElement('div');
-    tabDiv.className = `course-tab ${course.id === selectedCourseId ? 'active' : ''}`;
-    tabDiv.style.setProperty('--course-color', course.color);
-    tabDiv.onclick = () => selectCourse(course.id);
-    
-    tabDiv.innerHTML = `
-      <div class="course-name">${course.name}</div>
-      <div class="course-grade ${gradeClass}">${gradeDisplay}</div>
-      <button class="remove-course-btn" onclick="event.stopPropagation(); removeCourse(${course.id})">Remove</button>
-    `;
-    
-    courseTabs.appendChild(tabDiv);
-  });
-}
   
   
