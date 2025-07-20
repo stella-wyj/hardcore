@@ -4,33 +4,11 @@
       "id": 1,
       "name": "Computer Science and Information Systems",
       "instructor": "Not specified",
-      "color": "#ea4335",
+      "color": "#46bdc6",
       "goalGrade": null,
       "assessments": [
         {
           "id": 1,
-          "courseId": 1,
-          "title": "Syllabus Quiz",
-          "type": "quiz",
-          "dueDate": "2025-09-10",
-          "weight": 2,
-          "grade": null,
-          "description": "2025-09-10: Syllabus Quiz - 2%",
-          "createdAt": "2025-07-20T04:21:05.397Z"
-        },
-        {
-          "id": 2,
-          "courseId": 1,
-          "title": "A brief online quiz course expectations, policies, and grading, meant to ensure all students understand how the course will run",
-          "type": "quiz",
-          "dueDate": null,
-          "weight": null,
-          "grade": null,
-          "description": "A brief online quiz covering course expectations, policies, and grading, meant to ensure all students understand how the course will run.",
-          "createdAt": "2025-07-20T04:21:05.397Z"
-        },
-        {
-          "id": 3,
           "courseId": 1,
           "title": "Quiz 1",
           "type": "quiz",
@@ -38,21 +16,21 @@
           "weight": 3,
           "grade": null,
           "description": "2025-09-24: Quiz 1 - 3%",
-          "createdAt": "2025-07-20T04:21:05.397Z"
+          "createdAt": "2025-07-20T04:26:51.757Z"
         },
         {
-          "id": 4,
+          "id": 2,
           "courseId": 1,
-          "title": "This in-class quiz will cover programming fundamentals, with a focus on variables, data types, and basic operations",
+          "title": "Unnamed Assessment",
           "type": "quiz",
           "dueDate": null,
           "weight": null,
           "grade": null,
-          "description": "This in-class quiz will cover programming fundamentals, with a focus on variables, data types, and basic operations.",
-          "createdAt": "2025-07-20T04:21:05.397Z"
+          "description": "[description]",
+          "createdAt": "2025-07-20T04:26:51.757Z"
         },
         {
-          "id": 5,
+          "id": 3,
           "courseId": 1,
           "title": "Quiz 2",
           "type": "quiz",
@@ -60,18 +38,40 @@
           "weight": 4,
           "grade": null,
           "description": "2025-10-29: Quiz 2 - 4%",
-          "createdAt": "2025-07-20T04:21:05.397Z"
+          "createdAt": "2025-07-20T04:26:51.757Z"
         },
         {
-          "id": 6,
+          "id": 4,
           "courseId": 1,
-          "title": "An in-class quiz testing your understanding of if-statements, loops, and how to control program flow",
+          "title": "Unnamed Assessment",
           "type": "quiz",
           "dueDate": null,
           "weight": null,
           "grade": null,
-          "description": "An in-class quiz testing your understanding of if-statements, loops, and how to control program flow.",
-          "createdAt": "2025-07-20T04:21:05.397Z"
+          "description": "[description]",
+          "createdAt": "2025-07-20T04:26:51.757Z"
+        },
+        {
+          "id": 5,
+          "courseId": 1,
+          "title": "Syllabus Quiz",
+          "type": "quiz",
+          "dueDate": "2025-09-10",
+          "weight": 2,
+          "grade": null,
+          "description": "2025-09-10: Syllabus Quiz - 2%",
+          "createdAt": "2025-07-20T04:26:51.757Z"
+        },
+        {
+          "id": 6,
+          "courseId": 1,
+          "title": "Unnamed Assessment",
+          "type": "quiz",
+          "dueDate": null,
+          "weight": null,
+          "grade": null,
+          "description": "[description]",
+          "createdAt": "2025-07-20T04:26:51.757Z"
         },
         {
           "id": 7,
@@ -82,18 +82,18 @@
           "weight": 5,
           "grade": null,
           "description": "2025-09-18: Assignment 1 - 5%",
-          "createdAt": "2025-07-20T04:21:05.397Z"
+          "createdAt": "2025-07-20T04:26:51.757Z"
         },
         {
           "id": 8,
           "courseId": 1,
-          "title": "Your first assignment involves writing a Python script to solve a set of simple math problems. Submit your code through the course portal",
+          "title": "Unnamed Assessment",
           "type": "assignment",
           "dueDate": null,
           "weight": null,
           "grade": null,
-          "description": "Your first assignment involves writing a Python script to solve a set of simple math problems. Submit your code through the course portal.",
-          "createdAt": "2025-07-20T04:21:05.397Z"
+          "description": "[description]",
+          "createdAt": "2025-07-20T04:26:51.757Z"
         },
         {
           "id": 9,
@@ -104,18 +104,18 @@
           "weight": 6,
           "grade": null,
           "description": "2025-10-02: Assignment 2 - 6%",
-          "createdAt": "2025-07-20T04:21:05.397Z"
+          "createdAt": "2025-07-20T04:26:51.757Z"
         },
         {
           "id": 10,
           "courseId": 1,
-          "title": "You'll develop a simple calculator app using Python functions and user input. The assignment emphasizes code structure and user experience",
+          "title": "Unnamed Assessment",
           "type": "assignment",
           "dueDate": null,
           "weight": null,
           "grade": null,
-          "description": "You'll develop a simple calculator app using Python functions and user input. The assignment emphasizes code structure and user experience.",
-          "createdAt": "2025-07-20T04:21:05.397Z"
+          "description": "[description]",
+          "createdAt": "2025-07-20T04:26:51.757Z"
         },
         {
           "id": 11,
@@ -126,18 +126,18 @@
           "weight": 6,
           "grade": null,
           "description": "2025-10-23: Assignment 3 - 6%",
-          "createdAt": "2025-07-20T04:21:05.397Z"
+          "createdAt": "2025-07-20T04:26:51.757Z"
         },
         {
           "id": 12,
           "courseId": 1,
-          "title": "This assignment asks you to read and write data from files using Python, practicing essential skills for handling input and output",
+          "title": "Unnamed Assessment",
           "type": "assignment",
           "dueDate": null,
           "weight": null,
           "grade": null,
-          "description": "This assignment asks you to read and write data from files using Python, practicing essential skills for handling input and output.",
-          "createdAt": "2025-07-20T04:21:05.397Z"
+          "description": "[description]",
+          "createdAt": "2025-07-20T04:26:51.757Z"
         },
         {
           "id": 13,
@@ -148,18 +148,18 @@
           "weight": 6,
           "grade": null,
           "description": "2025-11-13: Assignment 4 - 6%",
-          "createdAt": "2025-07-20T04:21:05.397Z"
+          "createdAt": "2025-07-20T04:26:51.757Z"
         },
         {
           "id": 14,
           "courseId": 1,
-          "title": "Build a simple game in Python using functions, logic, and user input. This assignment focuses on creativity and code organization",
+          "title": "Unnamed Assessment",
           "type": "assignment",
           "dueDate": null,
           "weight": null,
           "grade": null,
-          "description": "Build a simple game in Python using functions, logic, and user input. This assignment focuses on creativity and code organization.",
-          "createdAt": "2025-07-20T04:21:05.397Z"
+          "description": "[description]",
+          "createdAt": "2025-07-20T04:26:51.757Z"
         },
         {
           "id": 15,
@@ -170,18 +170,18 @@
           "weight": 5,
           "grade": null,
           "description": "2025-11-05: Project Proposal - 5%",
-          "createdAt": "2025-07-20T04:21:05.397Z"
+          "createdAt": "2025-07-20T04:26:51.757Z"
         },
         {
           "id": 16,
           "courseId": 1,
-          "title": "Submit a short write-up (1-2 pages) proposing your idea for the final group project, your team members and project goals",
+          "title": "Unnamed Assessment",
           "type": "assignment",
           "dueDate": null,
           "weight": null,
           "grade": null,
-          "description": "Submit a short write-up (1-2 pages) proposing your idea for the final group project, including your team members and project goals.",
-          "createdAt": "2025-07-20T04:21:05.397Z"
+          "description": "[description]",
+          "createdAt": "2025-07-20T04:26:51.757Z"
         },
         {
           "id": 17,
@@ -192,7 +192,7 @@
           "weight": 18,
           "grade": null,
           "description": "2025-10-14: Midterm 1 - 18%",
-          "createdAt": "2025-07-20T04:21:05.397Z"
+          "createdAt": "2025-07-20T04:26:51.757Z"
         },
         {
           "id": 18,
@@ -203,7 +203,7 @@
           "weight": 15,
           "grade": null,
           "description": "2025-12-16: Final Exam - 15%",
-          "createdAt": "2025-07-20T04:21:05.397Z"
+          "createdAt": "2025-07-20T04:26:51.757Z"
         }
       ],
       "officeHours": [
@@ -213,36 +213,15 @@
         "Not specified"
       ],
       "otherInfo": [
-        "Participation is worth 10% and is based on regular attendance, in-class engagement, and contributions to group activities.  The Group Project (12%) is a group assignment due December 3, 2025.  Students should bring a non-programmable calculator and their cheat sheet to Midterm 1."
+        "Participation is worth 10% and includes attendance, engagement, and group contributions.",
+        "Group Project (due 2025-12-03) is worth 12%.  Evaluation is based on functionality, creativity, and teamwork.  A Project Proposal is due 2025-11-05 and is worth 5%."
       ],
-      "createdAt": "2025-07-20T04:21:05.397Z"
+      "createdAt": "2025-07-20T04:26:51.757Z"
     }
   ],
   "assessments": [
     {
       "id": 1,
-      "courseId": 1,
-      "title": "Syllabus Quiz",
-      "type": "quiz",
-      "dueDate": "2025-09-10",
-      "weight": 2,
-      "grade": null,
-      "description": "2025-09-10: Syllabus Quiz - 2%",
-      "createdAt": "2025-07-20T04:21:05.397Z"
-    },
-    {
-      "id": 2,
-      "courseId": 1,
-      "title": "A brief online quiz course expectations, policies, and grading, meant to ensure all students understand how the course will run",
-      "type": "quiz",
-      "dueDate": null,
-      "weight": null,
-      "grade": null,
-      "description": "A brief online quiz covering course expectations, policies, and grading, meant to ensure all students understand how the course will run.",
-      "createdAt": "2025-07-20T04:21:05.397Z"
-    },
-    {
-      "id": 3,
       "courseId": 1,
       "title": "Quiz 1",
       "type": "quiz",
@@ -250,21 +229,21 @@
       "weight": 3,
       "grade": null,
       "description": "2025-09-24: Quiz 1 - 3%",
-      "createdAt": "2025-07-20T04:21:05.397Z"
+      "createdAt": "2025-07-20T04:26:51.757Z"
     },
     {
-      "id": 4,
+      "id": 2,
       "courseId": 1,
-      "title": "This in-class quiz will cover programming fundamentals, with a focus on variables, data types, and basic operations",
+      "title": "Unnamed Assessment",
       "type": "quiz",
       "dueDate": null,
       "weight": null,
       "grade": null,
-      "description": "This in-class quiz will cover programming fundamentals, with a focus on variables, data types, and basic operations.",
-      "createdAt": "2025-07-20T04:21:05.397Z"
+      "description": "[description]",
+      "createdAt": "2025-07-20T04:26:51.757Z"
     },
     {
-      "id": 5,
+      "id": 3,
       "courseId": 1,
       "title": "Quiz 2",
       "type": "quiz",
@@ -272,18 +251,40 @@
       "weight": 4,
       "grade": null,
       "description": "2025-10-29: Quiz 2 - 4%",
-      "createdAt": "2025-07-20T04:21:05.397Z"
+      "createdAt": "2025-07-20T04:26:51.757Z"
     },
     {
-      "id": 6,
+      "id": 4,
       "courseId": 1,
-      "title": "An in-class quiz testing your understanding of if-statements, loops, and how to control program flow",
+      "title": "Unnamed Assessment",
       "type": "quiz",
       "dueDate": null,
       "weight": null,
       "grade": null,
-      "description": "An in-class quiz testing your understanding of if-statements, loops, and how to control program flow.",
-      "createdAt": "2025-07-20T04:21:05.397Z"
+      "description": "[description]",
+      "createdAt": "2025-07-20T04:26:51.757Z"
+    },
+    {
+      "id": 5,
+      "courseId": 1,
+      "title": "Syllabus Quiz",
+      "type": "quiz",
+      "dueDate": "2025-09-10",
+      "weight": 2,
+      "grade": null,
+      "description": "2025-09-10: Syllabus Quiz - 2%",
+      "createdAt": "2025-07-20T04:26:51.757Z"
+    },
+    {
+      "id": 6,
+      "courseId": 1,
+      "title": "Unnamed Assessment",
+      "type": "quiz",
+      "dueDate": null,
+      "weight": null,
+      "grade": null,
+      "description": "[description]",
+      "createdAt": "2025-07-20T04:26:51.757Z"
     },
     {
       "id": 7,
@@ -294,18 +295,18 @@
       "weight": 5,
       "grade": null,
       "description": "2025-09-18: Assignment 1 - 5%",
-      "createdAt": "2025-07-20T04:21:05.397Z"
+      "createdAt": "2025-07-20T04:26:51.757Z"
     },
     {
       "id": 8,
       "courseId": 1,
-      "title": "Your first assignment involves writing a Python script to solve a set of simple math problems. Submit your code through the course portal",
+      "title": "Unnamed Assessment",
       "type": "assignment",
       "dueDate": null,
       "weight": null,
       "grade": null,
-      "description": "Your first assignment involves writing a Python script to solve a set of simple math problems. Submit your code through the course portal.",
-      "createdAt": "2025-07-20T04:21:05.397Z"
+      "description": "[description]",
+      "createdAt": "2025-07-20T04:26:51.757Z"
     },
     {
       "id": 9,
@@ -316,18 +317,18 @@
       "weight": 6,
       "grade": null,
       "description": "2025-10-02: Assignment 2 - 6%",
-      "createdAt": "2025-07-20T04:21:05.397Z"
+      "createdAt": "2025-07-20T04:26:51.757Z"
     },
     {
       "id": 10,
       "courseId": 1,
-      "title": "You'll develop a simple calculator app using Python functions and user input. The assignment emphasizes code structure and user experience",
+      "title": "Unnamed Assessment",
       "type": "assignment",
       "dueDate": null,
       "weight": null,
       "grade": null,
-      "description": "You'll develop a simple calculator app using Python functions and user input. The assignment emphasizes code structure and user experience.",
-      "createdAt": "2025-07-20T04:21:05.397Z"
+      "description": "[description]",
+      "createdAt": "2025-07-20T04:26:51.757Z"
     },
     {
       "id": 11,
@@ -338,18 +339,18 @@
       "weight": 6,
       "grade": null,
       "description": "2025-10-23: Assignment 3 - 6%",
-      "createdAt": "2025-07-20T04:21:05.397Z"
+      "createdAt": "2025-07-20T04:26:51.757Z"
     },
     {
       "id": 12,
       "courseId": 1,
-      "title": "This assignment asks you to read and write data from files using Python, practicing essential skills for handling input and output",
+      "title": "Unnamed Assessment",
       "type": "assignment",
       "dueDate": null,
       "weight": null,
       "grade": null,
-      "description": "This assignment asks you to read and write data from files using Python, practicing essential skills for handling input and output.",
-      "createdAt": "2025-07-20T04:21:05.397Z"
+      "description": "[description]",
+      "createdAt": "2025-07-20T04:26:51.757Z"
     },
     {
       "id": 13,
@@ -360,18 +361,18 @@
       "weight": 6,
       "grade": null,
       "description": "2025-11-13: Assignment 4 - 6%",
-      "createdAt": "2025-07-20T04:21:05.397Z"
+      "createdAt": "2025-07-20T04:26:51.757Z"
     },
     {
       "id": 14,
       "courseId": 1,
-      "title": "Build a simple game in Python using functions, logic, and user input. This assignment focuses on creativity and code organization",
+      "title": "Unnamed Assessment",
       "type": "assignment",
       "dueDate": null,
       "weight": null,
       "grade": null,
-      "description": "Build a simple game in Python using functions, logic, and user input. This assignment focuses on creativity and code organization.",
-      "createdAt": "2025-07-20T04:21:05.397Z"
+      "description": "[description]",
+      "createdAt": "2025-07-20T04:26:51.757Z"
     },
     {
       "id": 15,
@@ -382,18 +383,18 @@
       "weight": 5,
       "grade": null,
       "description": "2025-11-05: Project Proposal - 5%",
-      "createdAt": "2025-07-20T04:21:05.397Z"
+      "createdAt": "2025-07-20T04:26:51.757Z"
     },
     {
       "id": 16,
       "courseId": 1,
-      "title": "Submit a short write-up (1-2 pages) proposing your idea for the final group project, your team members and project goals",
+      "title": "Unnamed Assessment",
       "type": "assignment",
       "dueDate": null,
       "weight": null,
       "grade": null,
-      "description": "Submit a short write-up (1-2 pages) proposing your idea for the final group project, including your team members and project goals.",
-      "createdAt": "2025-07-20T04:21:05.397Z"
+      "description": "[description]",
+      "createdAt": "2025-07-20T04:26:51.757Z"
     },
     {
       "id": 17,
@@ -404,7 +405,7 @@
       "weight": 18,
       "grade": null,
       "description": "2025-10-14: Midterm 1 - 18%",
-      "createdAt": "2025-07-20T04:21:05.397Z"
+      "createdAt": "2025-07-20T04:26:51.757Z"
     },
     {
       "id": 18,
@@ -415,7 +416,7 @@
       "weight": 15,
       "grade": null,
       "description": "2025-12-16: Final Exam - 15%",
-      "createdAt": "2025-07-20T04:21:05.397Z"
+      "createdAt": "2025-07-20T04:26:51.757Z"
     }
   ],
   "nextCourseId": 2,

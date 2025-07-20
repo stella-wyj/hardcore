@@ -249,15 +249,17 @@ const extractSyllabusInfo = async (pdfText, fileName) => {
 
     IMPORTANT DATE AND ASSIGNMENT PARSING RULES:
     1. ANY date that mentions a month (January, Feb, March, etc.) or weekday (Monday, Tuesday, etc.) followed by a day number is likely a DUE DATE for an assignment, quiz, or exam.
-    2. If the assingment "name" is greater than 3 words long, it is likely a DESCRIPTION, not an actual assignment
-    3. Convert all dates to YYYY-MM-DD format. If the year is not specified don't include it
-    4. If multiple assignments are mentioned with the same date, list them as separate items with distinct names.
-    5. If an assessment has null% weight, DO NOT INCLUDE IT in the grade calculator page at all
-    6. Just because a sentence includes the word "quiz" or "assigment" or "test" does NOT mean it is an actual assignment
-    7. Ensure each assessment has a clear weight percentage. If not specified, use "Not specified" for the weight.
-    8. do NOT include the course description in the course name, the assignment names should be at most 2 words (ie. Assignment 1, or Final Exam, or Quiz 1 etc)
-    9. do NOT include the assignment date in the assignment name 
-    10. Actual assessments should begin with capital letters, look for: "Assignment", "Test", "Quiz", "Midterm", "Final"
+    2. Assessment names should be SHORT and SPECIFIC (1-3 words max). Examples: "Assignment 1", "Quiz 2", "Midterm", "Final", "Project"
+    3. If an item is longer than 3 words, it's likely a DESCRIPTION and should NOT be included as an assessment
+    4. Convert all dates to YYYY-MM-DD format. If the year is not specified don't include it
+    5. If multiple assignments are mentioned with the same date, list them as separate items with distinct names.
+    6. If an assessment has null% weight, DO NOT INCLUDE IT in the grade calculator page at all
+    7. Just because a sentence includes the word "quiz" or "assignment" or "test" does NOT mean it is an actual assignment
+    8. Ensure each assessment has a clear weight percentage. If not specified, use "Not specified" for the weight.
+    9. DO NOT include the course description in the course name
+    10. DO NOT include the assignment date in the assignment name 
+    11. Actual assessments should begin with capital letters, look for: "Assignment", "Test", "Quiz", "Midterm", "Final", "Project", "Lab"
+    12. Descriptions should be on separate lines with dashes, NOT as part of the assessment name
     
   
     IMPORTANT: This syllabus document is for ONE COURSE ONLY. Extract information for a single course, even if the document mentions multiple topics or sections. If the document contains information for multiple separate courses, only extract the information for the main/primary course that this syllabus represents.

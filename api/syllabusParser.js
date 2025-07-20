@@ -217,10 +217,16 @@ function parseGeminiResponse(response) {
         }
       }
       else if (currentSection === 'midterm' && !parsed.midterm) {
-        parsed.midterm = parseAssessmentItem(item, 'midterm');
+        const assessment = parseAssessmentItem(item, 'midterm');
+        if (assessment) {
+          parsed.midterm = assessment;
+        }
       }
       else if (currentSection === 'final' && !parsed.final) {
-        parsed.final = parseAssessmentItem(item, 'final');
+        const assessment = parseAssessmentItem(item, 'final');
+        if (assessment) {
+          parsed.final = assessment;
+        }
       }
       else if (currentSection === 'officeHours' || currentSection === 'textbooks' || currentSection === 'otherInfo') {
         parsed[currentSection].push(item);
@@ -236,9 +242,14 @@ function parseAssessmentItem(item, type) {
   // Extract date, name, and weight from format like: "2024-03-15: Assignment 1 - 15%"
   const dateMatch = item.match(/(\d{4}-\d{2}-\d{2}):\s*(.+?)\s*-\s*(\d+)%/);
   if (dateMatch) {
+    const name = cleanAssessmentName(dateMatch[2].trim());
+    // Check if the name is too long (likely a description)
+    if (name.split(' ').length > 4) {
+      return null; // Skip this item as it's likely a description
+    }
     return {
       date: dateMatch[1],
-      name: cleanAssessmentName(dateMatch[2].trim()),
+      name: name,
       weight: parseInt(dateMatch[3]),
       type: type,
       description: item
@@ -248,23 +259,68 @@ function parseAssessmentItem(item, type) {
   // Try alternative format without date
   const weightMatch = item.match(/(.+?)\s*-\s*(\d+)%/);
   if (weightMatch) {
+    const name = cleanAssessmentName(weightMatch[1].trim());
+    // Check if the name is too long (likely a description)
+    if (name.split(' ').length > 4) {
+      return null; // Skip this item as it's likely a description
+    }
     return {
       date: null,
-      name: cleanAssessmentName(weightMatch[1].trim()),
+      name: name,
       weight: parseInt(weightMatch[2]),
       type: type,
       description: item
     };
   }
   
-  // Fallback - just store the raw item
-  return {
-    date: null,
-    name: cleanAssessmentName(item),
-    weight: null,
-    type: type,
-    description: item
-  };
+  // Try to extract just the assessment name from longer descriptions
+  // Look for patterns like "Assignment 1", "Quiz 1", "Midterm", "Final"
+  const assessmentPatterns = [
+    /(Assignment\s+\d+)/i,
+    /(Quiz\s+\d+)/i,
+    /(Test\s+\d+)/i,
+    /(Midterm)/i,
+    /(Final)/i,
+    /(Project)/i,
+    /(Lab\s+\d+)/i,
+    /(Homework\s+\d+)/i
+  ];
+  
+  for (const pattern of assessmentPatterns) {
+    const match = item.match(pattern);
+    if (match) {
+      const name = cleanAssessmentName(match[1]);
+      // Try to extract weight if present
+      const weightMatch = item.match(/(\d+)%/);
+      const weight = weightMatch ? parseInt(weightMatch[1]) : null;
+      
+      // Try to extract date if present
+      const dateMatch = item.match(/(\d{4}-\d{2}-\d{2})/);
+      const date = dateMatch ? dateMatch[1] : null;
+      
+      return {
+        date: date,
+        name: name,
+        weight: weight,
+        type: type,
+        description: item
+      };
+    }
+  }
+  
+  // Fallback - only include if it's a reasonable length
+  const cleanedName = cleanAssessmentName(item);
+  if (cleanedName.split(' ').length <= 4) {
+    return {
+      date: null,
+      name: cleanedName,
+      weight: null,
+      type: type,
+      description: item
+    };
+  }
+  
+  return null; // Skip items that are too long (likely descriptions)
 }
 
 // Save parsed syllabus data to database
