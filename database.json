@@ -1,0 +1,138 @@
+{
+  "courses": [
+    {
+      "id": 1,
+      "name": "Linear Algebra and Geometry",
+      "instructor": "Jeremy Macdonald, Romain Branchereau, Miguel Ayala, Antoine Giard",
+      "color": "#34a853",
+      "goalGrade": null,
+      "assessments": [
+        {
+          "id": 1,
+          "courseId": 1,
+          "title": "Unnamed Assessment",
+          "type": "quiz",
+          "dueDate": null,
+          "weight": null,
+          "grade": null,
+          "description": "Not specified",
+          "createdAt": "2025-07-20T03:44:37.308Z"
+        },
+        {
+          "id": 2,
+          "courseId": 1,
+          "title": "Webwork assignments",
+          "type": "assignment",
+          "dueDate": null,
+          "weight": 15,
+          "grade": null,
+          "description": "Not specified: Webwork assignments - 15%",
+          "createdAt": "2025-07-20T03:44:37.308Z"
+        },
+        {
+          "id": 3,
+          "courseId": 1,
+          "title": "Assignments released every Friday, Sunday. Multiple attempts allowed",
+          "type": "assignment",
+          "dueDate": null,
+          "weight": null,
+          "grade": null,
+          "description": "Assignments released every Friday, due Sunday.  Multiple attempts allowed.",
+          "createdAt": "2025-07-20T03:44:37.308Z"
+        },
+        {
+          "id": 4,
+          "courseId": 1,
+          "title": "Midterm Exam",
+          "type": "midterm",
+          "dueDate": "2024-10-09",
+          "weight": 20,
+          "grade": null,
+          "description": "2024-10-09: Midterm Exam - 20%",
+          "createdAt": "2025-07-20T03:44:37.308Z"
+        },
+        {
+          "id": 5,
+          "courseId": 1,
+          "title": "Final Exam",
+          "type": "final",
+          "dueDate": null,
+          "weight": 65,
+          "grade": null,
+          "description": "Not specified: Final Exam - 65% or 85%",
+          "createdAt": "2025-07-20T03:44:37.308Z"
+        }
+      ],
+      "officeHours": [
+        "Not specified"
+      ],
+      "textbooks": [
+        "Linear Algebra with Applications by W. K. Nicholson - Not specified",
+        "cost: Free"
+      ],
+      "otherInfo": [
+        "Two grading schemes are available; the higher grade will be used.  Scheme 1 includes a midterm (20%), Webwork assignments (15%), and a final exam (65%). Scheme 2 includes Webwork assignments (15%) and a final exam (85%). Letter grades are assigned based on a provided interval table; boundaries may be lowered at instructors’ discretion. Students are responsible for being aware of all assignment due dates. Requests for brief extensions will be considered. Collaboration on assignments is allowed, but outside help in solving problems is prohibited.  Course information and announcements will be posted on myCourses.  Use the Ed discussion forum for questions, not email.  Several resources for help are available including office hours, tutorials, a discussion forum, the Burnside Math Helpdesk, and SciLearn Peer Collaboration.  Students may submit written work in English or French. Legally mandated accommodations are handled by Student Accessibility and Achievement. The course content and/or evaluation scheme may change due to extraordinary circumstances."
+      ],
+      "createdAt": "2025-07-20T03:44:37.308Z"
+    }
+  ],
+  "assessments": [
+    {
+      "id": 1,
+      "courseId": 1,
+      "title": "Unnamed Assessment",
+      "type": "quiz",
+      "dueDate": null,
+      "weight": null,
+      "grade": null,
+      "description": "Not specified",
+      "createdAt": "2025-07-20T03:44:37.308Z"
+    },
+    {
+      "id": 2,
+      "courseId": 1,
+      "title": "Webwork assignments",
+      "type": "assignment",
+      "dueDate": null,
+      "weight": 15,
+      "grade": null,
+      "description": "Not specified: Webwork assignments - 15%",
+      "createdAt": "2025-07-20T03:44:37.308Z"
+    },
+    {
+      "id": 3,
+      "courseId": 1,
+      "title": "Assignments released every Friday, Sunday. Multiple attempts allowed",
+      "type": "assignment",
+      "dueDate": null,
+      "weight": null,
+      "grade": null,
+      "description": "Assignments released every Friday, due Sunday.  Multiple attempts allowed.",
+      "createdAt": "2025-07-20T03:44:37.308Z"
+    },
+    {
+      "id": 4,
+      "courseId": 1,
+      "title": "Midterm Exam",
+      "type": "midterm",
+      "dueDate": "2024-10-09",
+      "weight": 20,
+      "grade": null,
+      "description": "2024-10-09: Midterm Exam - 20%",
+      "createdAt": "2025-07-20T03:44:37.308Z"
+    },
+    {
+      "id": 5,
+      "courseId": 1,
+      "title": "Final Exam",
+      "type": "final",
+      "dueDate": null,
+      "weight": 65,
+      "grade": null,
+      "description": "Not specified: Final Exam - 65% or 85%",
+      "createdAt": "2025-07-20T03:44:37.308Z"
+    }
+  ],
+  "nextCourseId": 2,
+  "nextAssessmentId": 6
+}
