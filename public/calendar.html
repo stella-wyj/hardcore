@@ -12,8 +12,12 @@
   <style>
     .calendar-container {
       padding: 20px;
-      max-width: 1200px;
-      margin: 0 auto;
+      width: 100%;
+      box-sizing: border-box;
+      overflow-x: hidden;
+      height: auto !important;
+      min-height: auto !important;
+      max-height: none !important;
     }
     
     .calendar-header {
@@ -32,9 +36,16 @@
 
     
     .calendar-grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 30px;
+      display: grid !important;
+      grid-template-columns: 2fr 1fr !important;
+      gap: 20px;
+      width: 100%;
+      flex-direction: row !important;
+      box-sizing: border-box;
+      height: auto !important;
+      min-height: auto !important;
+      max-height: none !important;
+      flex: none !important;
     }
     
     .upcoming-events {
@@ -42,6 +53,7 @@
       border-radius: 20px;
       padding: 20px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      box-sizing: border-box;
     }
     
     .upcoming-title {
@@ -123,8 +135,9 @@
     .all-events {
       background: white;
       border-radius: 20px;
-      padding: 25px;
+      padding: 20px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      box-sizing: border-box;
     }
     
          .month-navigation {
@@ -437,9 +450,10 @@
       padding: 40px 20px;
     }
     
-    @media (max-width: 768px) {
+    @media (max-width: 1024px) {
       .calendar-grid {
         grid-template-columns: 1fr;
+        gap: 20px;
       }
       
       .download-buttons {
