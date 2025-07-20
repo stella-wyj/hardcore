@@ -239,6 +239,9 @@ body {
   transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
   letter-spacing: 1px;
   outline: none;
+  text-decoration: none;
+  display: inline-block;   
+
 }
 .upload-btn:hover, .upload-btn:focus {
   background: linear-gradient(90deg, #2196f3 0%, #21cbf3 100%);
