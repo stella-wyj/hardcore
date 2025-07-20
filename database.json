@@ -2,684 +2,834 @@
   "courses": [
     {
       "id": 1,
-      "name": "MATH 133 — Linear Algebra and Geometry]",
-      "instructor": "Dr. Jeremy Macdonald (coordinator), Dr. Romain Branchereau, Miguel Ayala, Antoine Giard",
-      "color": "#d50000",
-      "goalGrade": null,
+      "name": "Computer Science 101",
+      "instructor": "Dr. Sarah Johnson",
+      "color": "#4CAF50",
+      "goalGrade": 60,
       "assessments": [
         {
           "id": 1,
           "courseId": 1,
-          "title": "Weekly: WeBWork assignments",
+          "title": "Assignment 1 - Basic Programming",
           "type": "assignment",
-          "dueDate": null,
+          "dueDate": "2024-09-15",
           "weight": 15,
-          "grade": null,
-          "description": "Weekly: WeBWork assignments - 15%",
-          "createdAt": "2025-07-20T00:25:43.041Z"
+          "grade": 92,
+          "description": "Basic programming concepts and problem solving",
+          "createdAt": "2024-09-01T10:00:00.000Z"
         },
         {
           "id": 2,
           "courseId": 1,
-          "title": "Assignments released every Friday, due Sunday. Multiple attempts allowed per problem. Each problem has equal weight.  Submission is automatic upon clicking 'submit' for each question.",
-          "type": "assignment",
-          "dueDate": null,
-          "weight": null,
-          "grade": null,
-          "description": "Assignments released every Friday, due Sunday. Multiple attempts allowed per problem. Each problem has equal weight.  Submission is automatic upon clicking 'submit' for each question.",
-          "createdAt": "2025-07-20T00:25:43.041Z"
+          "title": "Quiz 1 - Variables and Loops",
+          "type": "quiz",
+          "dueDate": "2024-09-20",
+          "weight": 10,
+          "grade": 88,
+          "description": "Understanding variables, data types, and loop structures",
+          "createdAt": "2024-09-01T10:00:00.000Z"
         },
         {
           "id": 3,
           "courseId": 1,
-          "title": "October 9, 6:10-8:10 pm: Midterm exam",
-          "type": "midterm",
-          "dueDate": null,
-          "weight": 0,
+          "title": "Assignment 2 - Functions",
+          "type": "assignment",
+          "dueDate": "2024-09-30",
+          "weight": 20,
           "grade": null,
-          "description": "October 9, 6:10-8:10 pm: Midterm exam - 0% (Scheme 2) or 20% (Scheme 1)",
-          "createdAt": "2025-07-20T00:25:43.041Z"
+          "description": "Function implementation and modular programming",
+          "createdAt": "2024-09-01T10:00:00.000Z"
         },
         {
           "id": 4,
           "courseId": 1,
-          "title": "[date]: Final exam",
-          "type": "final",
-          "dueDate": null,
-          "weight": 85,
+          "title": "Midterm Exam",
+          "type": "midterm",
+          "dueDate": "2024-10-15",
+          "weight": 25,
           "grade": null,
-          "description": "[date]: Final exam - 85% (Scheme 2) or 65% (Scheme 1)",
-          "createdAt": "2025-07-20T00:25:43.041Z"
+          "description": "Comprehensive exam covering first half of course",
+          "createdAt": "2024-09-01T10:00:00.000Z"
+        },
+        {
+          "id": 5,
+          "courseId": 1,
+          "title": "Final Project",
+          "type": "final",
+          "dueDate": "2024-12-10",
+          "weight": 30,
+          "grade": null,
+          "description": "Complete programming project demonstrating all concepts",
+          "createdAt": "2024-09-01T10:00:00.000Z"
         }
       ],
       "officeHours": [
-        "Not specified"
+        "Monday/Wednesday, 2:00pm - 4:00pm, Room 301",
+        "Friday, 10:00am - 12:00pm, Room 301"
       ],
       "textbooks": [
-        "Linear Algebra with Applications by W. K. Nicholson - [ISBN not available]",
-        "Available freely at https://lyryx.com/linear-algebra-applications/"
+        "Introduction to Programming with Python",
+        "Computer Science: An Overview"
       ],
       "otherInfo": [
-        "Tutorials are held weekly and are taught by teaching assistants.  Students are encouraged to ask questions during tutorials and lectures.",
-        "Final grade is the higher of two schemes: Scheme 1 (Webwork 15%, Midterm 20%, Final 65%) and Scheme 2 (Webwork 15%, Midterm 0%, Final 85%).",
-        "Grading scale: 0-50 F, 50-55 D, 55-60 C, 60-65 C+, 65-70 B, 70-75 B, 75-80 B+, 80-85 A-, 85-100 A. Boundaries may be lowered at instructor's discretion.",
-        "Email should be used only for individual matters; use the Ed discussion forum for other questions.",
-        "Course information is posted on the myCourses website.",
-        "Collaboration on assignments is allowed, but students may not have others solve problems for them.",
-        "Contact instructors if the midterm date conflicts with other commitments or illness.",
-        "Missed final exams are handled by Service Point.",
-        "Resources for math help include office hours (instructors and TAs), tutorials, the Ed discussion forum, the Burnside Math Helpdesk, and SciLearn Peer Collab.",
-        "Students can contact instructors regarding life difficulties impacting their studies.",
-        "University policies on assessment of student learning, academic integrity, language, accommodations, and a disclaimer regarding unforeseen circumstances are noted in the syllabus."
+        "All assignments must be submitted through the course portal",
+        "Late submissions will receive a 10% penalty per day",
+        "Office hours are available both in-person and online"
       ],
-      "createdAt": "2025-07-20T00:25:43.041Z"
+      "createdAt": "2024-09-01T10:00:00.000Z"
     },
     {
       "id": 2,
-      "name": "PHYS 101 - “Introductory Physics - Mechanics”]**",
-      "instructor": "** Prof. Simon Caron-Huot",
-      "color": "#e65100",
-      "goalGrade": null,
+      "name": "Mathematics 201",
+      "instructor": "Prof. Michael Chen",
+      "color": "#2196F3",
+      "goalGrade": 70,
       "assessments": [
-        {
-          "id": 5,
-          "courseId": 2,
-          "title": "Not specified",
-          "type": "quiz",
-          "dueDate": null,
-          "weight": null,
-          "grade": null,
-          "description": "Not specified",
-          "createdAt": "2025-07-20T00:29:03.635Z"
-        },
         {
           "id": 6,
           "courseId": 2,
-          "title": "September 12: Assignment 1",
+          "title": "Homework 1 - Linear Algebra",
           "type": "assignment",
-          "dueDate": null,
-          "weight": 15,
-          "grade": null,
-          "description": "September 12: Assignment 1 - 15%",
-          "createdAt": "2025-07-20T00:29:03.635Z"
+          "dueDate": "2024-09-10",
+          "weight": 12,
+          "grade": 95,
+          "description": "Vector operations and matrix calculations",
+          "createdAt": "2024-09-01T10:00:00.000Z"
         },
         {
           "id": 7,
           "courseId": 2,
-          "title": "Weekly problem sets done online via the Ans system.  Allows multiple attempts; full marks for correct answer regardless of number of attempts.",
-          "type": "assignment",
-          "dueDate": null,
-          "weight": null,
-          "grade": null,
-          "description": "Weekly problem sets done online via the Ans system.  Allows multiple attempts; full marks for correct answer regardless of number of attempts.",
-          "createdAt": "2025-07-20T00:29:03.635Z"
+          "title": "Quiz 1 - Matrix Operations",
+          "type": "quiz",
+          "dueDate": "2024-09-18",
+          "weight": 8,
+          "grade": 87,
+          "description": "Matrix multiplication and determinants",
+          "createdAt": "2024-09-01T10:00:00.000Z"
         },
         {
           "id": 8,
           "courseId": 2,
-          "title": "Weekly assignments throughout the semester",
+          "title": "Homework 2 - Eigenvalues",
           "type": "assignment",
-          "dueDate": null,
-          "weight": 15,
-          "grade": null,
-          "description": "Weekly assignments throughout the semester - 15% (lowest dropped)",
-          "createdAt": "2025-07-20T00:29:03.635Z"
+          "dueDate": "2024-09-25",
+          "weight": 12,
+          "grade": 91,
+          "description": "Eigenvalue and eigenvector calculations",
+          "createdAt": "2024-09-01T10:00:00.000Z"
         },
         {
           "id": 9,
           "courseId": 2,
-          "title": "Weekly problem sets done online via the Ans system.  Allows multiple attempts; full marks for correct answer regardless of number of attempts.",
-          "type": "assignment",
-          "dueDate": null,
-          "weight": null,
+          "title": "Midterm Exam",
+          "type": "midterm",
+          "dueDate": "2024-10-20",
+          "weight": 30,
           "grade": null,
-          "description": "Weekly problem sets done online via the Ans system.  Allows multiple attempts; full marks for correct answer regardless of number of attempts.",
-          "createdAt": "2025-07-20T00:29:03.635Z"
+          "description": "Comprehensive exam on linear algebra concepts",
+          "createdAt": "2024-09-01T10:00:00.000Z"
         },
         {
           "id": 10,
           "courseId": 2,
-          "title": "[date]: Midterm exam",
-          "type": "midterm",
-          "dueDate": null,
-          "weight": 18,
-          "grade": null,
-          "description": "[date]: Midterm exam - 18% (Default), 20% (Option A), 23% (Option B), 25% (Option C)",
-          "createdAt": "2025-07-20T00:29:03.635Z"
-        },
-        {
-          "id": 11,
-          "courseId": 2,
-          "title": "[date]: Final exam",
+          "title": "Final Exam",
           "type": "final",
-          "dueDate": null,
-          "weight": 30,
+          "dueDate": "2024-12-15",
+          "weight": 38,
           "grade": null,
-          "description": "[date]: Final exam - 30% (Default), 35% (Option A), 35% (Option B), 40% (Option C)",
-          "createdAt": "2025-07-20T00:29:03.635Z"
+          "description": "Final comprehensive exam covering all course material",
+          "createdAt": "2024-09-01T10:00:00.000Z"
         }
       ],
       "officeHours": [
-        "Tuesdays, 10:00-11:00 am, Rutherford Physics Building room 312",
-        "Wednesdays, 9:30-10:55 am, Rutherford 326"
+        "Tuesday/Thursday, 1:00pm - 3:00pm, Room 205",
+        "Wednesday, 4:00pm - 6:00pm, Room 205"
       ],
       "textbooks": [
-        "*College Physics, 2e* - OpenStax  - Free online textbook.  Donations accepted.",
-        "*Physics, Principles with Applications* by Douglas Giancoli, 7th edition (Used copies available at McGill bookstore)"
+        "Linear Algebra and Its Applications",
+        "Mathematics for Computer Science"
       ],
       "otherInfo": [
-        "Course uses a flipped classroom approach. Pre-lecture readings are required.",
-        "Grading scheme options must be chosen by September 15th.  Default scheme is recommended.",
-        "Labs are required and must be passed (55% or higher) to pass the course. There is one virtual and six in-person lab sessions.",
-        "Tutorials are held in small groups and focus on problem-solving. Three time slots available (Monday, Tuesday, or Wednesday evenings).",
-        "Perusall platform used for pre-lecture reading and discussion; lowest two scores dropped.",
-        "Lowest two tutorial scores and lowest assignment score dropped.",
-        "A formula sheet will be provided for exams.",
-        "Students are expected to spend 10 hours per week on the course.",
-        "Information on accessibility resources and academic considerations for missed assessments are provided in the syllabus.",
-        "Use of generative AI is discouraged for assignments, but encouraged for understanding course material.  Students are accountable for submitted work.",
-        "Students have the right to submit written work in English or French."
+        "Calculators are allowed on all exams",
+        "Homework must be handwritten and scanned",
+        "Collaboration on homework is encouraged but write-ups must be individual"
       ],
-      "createdAt": "2025-07-20T00:29:03.633Z"
+      "createdAt": "2024-09-01T10:00:00.000Z"
     },
     {
       "id": 3,
-      "name": "PHYS 101 - “Introductory Physics - Mechanics”]**",
-      "instructor": "** Prof. Simon Caron-Huot",
-      "color": "#7b1fa2",
-      "goalGrade": null,
+      "name": "Physics 101",
+      "instructor": "Dr. Emily Rodriguez",
+      "color": "#FF9800",
+      "goalGrade": 75,
       "assessments": [
+        {
+          "id": 11,
+          "courseId": 3,
+          "title": "Lab Report 1 - Motion",
+          "type": "assignment",
+          "dueDate": "2024-09-12",
+          "weight": 10,
+          "grade": 78,
+          "description": "Analysis of motion experiments and data collection",
+          "createdAt": "2024-09-01T10:00:00.000Z"
+        },
         {
           "id": 12,
           "courseId": 3,
-          "title": "Not specified",
+          "title": "Quiz 1 - Mechanics",
           "type": "quiz",
-          "dueDate": null,
-          "weight": null,
-          "grade": null,
-          "description": "Not specified",
-          "createdAt": "2025-07-20T00:32:46.174Z"
+          "dueDate": "2024-09-22",
+          "weight": 15,
+          "grade": 72,
+          "description": "Basic mechanics and Newton's laws",
+          "createdAt": "2024-09-01T10:00:00.000Z"
         },
         {
           "id": 13,
           "courseId": 3,
-          "title": "September 12: Assignment 1",
+          "title": "Lab Report 2 - Forces",
           "type": "assignment",
-          "dueDate": null,
-          "weight": 15,
+          "dueDate": "2024-09-28",
+          "weight": 10,
           "grade": null,
-          "description": "September 12: Assignment 1 - 15%",
-          "createdAt": "2025-07-20T00:32:46.174Z"
+          "description": "Force analysis and free body diagrams",
+          "createdAt": "2024-09-01T10:00:00.000Z"
         },
         {
           "id": 14,
           "courseId": 3,
-          "title": "Weekly problem sets using the Ans online platform; multiple attempts allowed; full marks for correct answer regardless of attempts.",
-          "type": "assignment",
-          "dueDate": null,
-          "weight": null,
+          "title": "Midterm Exam",
+          "type": "midterm",
+          "dueDate": "2024-10-25",
+          "weight": 25,
           "grade": null,
-          "description": "Weekly problem sets using the Ans online platform; multiple attempts allowed; full marks for correct answer regardless of attempts.",
-          "createdAt": "2025-07-20T00:32:46.174Z"
+          "description": "Exam covering mechanics and motion",
+          "createdAt": "2024-09-01T10:00:00.000Z"
         },
         {
           "id": 15,
           "courseId": 3,
-          "title": "Subsequent weekly assignments",
-          "type": "assignment",
-          "dueDate": null,
-          "weight": 15,
-          "grade": null,
-          "description": "Subsequent weekly assignments - 15% (lowest dropped)",
-          "createdAt": "2025-07-20T00:32:46.174Z"
-        },
-        {
-          "id": 16,
-          "courseId": 3,
-          "title": "Weekly problem sets using the Ans online platform; multiple attempts allowed; full marks for correct answer regardless of attempts.",
-          "type": "assignment",
-          "dueDate": null,
-          "weight": null,
-          "grade": null,
-          "description": "Weekly problem sets using the Ans online platform; multiple attempts allowed; full marks for correct answer regardless of attempts.",
-          "createdAt": "2025-07-20T00:32:46.174Z"
-        },
-        {
-          "id": 17,
-          "courseId": 3,
-          "title": "[date]: Midterm Exam",
-          "type": "midterm",
-          "dueDate": null,
-          "weight": 18,
-          "grade": null,
-          "description": "[date]: Midterm Exam - 18% (Default), 20% (Option A), 23% (Option B), 25% (Option C)",
-          "createdAt": "2025-07-20T00:32:46.174Z"
-        },
-        {
-          "id": 18,
-          "courseId": 3,
-          "title": "[date]: Final Exam",
+          "title": "Final Exam",
           "type": "final",
-          "dueDate": null,
-          "weight": 30,
+          "dueDate": "2024-12-20",
+          "weight": 40,
           "grade": null,
-          "description": "[date]: Final Exam - 30% (Default), 35% (Option A), 35% (Option B), 40% (Option C)",
-          "createdAt": "2025-07-20T00:32:46.174Z"
+          "description": "Comprehensive final exam",
+          "createdAt": "2024-09-01T10:00:00.000Z"
         }
       ],
       "officeHours": [
-        "Tuesdays, 1:00-2:00pm, Rutherford Physics Building room 312",
-        "Wednesdays, 9:30-10:55am, Rutherford 326"
+        "Monday/Friday, 11:00am - 1:00pm, Lab 102",
+        "Wednesday, 3:00pm - 5:00pm, Lab 102"
       ],
       "textbooks": [
-        "*College Physics, 2e* - OpenStax (free online textbook) - [ISBN not available]",
-        "Cost: Free; donations accepted.",
-        "*Physics, Principles with Applications* by Douglas Giancoli, 7th edition, Prentice Hall (Used copies available at McGill bookstore) - [ISBN not available]",
-        "Cost: Not specified"
+        "Physics for Scientists and Engineers",
+        "Laboratory Manual for Physics 101"
       ],
       "otherInfo": [
-        "Course uses a flipped classroom approach.",
-        "Pre-lecture reading/discussion activities (Perusall) - 7% (default), 7% (Option A) (lowest two dropped).",
-        "Weekly tutorials (online small-group problem-solving) - 10% (default), 10% (Option A) (lowest two dropped).",
-        "Labs (required to pass the course) - 20%",
-        "One virtual lab and 6 in-person lab sessions.",
-        "Students must choose one of four grading schemes by September 15th.",
-        "Labs must be passed with a minimum of 55% to pass the course.",
-        "A formula sheet will be provided for both the midterm and final exams.",
-        "Course covers mechanics and waves.",
-        "Students should plan on spending 10 hours per week on the course.",
-        "Late or missing assessments will receive a score of 0 unless prior arrangements are made with the instructor for documented significant reasons.",
-        "Regrades must be requested within 10 days of grades being released.",
-        "Use of generative AI is allowed for understanding course material, but not for producing assignments.",
-        "Students can submit written work in English or French."
+        "Lab attendance is mandatory",
+        "Safety goggles must be worn in all lab sessions",
+        "Lab reports must be submitted within one week of the experiment"
       ],
-      "createdAt": "2025-07-20T00:32:46.173Z"
+      "createdAt": "2024-09-01T10:00:00.000Z"
     },
     {
       "id": 4,
-      "name": "** PHYS 101 - “Introductory Physics - Mechanics”",
-      "instructor": "** Prof. Simon Caron-Huot",
-      "color": "#34a853",
-      "goalGrade": null,
+      "name": "English Literature 201",
+      "instructor": "Prof. James Wilson",
+      "color": "#9C27B0",
+      "goalGrade": 88,
       "assessments": [
+        {
+          "id": 16,
+          "courseId": 4,
+          "title": "Essay 1 - Shakespeare Analysis",
+          "type": "assignment",
+          "dueDate": "2024-09-20",
+          "weight": 20,
+          "grade": 89,
+          "description": "Critical analysis of selected Shakespeare works",
+          "createdAt": "2024-09-01T10:00:00.000Z"
+        },
+        {
+          "id": 17,
+          "courseId": 4,
+          "title": "Participation Grade",
+          "type": "quiz",
+          "dueDate": null,
+          "weight": 10,
+          "grade": 85,
+          "description": "Class participation and discussion contributions",
+          "createdAt": "2024-09-01T10:00:00.000Z"
+        },
+        {
+          "id": 18,
+          "courseId": 4,
+          "title": "Essay 2 - Modern Literature",
+          "type": "assignment",
+          "dueDate": "2024-10-15",
+          "weight": 25,
+          "grade": null,
+          "description": "Analysis of 20th century literature",
+          "createdAt": "2024-09-01T10:00:00.000Z"
+        },
         {
           "id": 19,
           "courseId": 4,
-          "title": "Not specified",
-          "type": "quiz",
-          "dueDate": null,
-          "weight": null,
+          "title": "Midterm Paper",
+          "type": "midterm",
+          "dueDate": "2024-11-01",
+          "weight": 20,
           "grade": null,
-          "description": "Not specified",
-          "createdAt": "2025-07-20T00:33:55.674Z"
+          "description": "Comprehensive analysis paper",
+          "createdAt": "2024-09-01T10:00:00.000Z"
         },
         {
           "id": 20,
           "courseId": 4,
-          "title": "September 12: Assignment 1",
-          "type": "assignment",
-          "dueDate": null,
-          "weight": 15,
-          "grade": null,
-          "description": "September 12: Assignment 1 - 15%",
-          "createdAt": "2025-07-20T00:33:55.674Z"
-        },
-        {
-          "id": 21,
-          "courseId": 4,
-          "title": "Weekly problem sets done online via the Ans system.  Allows multiple attempts; full marks if correct.",
-          "type": "assignment",
-          "dueDate": null,
-          "weight": null,
-          "grade": null,
-          "description": "Weekly problem sets done online via the Ans system.  Allows multiple attempts; full marks if correct.",
-          "createdAt": "2025-07-20T00:33:55.674Z"
-        },
-        {
-          "id": 22,
-          "courseId": 4,
-          "title": "Subsequent weekly assignments",
-          "type": "assignment",
-          "dueDate": null,
-          "weight": 15,
-          "grade": null,
-          "description": "Subsequent weekly assignments - 15%",
-          "createdAt": "2025-07-20T00:33:55.674Z"
-        },
-        {
-          "id": 23,
-          "courseId": 4,
-          "title": "Weekly problem sets done online via the Ans system. Allows multiple attempts; full marks if correct.",
-          "type": "assignment",
-          "dueDate": null,
-          "weight": null,
-          "grade": null,
-          "description": "Weekly problem sets done online via the Ans system. Allows multiple attempts; full marks if correct.",
-          "createdAt": "2025-07-20T00:33:55.674Z"
-        },
-        {
-          "id": 24,
-          "courseId": 4,
-          "title": "[date]: Midterm exam",
-          "type": "midterm",
-          "dueDate": null,
-          "weight": 18,
-          "grade": null,
-          "description": "[date]: Midterm exam - 18% (Default), 20% (Option A), 23% (Option B), 25% (Option C)",
-          "createdAt": "2025-07-20T00:33:55.674Z"
-        },
-        {
-          "id": 25,
-          "courseId": 4,
-          "title": "December, [date]: Final exam",
+          "title": "Final Research Paper",
           "type": "final",
-          "dueDate": null,
-          "weight": 30,
+          "dueDate": "2024-12-10",
+          "weight": 25,
           "grade": null,
-          "description": "December, [date]: Final exam - 30% (Default), 35% (Option A), 35% (Option B), 40% (Option C)",
-          "createdAt": "2025-07-20T00:33:55.674Z"
+          "description": "Final research paper on chosen literary topic",
+          "createdAt": "2024-09-01T10:00:00.000Z"
         }
       ],
       "officeHours": [
-        "Tuesdays, 11:00am-12:25pm, Rutherford Physics Building room 312",
-        "Wednesdays, 9:30-10:55am, Rutherford 326"
+        "Tuesday/Thursday, 2:00pm - 4:00pm, Office 401",
+        "Friday, 10:00am - 12:00pm, Office 401"
       ],
       "textbooks": [
-        "*College Physics, 2e*  http://openstax.org/details/books/college-physics-2e - Free to download.",
-        "*Physics, Principles with Applications* by Douglas Giancoli, 7th edition, Prentice Hall (Used copies available at McGill bookstore)."
+        "The Norton Anthology of English Literature",
+        "Critical Theory Today: A User-Friendly Guide"
       ],
       "otherInfo": [
-        "Course uses a flipped classroom approach.  Pre-lecture reading and online discussions are required.",
-        "Grading schemes: Default scheme and three options (A, B, C) available until September 15.  Default scheme strongly recommended.  Lowest two scores dropped for Perusall and tutorials; lowest assignment score dropped. Labs are required to pass the course (minimum 55%).",
-        "Weekly components include: pre-lecture reading (Perusall), lectures (in Leacock 132, Tu/Th 1:05-2:25 PM), weekly assignments (Ans), weekly tutorials (small groups), and labs (one virtual, six in-person, starting September 16).",
-        "Students should plan to spend 10 hours per week on the course.",
-        "Email addresses for specific course components: labs101.phys@megill.ca, tutorials101.phys@megill.ca, exams101.phys@mcgill.ca, ans101.phys@mcgill.ca",
-        "Use of generative AI: Allowed for understanding course material, not for producing assignments.",
-        "Policy on missed assessments: Late or missing assessments receive a 0 unless pre-arranged with instructor for significant and documented reasons.",
-        "Policy on regrades: Requests must be made within 10 days of grade release. Contact appropriate email address for each component.",
-        "Course taught in English, but students may submit written work in French.",
-        "Accessibility resources: https://megill.ca/equity/resources/disability"
+        "Essays must be double-spaced with 12pt font",
+        "Late papers will lose 5% per day",
+        "Office hours are available for paper consultations"
       ],
-      "createdAt": "2025-07-20T00:33:55.674Z"
+      "createdAt": "2024-09-01T10:00:00.000Z"
+    },
+    {
+      "id": 5,
+      "name": "Introduction to Macroeconomics]**",
+      "instructor": "Dr. Ken Jackson**",
+      "color": "#e65100",
+      "goalGrade": null,
+      "assessments": [
+        {
+          "id": 21,
+          "courseId": 5,
+          "title": "Before classes: Pre-Lecture Learning Curve (Part 1-4)",
+          "type": "quiz",
+          "dueDate": null,
+          "weight": 4,
+          "grade": null,
+          "description": "Before classes: Pre-Lecture Learning Curve (Part 1-4) - 4% each part (16% total)",
+          "createdAt": "2025-07-20T00:51:01.426Z"
+        },
+        {
+          "id": 22,
+          "courseId": 5,
+          "title": "Completed on Achieve before class; mastery-based grading; best 12/15+ scores count.",
+          "type": "quiz",
+          "dueDate": null,
+          "weight": null,
+          "grade": null,
+          "description": "Completed on Achieve before class; mastery-based grading; best 12/15+ scores count.",
+          "createdAt": "2025-07-20T00:51:01.426Z"
+        },
+        {
+          "id": 23,
+          "courseId": 5,
+          "title": "During lecture: iClicker Lecture Quizzes - Not specified",
+          "type": "quiz",
+          "dueDate": null,
+          "weight": null,
+          "grade": null,
+          "description": "During lecture: iClicker Lecture Quizzes - Not specified",
+          "createdAt": "2025-07-20T00:51:01.426Z"
+        },
+        {
+          "id": 24,
+          "courseId": 5,
+          "title": "Completed during lecture; participation and performance graded starting week 2.",
+          "type": "quiz",
+          "dueDate": null,
+          "weight": null,
+          "grade": null,
+          "description": "Completed during lecture; participation and performance graded starting week 2.",
+          "createdAt": "2025-07-20T00:51:01.426Z"
+        },
+        {
+          "id": 25,
+          "courseId": 5,
+          "title": "[Date]: Post-Lecture End-of-Chapter Quizzes - Not specified",
+          "type": "quiz",
+          "dueDate": null,
+          "weight": null,
+          "grade": null,
+          "description": "[Date]: Post-Lecture End-of-Chapter Quizzes - Not specified",
+          "createdAt": "2025-07-20T00:51:01.426Z"
+        },
+        {
+          "id": 26,
+          "courseId": 5,
+          "title": "Due one week after class on Achieve.",
+          "type": "quiz",
+          "dueDate": null,
+          "weight": null,
+          "grade": null,
+          "description": "Due one week after class on Achieve.",
+          "createdAt": "2025-07-20T00:51:01.426Z"
+        },
+        {
+          "id": 27,
+          "courseId": 5,
+          "title": "Intermittently: Additional Review Quizzes - Not specified",
+          "type": "quiz",
+          "dueDate": null,
+          "weight": null,
+          "grade": null,
+          "description": "Intermittently: Additional Review Quizzes - Not specified",
+          "createdAt": "2025-07-20T00:51:01.426Z"
+        },
+        {
+          "id": 28,
+          "courseId": 5,
+          "title": "Posted on MyLearningSpace; best score counts.",
+          "type": "quiz",
+          "dueDate": null,
+          "weight": null,
+          "grade": null,
+          "description": "Posted on MyLearningSpace; best score counts.",
+          "createdAt": "2025-07-20T00:51:01.426Z"
+        },
+        {
+          "id": 29,
+          "courseId": 5,
+          "title": "[Date]: Homework Assignments - Not specified",
+          "type": "assignment",
+          "dueDate": null,
+          "weight": null,
+          "grade": null,
+          "description": "[Date]: Homework Assignments - Not specified",
+          "createdAt": "2025-07-20T00:51:01.426Z"
+        },
+        {
+          "id": 30,
+          "courseId": 5,
+          "title": "Assigned through Achieve; mastery-based grading; due dates on Achieve site.",
+          "type": "assignment",
+          "dueDate": null,
+          "weight": null,
+          "grade": null,
+          "description": "Assigned through Achieve; mastery-based grading; due dates on Achieve site.",
+          "createdAt": "2025-07-20T00:51:01.426Z"
+        },
+        {
+          "id": 31,
+          "courseId": 5,
+          "title": "February 1st, 6 pm: Midterm Test #1",
+          "type": "midterm",
+          "dueDate": null,
+          "weight": 15,
+          "grade": null,
+          "description": "February 1st, 6 pm: Midterm Test #1 - 15%",
+          "createdAt": "2025-07-20T00:51:01.426Z"
+        },
+        {
+          "id": 32,
+          "courseId": 5,
+          "title": "April 9th to 27th: Final Exam",
+          "type": "final",
+          "dueDate": null,
+          "weight": 35,
+          "grade": null,
+          "description": "April 9th to 27th: Final Exam - 35%",
+          "createdAt": "2025-07-20T00:51:01.426Z"
+        }
+      ],
+      "officeHours": [
+        "M/W: 12:30 to 2:00 pm, LH3008",
+        "Tu/Th: 10:00 to 11:00 am, LH3008",
+        "Tu/Th: 2:00 to 3:00 pm, LH3008"
+      ],
+      "textbooks": [
+        "Principles of Macroeconomics, 1st Canadian Edition (2023) by Milligan, Oreopoulos, Stevenson, and Wolfers",
+        "E-text with Achieve: $74.99 (includes Achieve and iClicker access)",
+        "E-text, Achieve with Looseleaf Print: $116.00 (includes Achieve and iClicker access)"
+      ],
+      "otherInfo": [
+        "All course content and assessment are subject to change; changes will be posted to the EC140 MyLearningSpace page.",
+        "Lectures will be live-streamed and recorded on Zoom (not guaranteed for all lectures).",
+        "Tutorials are scheduled occasionally on Zoom and will be recorded.",
+        "Students must register for Achieve through MyLearningSpace.",
+        "Late submissions for minor assessments are not accepted.  Only the best 12 minor assessment grades (out of at least 15) in each of the four parts count towards the overall grade.",
+        "Students who miss a midterm for religious observance, academic conflict, or varsity athletics may be eligible to write at an alternate time (notification required early).  Other missed midterms result in grade weight shifted to the final.",
+        "Students missing the final exam for an acceptable reason may apply for a deferred exam (late May/early June).",
+        "Students are permitted a non-programmable, non-graphing calculator and a single 8.5” x 11” sheet of notes for midterms and final.",
+        "Course materials are the instructor's intellectual property; unauthorized recording or distribution is prohibited.  Class recording consent is implied by attendance."
+      ],
+      "createdAt": "2025-07-20T00:51:01.426Z"
     }
   ],
   "assessments": [
     {
       "id": 1,
       "courseId": 1,
-      "title": "Weekly: WeBWork assignments",
+      "title": "Assignment 1 - Basic Programming",
       "type": "assignment",
-      "dueDate": null,
+      "dueDate": "2024-09-15",
       "weight": 15,
-      "grade": null,
-      "description": "Weekly: WeBWork assignments - 15%",
-      "createdAt": "2025-07-20T00:25:43.041Z"
+      "grade": 90,
+      "description": "Basic programming concepts and problem solving",
+      "createdAt": "2024-09-01T10:00:00.000Z"
     },
     {
       "id": 2,
       "courseId": 1,
-      "title": "Assignments released every Friday, due Sunday. Multiple attempts allowed per problem. Each problem has equal weight.  Submission is automatic upon clicking 'submit' for each question.",
-      "type": "assignment",
-      "dueDate": null,
-      "weight": null,
+      "title": "Quiz 1 - Variables and Loops",
+      "type": "quiz",
+      "dueDate": "2024-09-20",
+      "weight": 10,
       "grade": null,
-      "description": "Assignments released every Friday, due Sunday. Multiple attempts allowed per problem. Each problem has equal weight.  Submission is automatic upon clicking 'submit' for each question.",
-      "createdAt": "2025-07-20T00:25:43.041Z"
+      "description": "Understanding variables, data types, and loop structures",
+      "createdAt": "2024-09-01T10:00:00.000Z"
     },
     {
       "id": 3,
       "courseId": 1,
-      "title": "October 9, 6:10-8:10 pm: Midterm exam",
-      "type": "midterm",
-      "dueDate": null,
-      "weight": 0,
+      "title": "Assignment 2 - Functions",
+      "type": "assignment",
+      "dueDate": "2024-09-30",
+      "weight": 20,
       "grade": null,
-      "description": "October 9, 6:10-8:10 pm: Midterm exam - 0% (Scheme 2) or 20% (Scheme 1)",
-      "createdAt": "2025-07-20T00:25:43.041Z"
+      "description": "Function implementation and modular programming",
+      "createdAt": "2024-09-01T10:00:00.000Z"
     },
     {
       "id": 4,
       "courseId": 1,
-      "title": "[date]: Final exam",
-      "type": "final",
-      "dueDate": null,
-      "weight": 85,
+      "title": "Midterm Exam",
+      "type": "midterm",
+      "dueDate": "2024-10-15",
+      "weight": 25,
       "grade": null,
-      "description": "[date]: Final exam - 85% (Scheme 2) or 65% (Scheme 1)",
-      "createdAt": "2025-07-20T00:25:43.041Z"
+      "description": "Comprehensive exam covering first half of course",
+      "createdAt": "2024-09-01T10:00:00.000Z"
     },
     {
       "id": 5,
-      "courseId": 2,
-      "title": "Not specified",
-      "type": "quiz",
-      "dueDate": null,
-      "weight": null,
+      "courseId": 1,
+      "title": "Final Project",
+      "type": "final",
+      "dueDate": "2024-12-10",
+      "weight": 30,
       "grade": null,
-      "description": "Not specified",
-      "createdAt": "2025-07-20T00:29:03.635Z"
+      "description": "Complete programming project demonstrating all concepts",
+      "createdAt": "2024-09-01T10:00:00.000Z"
     },
     {
       "id": 6,
       "courseId": 2,
-      "title": "September 12: Assignment 1",
+      "title": "Homework 1 - Linear Algebra",
       "type": "assignment",
-      "dueDate": null,
-      "weight": 15,
-      "grade": null,
-      "description": "September 12: Assignment 1 - 15%",
-      "createdAt": "2025-07-20T00:29:03.635Z"
+      "dueDate": "2024-09-10",
+      "weight": 12,
+      "grade": 60,
+      "description": "Vector operations and matrix calculations",
+      "createdAt": "2024-09-01T10:00:00.000Z"
     },
     {
       "id": 7,
       "courseId": 2,
-      "title": "Weekly problem sets done online via the Ans system.  Allows multiple attempts; full marks for correct answer regardless of number of attempts.",
-      "type": "assignment",
-      "dueDate": null,
-      "weight": null,
-      "grade": null,
-      "description": "Weekly problem sets done online via the Ans system.  Allows multiple attempts; full marks for correct answer regardless of number of attempts.",
-      "createdAt": "2025-07-20T00:29:03.635Z"
+      "title": "Quiz 1 - Matrix Operations",
+      "type": "quiz",
+      "dueDate": "2024-09-18",
+      "weight": 8,
+      "grade": 87,
+      "description": "Matrix multiplication and determinants",
+      "createdAt": "2024-09-01T10:00:00.000Z"
     },
     {
       "id": 8,
       "courseId": 2,
-      "title": "Weekly assignments throughout the semester",
+      "title": "Homework 2 - Eigenvalues",
       "type": "assignment",
-      "dueDate": null,
-      "weight": 15,
-      "grade": null,
-      "description": "Weekly assignments throughout the semester - 15% (lowest dropped)",
-      "createdAt": "2025-07-20T00:29:03.635Z"
+      "dueDate": "2024-09-25",
+      "weight": 12,
+      "grade": 91,
+      "description": "Eigenvalue and eigenvector calculations",
+      "createdAt": "2024-09-01T10:00:00.000Z"
     },
     {
       "id": 9,
       "courseId": 2,
-      "title": "Weekly problem sets done online via the Ans system.  Allows multiple attempts; full marks for correct answer regardless of number of attempts.",
-      "type": "assignment",
-      "dueDate": null,
-      "weight": null,
-      "grade": null,
-      "description": "Weekly problem sets done online via the Ans system.  Allows multiple attempts; full marks for correct answer regardless of number of attempts.",
-      "createdAt": "2025-07-20T00:29:03.635Z"
+      "title": "Midterm Exam",
+      "type": "midterm",
+      "dueDate": "2024-10-20",
+      "weight": 30,
+      "grade": 66.1,
+      "description": "Comprehensive exam on linear algebra concepts",
+      "createdAt": "2024-09-01T10:00:00.000Z"
     },
     {
       "id": 10,
       "courseId": 2,
-      "title": "[date]: Midterm exam",
-      "type": "midterm",
-      "dueDate": null,
-      "weight": 18,
-      "grade": null,
-      "description": "[date]: Midterm exam - 18% (Default), 20% (Option A), 23% (Option B), 25% (Option C)",
-      "createdAt": "2025-07-20T00:29:03.635Z"
+      "title": "Final Exam",
+      "type": "final",
+      "dueDate": "2024-12-15",
+      "weight": 38,
+      "grade": 66.1,
+      "description": "Final comprehensive exam covering all course material",
+      "createdAt": "2024-09-01T10:00:00.000Z"
     },
     {
       "id": 11,
-      "courseId": 2,
-      "title": "[date]: Final exam",
-      "type": "final",
-      "dueDate": null,
-      "weight": 30,
-      "grade": null,
-      "description": "[date]: Final exam - 30% (Default), 35% (Option A), 35% (Option B), 40% (Option C)",
-      "createdAt": "2025-07-20T00:29:03.635Z"
+      "courseId": 3,
+      "title": "Lab Report 1 - Motion",
+      "type": "assignment",
+      "dueDate": "2024-09-12",
+      "weight": 10,
+      "grade": 78,
+      "description": "Analysis of motion experiments and data collection",
+      "createdAt": "2024-09-01T10:00:00.000Z"
     },
     {
       "id": 12,
       "courseId": 3,
-      "title": "Not specified",
+      "title": "Quiz 1 - Mechanics",
       "type": "quiz",
-      "dueDate": null,
-      "weight": null,
-      "grade": null,
-      "description": "Not specified",
-      "createdAt": "2025-07-20T00:32:46.174Z"
+      "dueDate": "2024-09-22",
+      "weight": 15,
+      "grade": 72,
+      "description": "Basic mechanics and Newton's laws",
+      "createdAt": "2024-09-01T10:00:00.000Z"
     },
     {
       "id": 13,
       "courseId": 3,
-      "title": "September 12: Assignment 1",
+      "title": "Lab Report 2 - Forces",
       "type": "assignment",
-      "dueDate": null,
-      "weight": 15,
+      "dueDate": "2024-09-28",
+      "weight": 10,
       "grade": null,
-      "description": "September 12: Assignment 1 - 15%",
-      "createdAt": "2025-07-20T00:32:46.174Z"
+      "description": "Force analysis and free body diagrams",
+      "createdAt": "2024-09-01T10:00:00.000Z"
     },
     {
       "id": 14,
       "courseId": 3,
-      "title": "Weekly problem sets using the Ans online platform; multiple attempts allowed; full marks for correct answer regardless of attempts.",
-      "type": "assignment",
-      "dueDate": null,
-      "weight": null,
+      "title": "Midterm Exam",
+      "type": "midterm",
+      "dueDate": "2024-10-25",
+      "weight": 25,
       "grade": null,
-      "description": "Weekly problem sets using the Ans online platform; multiple attempts allowed; full marks for correct answer regardless of attempts.",
-      "createdAt": "2025-07-20T00:32:46.174Z"
+      "description": "Exam covering mechanics and motion",
+      "createdAt": "2024-09-01T10:00:00.000Z"
     },
     {
       "id": 15,
       "courseId": 3,
-      "title": "Subsequent weekly assignments",
-      "type": "assignment",
-      "dueDate": null,
-      "weight": 15,
+      "title": "Final Exam",
+      "type": "final",
+      "dueDate": "2024-12-20",
+      "weight": 40,
       "grade": null,
-      "description": "Subsequent weekly assignments - 15% (lowest dropped)",
-      "createdAt": "2025-07-20T00:32:46.174Z"
+      "description": "Comprehensive final exam",
+      "createdAt": "2024-09-01T10:00:00.000Z"
     },
     {
       "id": 16,
-      "courseId": 3,
-      "title": "Weekly problem sets using the Ans online platform; multiple attempts allowed; full marks for correct answer regardless of attempts.",
+      "courseId": 4,
+      "title": "Essay 1 - Shakespeare Analysis",
       "type": "assignment",
-      "dueDate": null,
-      "weight": null,
-      "grade": null,
-      "description": "Weekly problem sets using the Ans online platform; multiple attempts allowed; full marks for correct answer regardless of attempts.",
-      "createdAt": "2025-07-20T00:32:46.174Z"
+      "dueDate": "2024-09-20",
+      "weight": 20,
+      "grade": 89,
+      "description": "Critical analysis of selected Shakespeare works",
+      "createdAt": "2024-09-01T10:00:00.000Z"
     },
     {
       "id": 17,
-      "courseId": 3,
-      "title": "[date]: Midterm Exam",
-      "type": "midterm",
+      "courseId": 4,
+      "title": "Participation Grade",
+      "type": "quiz",
       "dueDate": null,
-      "weight": 18,
-      "grade": null,
-      "description": "[date]: Midterm Exam - 18% (Default), 20% (Option A), 23% (Option B), 25% (Option C)",
-      "createdAt": "2025-07-20T00:32:46.174Z"
+      "weight": 10,
+      "grade": 85,
+      "description": "Class participation and discussion contributions",
+      "createdAt": "2024-09-01T10:00:00.000Z"
     },
     {
       "id": 18,
-      "courseId": 3,
-      "title": "[date]: Final Exam",
-      "type": "final",
-      "dueDate": null,
-      "weight": 30,
+      "courseId": 4,
+      "title": "Essay 2 - Modern Literature",
+      "type": "assignment",
+      "dueDate": "2024-10-15",
+      "weight": 25,
       "grade": null,
-      "description": "[date]: Final Exam - 30% (Default), 35% (Option A), 35% (Option B), 40% (Option C)",
-      "createdAt": "2025-07-20T00:32:46.174Z"
+      "description": "Analysis of 20th century literature",
+      "createdAt": "2024-09-01T10:00:00.000Z"
     },
     {
       "id": 19,
       "courseId": 4,
-      "title": "Not specified",
-      "type": "quiz",
-      "dueDate": null,
-      "weight": null,
+      "title": "Midterm Paper",
+      "type": "midterm",
+      "dueDate": "2024-11-01",
+      "weight": 20,
       "grade": null,
-      "description": "Not specified",
-      "createdAt": "2025-07-20T00:33:55.674Z"
+      "description": "Comprehensive analysis paper",
+      "createdAt": "2024-09-01T10:00:00.000Z"
     },
     {
       "id": 20,
       "courseId": 4,
-      "title": "September 12: Assignment 1",
-      "type": "assignment",
-      "dueDate": null,
-      "weight": 15,
+      "title": "Final Research Paper",
+      "type": "final",
+      "dueDate": "2024-12-10",
+      "weight": 25,
       "grade": null,
-      "description": "September 12: Assignment 1 - 15%",
-      "createdAt": "2025-07-20T00:33:55.674Z"
+      "description": "Final research paper on chosen literary topic",
+      "createdAt": "2024-09-01T10:00:00.000Z"
     },
     {
       "id": 21,
-      "courseId": 4,
-      "title": "Weekly problem sets done online via the Ans system.  Allows multiple attempts; full marks if correct.",
-      "type": "assignment",
+      "courseId": 5,
+      "title": "Before classes: Pre-Lecture Learning Curve (Part 1-4)",
+      "type": "quiz",
       "dueDate": null,
-      "weight": null,
+      "weight": 4,
       "grade": null,
-      "description": "Weekly problem sets done online via the Ans system.  Allows multiple attempts; full marks if correct.",
-      "createdAt": "2025-07-20T00:33:55.674Z"
+      "description": "Before classes: Pre-Lecture Learning Curve (Part 1-4) - 4% each part (16% total)",
+      "createdAt": "2025-07-20T00:51:01.426Z"
     },
     {
       "id": 22,
-      "courseId": 4,
-      "title": "Subsequent weekly assignments",
-      "type": "assignment",
+      "courseId": 5,
+      "title": "Completed on Achieve before class; mastery-based grading; best 12/15+ scores count.",
+      "type": "quiz",
       "dueDate": null,
-      "weight": 15,
+      "weight": null,
       "grade": null,
-      "description": "Subsequent weekly assignments - 15%",
-      "createdAt": "2025-07-20T00:33:55.674Z"
+      "description": "Completed on Achieve before class; mastery-based grading; best 12/15+ scores count.",
+      "createdAt": "2025-07-20T00:51:01.426Z"
     },
     {
       "id": 23,
-      "courseId": 4,
-      "title": "Weekly problem sets done online via the Ans system. Allows multiple attempts; full marks if correct.",
+      "courseId": 5,
+      "title": "During lecture: iClicker Lecture Quizzes - Not specified",
+      "type": "quiz",
+      "dueDate": null,
+      "weight": null,
+      "grade": null,
+      "description": "During lecture: iClicker Lecture Quizzes - Not specified",
+      "createdAt": "2025-07-20T00:51:01.426Z"
+    },
+    {
+      "id": 24,
+      "courseId": 5,
+      "title": "Completed during lecture; participation and performance graded starting week 2.",
+      "type": "quiz",
+      "dueDate": null,
+      "weight": null,
+      "grade": null,
+      "description": "Completed during lecture; participation and performance graded starting week 2.",
+      "createdAt": "2025-07-20T00:51:01.426Z"
+    },
+    {
+      "id": 25,
+      "courseId": 5,
+      "title": "[Date]: Post-Lecture End-of-Chapter Quizzes - Not specified",
+      "type": "quiz",
+      "dueDate": null,
+      "weight": null,
+      "grade": null,
+      "description": "[Date]: Post-Lecture End-of-Chapter Quizzes - Not specified",
+      "createdAt": "2025-07-20T00:51:01.426Z"
+    },
+    {
+      "id": 26,
+      "courseId": 5,
+      "title": "Due one week after class on Achieve.",
+      "type": "quiz",
+      "dueDate": null,
+      "weight": null,
+      "grade": null,
+      "description": "Due one week after class on Achieve.",
+      "createdAt": "2025-07-20T00:51:01.426Z"
+    },
+    {
+      "id": 27,
+      "courseId": 5,
+      "title": "Intermittently: Additional Review Quizzes - Not specified",
+      "type": "quiz",
+      "dueDate": null,
+      "weight": null,
+      "grade": null,
+      "description": "Intermittently: Additional Review Quizzes - Not specified",
+      "createdAt": "2025-07-20T00:51:01.426Z"
+    },
+    {
+      "id": 28,
+      "courseId": 5,
+      "title": "Posted on MyLearningSpace; best score counts.",
+      "type": "quiz",
+      "dueDate": null,
+      "weight": null,
+      "grade": null,
+      "description": "Posted on MyLearningSpace; best score counts.",
+      "createdAt": "2025-07-20T00:51:01.426Z"
+    },
+    {
+      "id": 29,
+      "courseId": 5,
+      "title": "[Date]: Homework Assignments - Not specified",
       "type": "assignment",
       "dueDate": null,
       "weight": null,
       "grade": null,
-      "description": "Weekly problem sets done online via the Ans system. Allows multiple attempts; full marks if correct.",
-      "createdAt": "2025-07-20T00:33:55.674Z"
+      "description": "[Date]: Homework Assignments - Not specified",
+      "createdAt": "2025-07-20T00:51:01.426Z"
     },
     {
-      "id": 24,
-      "courseId": 4,
-      "title": "[date]: Midterm exam",
+      "id": 30,
+      "courseId": 5,
+      "title": "Assigned through Achieve; mastery-based grading; due dates on Achieve site.",
+      "type": "assignment",
+      "dueDate": null,
+      "weight": null,
+      "grade": null,
+      "description": "Assigned through Achieve; mastery-based grading; due dates on Achieve site.",
+      "createdAt": "2025-07-20T00:51:01.426Z"
+    },
+    {
+      "id": 31,
+      "courseId": 5,
+      "title": "February 1st, 6 pm: Midterm Test #1",
       "type": "midterm",
       "dueDate": null,
-      "weight": 18,
+      "weight": 15,
       "grade": null,
-      "description": "[date]: Midterm exam - 18% (Default), 20% (Option A), 23% (Option B), 25% (Option C)",
-      "createdAt": "2025-07-20T00:33:55.674Z"
+      "description": "February 1st, 6 pm: Midterm Test #1 - 15%",
+      "createdAt": "2025-07-20T00:51:01.426Z"
     },
     {
-      "id": 25,
-      "courseId": 4,
-      "title": "December, [date]: Final exam",
+      "id": 32,
+      "courseId": 5,
+      "title": "April 9th to 27th: Final Exam",
       "type": "final",
       "dueDate": null,
-      "weight": 30,
+      "weight": 35,
       "grade": null,
-      "description": "December, [date]: Final exam - 30% (Default), 35% (Option A), 35% (Option B), 40% (Option C)",
-      "createdAt": "2025-07-20T00:33:55.674Z"
+      "description": "April 9th to 27th: Final Exam - 35%",
+      "createdAt": "2025-07-20T00:51:01.426Z"
     }
   ],
-  "nextCourseId": 5,
-  "nextAssessmentId": 26
+  "nextCourseId": 6,
+  "nextAssessmentId": 33
 }
