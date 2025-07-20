@@ -87,6 +87,13 @@
                 <p style="color:#666;margin-bottom:1em;">Drag and drop your file here</p>
                 <button class="upload-btn" onclick="document.getElementById('fileInput').click()">Choose File</button>
                 <input type="file" id="fileInput" accept=".pdf,.txt" style="display:none;" />
+                <button class="upload-btn" onclick="toggleInputMethod()" style="margin-top: 10px; background: #28a745;">Switch to Text Input</button>
+              </div>
+              <div class="text-input-area" id="textInputArea" style="display: none;">
+                <p style="color:#666;margin-bottom:1em;">Paste your syllabus text here</p>
+                <textarea id="syllabusText" placeholder="Paste your syllabus content here..." style="width: 100%; height: 200px; padding: 10px; border: 2px dashed #ccc; border-radius: 8px; font-family: inherit; resize: vertical;"></textarea>
+                <button class="upload-btn" onclick="handleTextSubmit()" style="margin-top: 10px;">Submit Text</button>
+                <button class="upload-btn" onclick="toggleInputMethod()" style="margin-top: 10px; background: #007bff;">Switch to File Upload</button>
               </div>
               <div class="error" id="error" style="display:none;"></div>
             </section>

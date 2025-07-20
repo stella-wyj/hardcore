@@ -227,9 +227,15 @@ app.post('/upload', upload ? upload.single('syllabus') : (req, res) => {
       fs.unlinkSync(req.file.path);
     }
     
+    // Check if it's a Gemini API rate limit error
+    let errorMessage = error.message || 'Failed to process syllabus';
+    if (error.message && (error.message.includes('429') || error.message.includes('quota') || error.message.includes('Too Many Requests'))) {
+      errorMessage = 'PDF could not be parsed automatically due to API rate limits. Please use the text input option to manually enter the syllabus information.';
+    }
+    
     res.status(500).json({
       success: false,
-      error: error.message || 'Failed to process syllabus'
+      error: errorMessage
     });
   }
 });
