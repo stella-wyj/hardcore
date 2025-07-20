@@ -216,6 +216,11 @@ function handleFile(file) {
         
         // Refresh the courses list in Performance Summary
         loadCoursesAndGrades();
+        
+        // Also refresh the grade calculator if we're on the grades page
+        if (window.location.pathname.includes('grades')) {
+          loadGradeCalculatorData();
+        }
         }, 1000); // Close setTimeout
         
       } else {
@@ -438,38 +443,45 @@ async function selectCourse(courseId) {
 
 // Render assessments for a course
 function renderAssessments(course) {
-  const assessmentsList = document.getElementById('assessmentsList');
+  const assessmentsTableBody = document.getElementById('assessmentsTableBody');
   
   if (!course.assessments || course.assessments.length === 0) {
-    assessmentsList.innerHTML = '<p style="color: #666; text-align: center;">No assessments found for this course</p>';
+    assessmentsTableBody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #666; padding: 40px;">No assessments found for this course</td></tr>';
     return;
   }
   
-  assessmentsList.innerHTML = course.assessments.map(assessment => `
-    <div class="assessment-item">
-      <div class="assessment-header">
+  assessmentsTableBody.innerHTML = course.assessments.map(assessment => `
+    <tr>
+      <td>
         <div class="assessment-title">${assessment.title}</div>
-        <div class="assessment-weight">${assessment.weight || 0}%</div>
-      </div>
-      <div class="assessment-details">
-        <div class="assessment-detail">
-          <strong>Type:</strong> 
-          <span class="type-badge">${assessment.type}</span>
+      </td>
+      <td>
+        <span class="assessment-type ${assessment.type}">${assessment.type}</span>
+      </td>
+      <td>
+        <span class="assessment-weight">${assessment.weight || 0}%</span>
+      </td>
+      <td>
+        <span class="assessment-due-date">${assessment.dueDate || 'Not specified'}</span>
+      </td>
+      <td>
+        <div class="grade-input-cell">
+          <input type="number" id="grade-${assessment.id}" placeholder="Grade" min="0" max="100" value="${assessment.grade || ''}" />
+          <button onclick="updateAssessmentGrade(${course.id}, ${assessment.id})">Save</button>
+          ${assessment.grade ? `
+            <span class="grade-display">${assessment.grade}%</span>
+            <button onclick="deleteAssessmentGrade(${course.id}, ${assessment.id})" class="delete-grade-btn">Delete</button>
+          ` : ''}
         </div>
-        <div class="assessment-detail">
-          <strong>Due:</strong> ${assessment.dueDate || 'Not specified'}
+      </td>
+      <td>
+        <div class="actions-cell">
+          <button onclick="deleteAssessmentGrade(${course.id}, ${assessment.id})" class="delete-grade-btn" title="Delete Assessment">
+            🗑️
+          </button>
         </div>
-      </div>
-      <div class="grade-input-section">
-        <label>Grade:</label>
-        <input type="number" id="grade-${assessment.id}" placeholder="Enter grade" min="0" max="100" value="${assessment.grade || ''}" />
-        <button onclick="updateAssessmentGrade(${course.id}, ${assessment.id})">Save</button>
-        ${assessment.grade ? `
-          <span class="grade-display">${assessment.grade}%</span>
-          <button onclick="deleteAssessmentGrade(${course.id}, ${assessment.id})" class="delete-grade-btn">Delete Grade</button>
-        ` : ''}
-      </div>
-    </div>
+      </td>
+    </tr>
   `).join('');
 }
 
@@ -501,6 +513,11 @@ async function updateAssessmentGrade(courseId, assessmentId) {
       renderCourseTabs(currentCourses);
       updateGradeCalculations(course);
       
+      // Refresh performance summary if on dashboard
+      if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
+        loadCoursesAndGrades();
+      }
+      
       // Show success message
       gradeInput.style.borderColor = '#4CAF50';
       setTimeout(() => {
@@ -517,9 +534,6 @@ async function updateAssessmentGrade(courseId, assessmentId) {
 
 // Delete assessment grade
 async function deleteAssessmentGrade(courseId, assessmentId) {
-  if (!confirm('Are you sure you want to delete this assessment grade?')) {
-    return;
-  }
 
   try {
     const response = await fetch(`/api/courses/${courseId}/assessments/${assessmentId}/grade`, {
@@ -538,8 +552,12 @@ async function deleteAssessmentGrade(courseId, assessmentId) {
       renderCourseTabs(currentCourses);
       updateGradeCalculations(course);
       
-      // Show success message
-      alert('Assessment grade deleted successfully!');
+      // Refresh performance summary if on dashboard
+      if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
+        loadCoursesAndGrades();
+      }
+      
+
     } else {
       alert('Error deleting assessment grade');
     }
@@ -573,6 +591,11 @@ async function updateGoalGrade() {
       
       // Update grade calculations
       updateGradeCalculations(course);
+      
+      // Refresh performance summary if on dashboard
+      if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
+        loadCoursesAndGrades();
+      }
       
       // Show success message
       goalGradeInput.style.borderColor = '#4CAF50';
@@ -626,25 +649,29 @@ function updateGradeCalculations(course) {
   const requiredGrade = calculateRequiredGrade(course);
   
   // Update current grade display
-  const currentGradeElement = document.getElementById('currentGrade');
-  if (currentGrade !== null) {
-    currentGradeElement.textContent = currentGrade.toFixed(1) + '%';
-    currentGradeElement.className = 'stat-value ' + getGradeClass(currentGrade);
-  } else {
-    currentGradeElement.textContent = '--';
-    currentGradeElement.className = 'stat-value';
+  const currentGradeDisplay = document.getElementById('currentGradeDisplay');
+  if (currentGradeDisplay) {
+    if (currentGrade !== null) {
+      currentGradeDisplay.textContent = currentGrade.toFixed(1) + '%';
+      currentGradeDisplay.className = getGradeClass(currentGrade);
+    } else {
+      currentGradeDisplay.textContent = '--';
+      currentGradeDisplay.className = '';
+    }
   }
   
   // Update required grade display
-  const requiredGradeStat = document.getElementById('requiredGradeStat');
   const requiredGradeElement = document.getElementById('requiredGrade');
+  const requiredGradeDisplay = document.getElementById('requiredGradeDisplay');
   
-  if (requiredGrade !== null) {
-    requiredGradeStat.style.display = 'flex';
-    requiredGradeElement.textContent = requiredGrade.toFixed(1) + '%';
-    requiredGradeElement.className = 'stat-value ' + getGradeClass(requiredGrade);
-  } else {
-    requiredGradeStat.style.display = 'none';
+  if (requiredGradeDisplay && requiredGradeElement) {
+    if (requiredGrade !== null && course.goalGrade) {
+      requiredGradeDisplay.style.display = 'flex';
+      requiredGradeElement.textContent = requiredGrade.toFixed(1) + '%';
+      requiredGradeElement.className = getGradeClass(requiredGrade);
+    } else {
+      requiredGradeDisplay.style.display = 'none';
+    }
   }
 }
 
@@ -684,11 +711,13 @@ async function loadCoursesAndGrades() {
   const performanceSummary = document.getElementById('performance-summary');
   if (!performanceSummary) return;
   
-  performanceSummary.innerHTML = '';
-  
   try {
     const res = await fetch('/api/courses');
     const courses = await res.json();
+    
+    // Clear and rebuild the performance summary
+    performanceSummary.innerHTML = '';
+    
     if (Array.isArray(courses) && courses.length > 0) {
       courses.forEach(course => {
         const currentGrade = calculateCurrentGrade(course);
@@ -704,27 +733,32 @@ async function loadCoursesAndGrades() {
       performanceSummary.innerHTML = '<div style="color:#888;">No courses found.</div>';
     }
   } catch (e) {
+    console.error('Error loading courses for performance summary:', e);
     performanceSummary.innerHTML = '<div style="color:#c00;">Error loading courses.</div>';
   }
 }
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
-  loadCoursesAndGrades();
-  
   // Set up navigation based on current path
   const path = window.location.pathname;
   if (path.includes("calendar")) {
     document.querySelector(".calendar-btn").classList.add("active");
   } else if (path.includes("grades")) {
     document.querySelector(".grades-btn").classList.add("active");
-    // Clear the grade calculator to start fresh
-    clearGradeCalculator();
+    // Load grade calculator data (don't clear, just load)
+    loadGradeCalculatorData();
   } else {
     // Default to dashboard (index.html)
     document.querySelector(".dashboard-btn").classList.add("active");
     // Load dashboard data
     loadCoursesAndGrades();
+  }
+  
+  // Refresh performance summary when returning to dashboard
+  if (path === '/' || path === '/index.html') {
+    // Refresh performance summary every 5 seconds to keep it updated
+    setInterval(loadCoursesAndGrades, 5000);
   }
 });
 
@@ -738,12 +772,12 @@ function clearGradeCalculator() {
   const courseTabs = document.getElementById('courseTabs');
   const courseContent = document.getElementById('courseContent');
   const noCoursesMessage = document.getElementById('noCoursesMessage');
-  const assessmentsList = document.getElementById('assessmentsList');
+  const assessmentsTableBody = document.getElementById('assessmentsTableBody');
   const gradeSummary = document.getElementById('gradeSummary');
   
   if (courseTabs) courseTabs.innerHTML = '';
   if (courseContent) courseContent.style.display = 'none';
-  if (assessmentsList) assessmentsList.innerHTML = '';
+  if (assessmentsTableBody) assessmentsTableBody.innerHTML = '';
   if (gradeSummary) gradeSummary.innerHTML = '';
   if (noCoursesMessage) noCoursesMessage.style.display = 'block';
 }
@@ -772,31 +806,7 @@ function showRemoveCourseModal() {
   document.getElementById('removeCourseModal').style.display = 'flex';
 }
 
-function showRemoveAssessmentModal() {
-  if (!selectedCourseId) {
-    alert('Please select a course first');
-    return;
-  }
-  
-  const course = currentCourses.find(c => c.id === selectedCourseId);
-  if (!course || !course.assessments || course.assessments.length === 0) {
-    alert('No assessments found in the selected course');
-    return;
-  }
-  
-  const assessmentSelect = document.getElementById('assessmentToRemove');
-  assessmentSelect.innerHTML = '<option value="">Choose an assessment...</option>';
-  
-  // Populate assessment dropdown with assessments from current course
-  course.assessments.forEach(assessment => {
-    const option = document.createElement('option');
-    option.value = assessment.id;
-    option.textContent = `${assessment.title} (${assessment.weight}%)`;
-    assessmentSelect.appendChild(option);
-  });
-  
-  document.getElementById('removeAssessmentModal').style.display = 'flex';
-}
+
 
 function showClearAllModal() {
   document.getElementById('clearAllModal').style.display = 'flex';
@@ -831,9 +841,7 @@ async function confirmRemoveCourse() {
     return;
   }
   
-  if (!confirm(`Are you sure you want to remove "${course.name}"? This action cannot be undone.`)) {
-    return;
-  }
+
   
   try {
     const response = await fetch(`/api/courses/${courseId}`, {
@@ -855,10 +863,15 @@ async function confirmRemoveCourse() {
         selectCourse(currentCourses[0].id);
       }
       
+      // Refresh performance summary if on dashboard
+      if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
+        loadCoursesAndGrades();
+      }
+      
       // Close modal
       closeModal('removeCourseModal');
       
-      alert('Course removed successfully!');
+      alert(`Course "${course.name}" and all its ${assessmentsToRemove.length} assessments have been removed successfully!`);
     } else {
       alert('Error removing course');
     }
@@ -868,61 +881,10 @@ async function confirmRemoveCourse() {
   }
 }
 
-// Confirm and remove assessment
-async function confirmRemoveAssessment() {
-  const assessmentSelect = document.getElementById('assessmentToRemove');
-  const assessmentId = assessmentSelect.value;
-  
-  if (!assessmentId) {
-    alert('Please select an assessment to remove');
-    return;
-  }
-  
-  const course = currentCourses.find(c => c.id === selectedCourseId);
-  const assessment = course?.assessments.find(a => a.id === parseInt(assessmentId));
-  
-  if (!course || !assessment) {
-    alert('Assessment not found');
-    return;
-  }
-  
-  if (!confirm(`Are you sure you want to remove "${assessment.title}" from "${course.name}"? This action cannot be undone.`)) {
-    return;
-  }
-  
-  try {
-    const response = await fetch(`/api/courses/${selectedCourseId}/assessments/${assessmentId}`, {
-      method: 'DELETE'
-    });
-    
-    if (response.ok) {
-      // Remove from local data
-      course.assessments = course.assessments.filter(a => a.id !== parseInt(assessmentId));
-      
-      // Re-render assessments
-      renderAssessments(course);
-      
-      // Update grade calculations
-      updateGradeCalculations(course);
-      
-      // Close modal
-      closeModal('removeAssessmentModal');
-      
-      alert('Assessment removed successfully!');
-    } else {
-      alert('Error removing assessment');
-    }
-  } catch (error) {
-    console.error('Error removing assessment:', error);
-    alert('Error removing assessment');
-  }
-}
+
 
 // Confirm and clear all courses
 async function confirmClearAll() {
-  if (!confirm('Are you absolutely sure you want to delete ALL courses and ALL assessments? This action cannot be undone.')) {
-    return;
-  }
   
   try {
     const response = await fetch('/api/clear-all', {
@@ -942,6 +904,11 @@ async function confirmClearAll() {
       if (courseTabs) courseTabs.innerHTML = '';
       if (courseContent) courseContent.style.display = 'none';
       if (noCoursesMessage) noCoursesMessage.style.display = 'block';
+      
+      // Refresh performance summary if on dashboard
+      if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
+        loadCoursesAndGrades();
+      }
       
       // Close modal
       closeModal('clearAllModal');
@@ -987,6 +954,11 @@ document.getElementById('addCourseForm').addEventListener('submit', async functi
       
       // Select the new course
       selectCourse(newCourse.id);
+      
+      // Refresh performance summary if on dashboard
+      if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
+        loadCoursesAndGrades();
+      }
       
       // Close modal and reset form
       closeModal('addCourseModal');
@@ -1041,6 +1013,11 @@ document.getElementById('addAssessmentForm').addEventListener('submit', async fu
       
       // Update grade calculations
       updateGradeCalculations(course);
+      
+      // Refresh performance summary if on dashboard
+      if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
+        loadCoursesAndGrades();
+      }
       
       // Close modal and reset form
       closeModal('addAssessmentModal');

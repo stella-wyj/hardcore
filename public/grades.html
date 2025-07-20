@@ -57,9 +57,6 @@
               <button class="remove-course-btn" onclick="showRemoveCourseModal()">
                 <span>🗑️</span> Remove Course
               </button>
-              <button class="remove-assessment-btn" onclick="showRemoveAssessmentModal()">
-                <span>🗑️</span> Remove Assessment
-              </button>
               <button class="clear-all-btn" onclick="showClearAllModal()">
                 <span>🗑️</span> Clear All
               </button>
@@ -85,24 +82,52 @@
                 <h3>Current Course: <span id="currentCourseName"></span></h3>
               </div>
               
-              <!-- Assessments and Grade Input -->
+              <!-- Course Overview -->
+              <div class="course-overview">
+                <div class="overview-card">
+                  <div class="overview-item">
+                    <label>Current Grade:</label>
+                    <span id="currentGradeDisplay">--</span>
+                  </div>
+                  <div class="overview-item">
+                    <label>Goal Grade:</label>
+                    <div class="goal-input-group">
+                      <input type="number" id="goalGradeInput" placeholder="Set goal" min="0" max="100" />
+                      <button onclick="updateGoalGrade()">Set</button>
+                    </div>
+                  </div>
+                  <div class="overview-item" id="requiredGradeDisplay" style="display: none;">
+                    <label>Required Average:</label>
+                    <span id="requiredGrade">--</span>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Assessments Section -->
               <div class="assessments-section">
                 <div class="assessments-header">
                   <h3>Assessments</h3>
-                  <div class="assessments-actions">
-                    <button class="add-assessment-btn" onclick="showAddAssessmentModal()">
-                      <span>+</span> Add Assessment
-                    </button>
-                    <div class="goal-grade-section">
-                      <label for="goalGradeInput">Goal Grade:</label>
-                      <input type="number" id="goalGradeInput" placeholder="Enter goal %" min="0" max="100" />
-                      <button onclick="updateGoalGrade()">Set Goal</button>
-                    </div>
-                  </div>
+                  <button class="add-assessment-btn" onclick="showAddAssessmentModal()">
+                    <span>+</span> Add Assessment
+                  </button>
                 </div>
                 
-                <div class="assessments-list" id="assessmentsList">
-                  <!-- Assessments will be dynamically generated here -->
+                <div class="assessments-table-container">
+                  <table class="assessments-table" id="assessmentsTable">
+                    <thead>
+                      <tr>
+                        <th>Assessment</th>
+                        <th>Type</th>
+                        <th>Weight</th>
+                        <th>Due Date</th>
+                        <th>Grade</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody id="assessmentsTableBody">
+                      <!-- Assessments will be dynamically generated here -->
+                    </tbody>
+                  </table>
                 </div>
                 
                 <!-- Grade Summary -->
@@ -215,30 +240,7 @@
     </div>
   </div>
 
-  <!-- Remove Assessment Modal -->
-  <div id="removeAssessmentModal" class="modal" style="display: none;">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>Remove Assessment</h3>
-        <span class="close" onclick="closeModal('removeAssessmentModal')">&times;</span>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label for="assessmentToRemove">Select Assessment to Remove:</label>
-          <select id="assessmentToRemove" required>
-            <option value="">Choose an assessment...</option>
-          </select>
-        </div>
-        <div class="warning-message">
-          <p>⚠️ Warning: This action cannot be undone. The assessment and its grade will be permanently deleted.</p>
-        </div>
-        <div class="form-actions">
-          <button type="button" onclick="closeModal('removeAssessmentModal')">Cancel</button>
-          <button type="button" onclick="confirmRemoveAssessment()" class="danger-btn">Remove Assessment</button>
-        </div>
-      </div>
-    </div>
-  </div>
+
 
   <!-- Clear All Modal -->
   <div id="clearAllModal" class="modal" style="display: none;">
