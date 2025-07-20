@@ -108,6 +108,178 @@
         "Students can submit written work in English or French."
       ],
       "createdAt": "2025-07-20T01:08:53.722Z"
+    },
+    {
+      "id": 2,
+      "name": "Introductory Physics - Mechanics",
+      "instructor": "Prof. Simon Caron-Huot",
+      "color": "#ff6d01",
+      "goalGrade": null,
+      "assessments": [
+        {
+          "id": 8,
+          "courseId": 2,
+          "title": "Not specified",
+          "type": "quiz",
+          "dueDate": null,
+          "weight": null,
+          "grade": null,
+          "description": "Not specified",
+          "createdAt": "2025-07-20T01:27:58.820Z"
+        },
+        {
+          "id": 9,
+          "courseId": 2,
+          "title": "September 12: Assignment 1",
+          "type": "assignment",
+          "dueDate": null,
+          "weight": 15,
+          "grade": null,
+          "description": "September 12: Assignment 1 - 15%",
+          "createdAt": "2025-07-20T01:27:58.820Z"
+        },
+        {
+          "id": 10,
+          "courseId": 2,
+          "title": "Weekly problem sets done online via the Ans system.  Allows multiple attempts; full marks if correct regardless of number of tries.",
+          "type": "assignment",
+          "dueDate": null,
+          "weight": null,
+          "grade": null,
+          "description": "Weekly problem sets done online via the Ans system.  Allows multiple attempts; full marks if correct regardless of number of tries.",
+          "createdAt": "2025-07-20T01:27:58.820Z"
+        },
+        {
+          "id": 11,
+          "courseId": 2,
+          "title": "[date]: Midterm Exam",
+          "type": "midterm",
+          "dueDate": null,
+          "weight": 18,
+          "grade": null,
+          "description": "[date]: Midterm Exam - 18% (Default), 20% (Option A), 23% (Option B), 25% (Option C)",
+          "createdAt": "2025-07-20T01:27:58.820Z"
+        },
+        {
+          "id": 12,
+          "courseId": 2,
+          "title": "December, [date]: Final Exam",
+          "type": "final",
+          "dueDate": null,
+          "weight": 30,
+          "grade": null,
+          "description": "December, [date]: Final Exam - 30% (Default), 35% (Option A), 35% (Option B), 40% (Option C)",
+          "createdAt": "2025-07-20T01:27:58.820Z"
+        }
+      ],
+      "officeHours": [
+        "Tuesday, 9:30-10:55am, Rutherford Physics Building room 312",
+        "Wednesday, 9:30-10:55am, Rutherford Physics Building room 326"
+      ],
+      "textbooks": [
+        "College Physics, 2e by OpenStax - [ISBN not specified]",
+        "Free to use/download.  Donations accepted.",
+        "Physics, Principles with Applications, 7th edition by Douglas Giancoli - [ISBN not specified]",
+        "Used copies available at the McGill bookstore."
+      ],
+      "otherInfo": [
+        "Course uses a flipped classroom approach.",
+        "Pre-lecture reading and discussion activities (Perusall) are worth 7% (default). Lowest two scores dropped.",
+        "Tutorial participation is worth 10% (default). Lowest two scores dropped. Tutorials are held in small groups; attendance and participation required.",
+        "Labs are worth 20% and are required to pass the course (minimum 55%).  One virtual lab and six in-person sessions. Reports due at the end of each lab.",
+        "Four grading schemes are available; students must choose by September 15th.",
+        "Lectures are held Tuesdays and Thursdays, 1:05-2:25 PM in Leacock 132, from August 29th to December 3rd, excluding the week of October 14th (Reading Week). Lecture recordings may be available on MyCourses.",
+        "A scientific calculator is required.",
+        "Students should plan to spend 10 hours per week on the course.",
+        "Late or missing assessments receive a 0 unless prior arrangements are made with the instructor for significant and documented reasons.",
+        "Regrades must be requested within 10 days of grade release.  Different email addresses for different inquiries.",
+        "Use of generative AI is allowed for understanding course materials but not for producing assignments.",
+        "Students can submit written work in English or French."
+      ],
+      "createdAt": "2025-07-20T01:27:58.817Z"
+    },
+    {
+      "id": 3,
+      "name": "Linear Algebra and Geometry",
+      "instructor": "Dr. Jeremy Macdonald (coordinator), Dr. Romain Branchereau, Miguel Ayala, Antoine Giard",
+      "color": "#34a853",
+      "goalGrade": null,
+      "assessments": [
+        {
+          "id": 13,
+          "courseId": 3,
+          "title": "Not specified",
+          "type": "quiz",
+          "dueDate": null,
+          "weight": null,
+          "grade": null,
+          "description": "Not specified",
+          "createdAt": "2025-07-20T01:32:46.654Z"
+        },
+        {
+          "id": 14,
+          "courseId": 3,
+          "title": "Not specified: Webwork assignments",
+          "type": "assignment",
+          "dueDate": null,
+          "weight": 15,
+          "grade": null,
+          "description": "Not specified: Webwork assignments - 15%",
+          "createdAt": "2025-07-20T01:32:46.654Z"
+        },
+        {
+          "id": 15,
+          "courseId": 3,
+          "title": "Assignments released every Friday, due Sunday of the following week.  Multiple attempts allowed; each problem has equal weight.",
+          "type": "assignment",
+          "dueDate": null,
+          "weight": null,
+          "grade": null,
+          "description": "Assignments released every Friday, due Sunday of the following week.  Multiple attempts allowed; each problem has equal weight.",
+          "createdAt": "2025-07-20T01:32:46.654Z"
+        },
+        {
+          "id": 16,
+          "courseId": 3,
+          "title": "Midterm Exam",
+          "type": "midterm",
+          "dueDate": "2024-10-09",
+          "weight": 20,
+          "grade": null,
+          "description": "2024-10-09: Midterm Exam - 20%",
+          "createdAt": "2025-07-20T01:32:46.654Z"
+        },
+        {
+          "id": 17,
+          "courseId": 3,
+          "title": "Not specified: Final Exam",
+          "type": "final",
+          "dueDate": null,
+          "weight": 65,
+          "grade": null,
+          "description": "Not specified: Final Exam - 65% (Scheme 1)/85% (Scheme 2)",
+          "createdAt": "2025-07-20T01:32:46.654Z"
+        }
+      ],
+      "officeHours": [
+        "Not specified"
+      ],
+      "textbooks": [
+        "Linear Algebra with Applications by W. K. Nicholson - Not specified",
+        "Cost: Free, available online at https://lyryx.com/linear-algebra-applications/"
+      ],
+      "otherInfo": [
+        "Grading Scheme:  Final grade is the higher of two schemes: Scheme 1 (Webwork 15%, Midterm 20%, Final 65%) and Scheme 2 (Webwork 15%, Final 85%). Letter grades are assigned based on a provided scale (with potential lowering of boundaries at instructors’ discretion).",
+        "Email Policy: Use email only for individual matters; use the Ed discussion forum (linked in myCourses) for other questions.",
+        "Course Website: myCourses",
+        "Tutorials: Weekly tutorials led by teaching assistants; strongly encouraged to ask questions.",
+        "Homework Policy: Collaboration allowed, but problems cannot be solved by others (humans or AI).",
+        "Resources for Math Help: Office hours, tutorials, Ed discussion forum, Burnside Math Helpdesk, SciLearn Peer Collab.",
+        "Life Difficulties: Contact instructors if life difficulties interfere with studies.",
+        "University Policies: Policy on Assessment of Student Learning (PASL), Academic Integrity, Language (English or French), Accommodations (handled by Student Accessibility and Achievement).",
+        "Disclaimer: Course content and evaluation scheme subject to change due to extraordinary circumstances."
+      ],
+      "createdAt": "2025-07-20T01:32:46.654Z"
     }
   ],
   "assessments": [
@@ -187,8 +359,118 @@
       "grade": null,
       "description": "[date]: Final exam - 30% (Default), 35% (Option A), 35% (Option B), 40% (Option C)",
       "createdAt": "2025-07-20T01:08:53.722Z"
+    },
+    {
+      "id": 8,
+      "courseId": 2,
+      "title": "Not specified",
+      "type": "quiz",
+      "dueDate": null,
+      "weight": null,
+      "grade": null,
+      "description": "Not specified",
+      "createdAt": "2025-07-20T01:27:58.820Z"
+    },
+    {
+      "id": 9,
+      "courseId": 2,
+      "title": "September 12: Assignment 1",
+      "type": "assignment",
+      "dueDate": null,
+      "weight": 15,
+      "grade": null,
+      "description": "September 12: Assignment 1 - 15%",
+      "createdAt": "2025-07-20T01:27:58.820Z"
+    },
+    {
+      "id": 10,
+      "courseId": 2,
+      "title": "Weekly problem sets done online via the Ans system.  Allows multiple attempts; full marks if correct regardless of number of tries.",
+      "type": "assignment",
+      "dueDate": null,
+      "weight": null,
+      "grade": null,
+      "description": "Weekly problem sets done online via the Ans system.  Allows multiple attempts; full marks if correct regardless of number of tries.",
+      "createdAt": "2025-07-20T01:27:58.820Z"
+    },
+    {
+      "id": 11,
+      "courseId": 2,
+      "title": "[date]: Midterm Exam",
+      "type": "midterm",
+      "dueDate": null,
+      "weight": 18,
+      "grade": null,
+      "description": "[date]: Midterm Exam - 18% (Default), 20% (Option A), 23% (Option B), 25% (Option C)",
+      "createdAt": "2025-07-20T01:27:58.820Z"
+    },
+    {
+      "id": 12,
+      "courseId": 2,
+      "title": "December, [date]: Final Exam",
+      "type": "final",
+      "dueDate": null,
+      "weight": 30,
+      "grade": null,
+      "description": "December, [date]: Final Exam - 30% (Default), 35% (Option A), 35% (Option B), 40% (Option C)",
+      "createdAt": "2025-07-20T01:27:58.820Z"
+    },
+    {
+      "id": 13,
+      "courseId": 3,
+      "title": "Not specified",
+      "type": "quiz",
+      "dueDate": null,
+      "weight": null,
+      "grade": null,
+      "description": "Not specified",
+      "createdAt": "2025-07-20T01:32:46.654Z"
+    },
+    {
+      "id": 14,
+      "courseId": 3,
+      "title": "Not specified: Webwork assignments",
+      "type": "assignment",
+      "dueDate": null,
+      "weight": 15,
+      "grade": null,
+      "description": "Not specified: Webwork assignments - 15%",
+      "createdAt": "2025-07-20T01:32:46.654Z"
+    },
+    {
+      "id": 15,
+      "courseId": 3,
+      "title": "Assignments released every Friday, due Sunday of the following week.  Multiple attempts allowed; each problem has equal weight.",
+      "type": "assignment",
+      "dueDate": null,
+      "weight": null,
+      "grade": null,
+      "description": "Assignments released every Friday, due Sunday of the following week.  Multiple attempts allowed; each problem has equal weight.",
+      "createdAt": "2025-07-20T01:32:46.654Z"
+    },
+    {
+      "id": 16,
+      "courseId": 3,
+      "title": "Midterm Exam",
+      "type": "midterm",
+      "dueDate": "2024-10-09",
+      "weight": 20,
+      "grade": null,
+      "description": "2024-10-09: Midterm Exam - 20%",
+      "createdAt": "2025-07-20T01:32:46.654Z"
+    },
+    {
+      "id": 17,
+      "courseId": 3,
+      "title": "Not specified: Final Exam",
+      "type": "final",
+      "dueDate": null,
+      "weight": 65,
+      "grade": null,
+      "description": "Not specified: Final Exam - 65% (Scheme 1)/85% (Scheme 2)",
+      "createdAt": "2025-07-20T01:32:46.654Z"
     }
   ],
-  "nextCourseId": 2,
-  "nextAssessmentId": 8
+  "nextCourseId": 4,
+  "nextAssessmentId": 18
 }

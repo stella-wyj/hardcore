@@ -50,6 +50,11 @@
           <div class="grade-calculator-header">
             <h2>📊 Grade Calculator</h2>
             <p>Track your grades and set goals for each course</p>
+            <div class="header-actions">
+              <button class="add-course-btn" onclick="showAddCourseModal()">
+                <span>+</span> Add Course
+              </button>
+            </div>
           </div>
           
           <div class="grade-calculator-content">
@@ -75,10 +80,15 @@
               <div class="assessments-section">
                 <div class="assessments-header">
                   <h3>Assessments</h3>
-                  <div class="goal-grade-section">
-                    <label for="goalGradeInput">Goal Grade:</label>
-                    <input type="number" id="goalGradeInput" placeholder="Enter goal %" min="0" max="100" />
-                    <button onclick="updateGoalGrade()">Set Goal</button>
+                  <div class="assessments-actions">
+                    <button class="add-assessment-btn" onclick="showAddAssessmentModal()">
+                      <span>+</span> Add Assessment
+                    </button>
+                    <div class="goal-grade-section">
+                      <label for="goalGradeInput">Goal Grade:</label>
+                      <input type="number" id="goalGradeInput" placeholder="Enter goal %" min="0" max="100" />
+                      <button onclick="updateGoalGrade()">Set Goal</button>
+                    </div>
                   </div>
                 </div>
                 
@@ -99,6 +109,75 @@
 
         
       
+    </div>
+  </div>
+
+  <!-- Add Course Modal -->
+  <div id="addCourseModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Add New Course</h3>
+        <span class="close" onclick="closeModal('addCourseModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <form id="addCourseForm">
+          <div class="form-group">
+            <label for="courseName">Course Name:</label>
+            <input type="text" id="courseName" required placeholder="e.g., Linear Algebra">
+          </div>
+          <div class="form-group">
+            <label for="courseInstructor">Instructor:</label>
+            <input type="text" id="courseInstructor" placeholder="e.g., Dr. Smith">
+          </div>
+          <div class="form-group">
+            <label for="courseColor">Color:</label>
+            <input type="color" id="courseColor" value="#4285f4">
+          </div>
+          <div class="form-actions">
+            <button type="button" onclick="closeModal('addCourseModal')">Cancel</button>
+            <button type="submit">Add Course</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Assessment Modal -->
+  <div id="addAssessmentModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Add New Assessment</h3>
+        <span class="close" onclick="closeModal('addAssessmentModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <form id="addAssessmentForm">
+          <div class="form-group">
+            <label for="assessmentTitle">Assessment Title:</label>
+            <input type="text" id="assessmentTitle" required placeholder="e.g., Assignment 1">
+          </div>
+          <div class="form-group">
+            <label for="assessmentType">Type:</label>
+            <select id="assessmentType" required>
+              <option value="assignment">Assignment</option>
+              <option value="quiz">Quiz</option>
+              <option value="midterm">Midterm</option>
+              <option value="final">Final</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="assessmentWeight">Weight (%):</label>
+            <input type="number" id="assessmentWeight" required min="0" max="100" placeholder="e.g., 15">
+          </div>
+          <div class="form-group">
+            <label for="assessmentDueDate">Due Date:</label>
+            <input type="date" id="assessmentDueDate">
+          </div>
+          <div class="form-actions">
+            <button type="button" onclick="closeModal('addAssessmentModal')">Cancel</button>
+            <button type="submit">Add Assessment</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 
