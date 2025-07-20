@@ -1,5 +1,423 @@
 {
-  "courses": [],
-  "nextCourseId": 1,
-  "nextAssessmentId": 1
+  "courses": [
+    {
+      "id": 1,
+      "name": "Computer Science and Information Systems",
+      "instructor": "Not specified",
+      "color": "#46bdc6",
+      "goalGrade": null,
+      "assessments": [
+        {
+          "id": 1,
+          "courseId": 1,
+          "title": "Syllabus Quiz",
+          "type": "quiz",
+          "dueDate": "2025-09-10",
+          "weight": 2,
+          "grade": null,
+          "description": "2025-09-10: Syllabus Quiz - 2%",
+          "createdAt": "2025-07-20T04:45:20.630Z"
+        },
+        {
+          "id": 2,
+          "courseId": 1,
+          "title": "A brief online quiz course expectations, policies, and grading",
+          "type": "quiz",
+          "dueDate": null,
+          "weight": null,
+          "grade": null,
+          "description": "A brief online quiz covering course expectations, policies, and grading.",
+          "createdAt": "2025-07-20T04:45:20.630Z"
+        },
+        {
+          "id": 3,
+          "courseId": 1,
+          "title": "Quiz 1",
+          "type": "quiz",
+          "dueDate": "2025-09-24",
+          "weight": 3,
+          "grade": null,
+          "description": "2025-09-24: Quiz 1 - 3%",
+          "createdAt": "2025-07-20T04:45:20.630Z"
+        },
+        {
+          "id": 4,
+          "courseId": 1,
+          "title": "Covers programming fundamentals, variables, data types, and basic operations",
+          "type": "quiz",
+          "dueDate": null,
+          "weight": null,
+          "grade": null,
+          "description": "Covers programming fundamentals, variables, data types, and basic operations.",
+          "createdAt": "2025-07-20T04:45:20.630Z"
+        },
+        {
+          "id": 5,
+          "courseId": 1,
+          "title": "Quiz 2",
+          "type": "quiz",
+          "dueDate": "2025-10-29",
+          "weight": 4,
+          "grade": null,
+          "description": "2025-10-29: Quiz 2 - 4%",
+          "createdAt": "2025-07-20T04:45:20.630Z"
+        },
+        {
+          "id": 6,
+          "courseId": 1,
+          "title": "Tests understanding of if-statements, loops, and program flow control",
+          "type": "quiz",
+          "dueDate": null,
+          "weight": null,
+          "grade": null,
+          "description": "Tests understanding of if-statements, loops, and program flow control.",
+          "createdAt": "2025-07-20T04:45:20.630Z"
+        },
+        {
+          "id": 7,
+          "courseId": 1,
+          "title": "Assignment 1",
+          "type": "assignment",
+          "dueDate": "2025-09-18",
+          "weight": 5,
+          "grade": null,
+          "description": "2025-09-18: Assignment 1 - 5%",
+          "createdAt": "2025-07-20T04:45:20.630Z"
+        },
+        {
+          "id": 8,
+          "courseId": 1,
+          "title": "Writing a Python script to solve simple math problems",
+          "type": "assignment",
+          "dueDate": null,
+          "weight": null,
+          "grade": null,
+          "description": "Writing a Python script to solve simple math problems.",
+          "createdAt": "2025-07-20T04:45:20.630Z"
+        },
+        {
+          "id": 9,
+          "courseId": 1,
+          "title": "Assignment 2",
+          "type": "assignment",
+          "dueDate": "2025-10-02",
+          "weight": 6,
+          "grade": null,
+          "description": "2025-10-02: Assignment 2 - 6%",
+          "createdAt": "2025-07-20T04:45:20.630Z"
+        },
+        {
+          "id": 10,
+          "courseId": 1,
+          "title": "Developing a simple calculator app using Python functions and user input",
+          "type": "assignment",
+          "dueDate": null,
+          "weight": null,
+          "grade": null,
+          "description": "Developing a simple calculator app using Python functions and user input.",
+          "createdAt": "2025-07-20T04:45:20.630Z"
+        },
+        {
+          "id": 11,
+          "courseId": 1,
+          "title": "Assignment 3",
+          "type": "assignment",
+          "dueDate": "2025-10-23",
+          "weight": 6,
+          "grade": null,
+          "description": "2025-10-23: Assignment 3 - 6%",
+          "createdAt": "2025-07-20T04:45:20.630Z"
+        },
+        {
+          "id": 12,
+          "courseId": 1,
+          "title": "Reading and writing data from files using Python",
+          "type": "assignment",
+          "dueDate": null,
+          "weight": null,
+          "grade": null,
+          "description": "Reading and writing data from files using Python.",
+          "createdAt": "2025-07-20T04:45:20.630Z"
+        },
+        {
+          "id": 13,
+          "courseId": 1,
+          "title": "Project Proposal",
+          "type": "assignment",
+          "dueDate": "2025-11-05",
+          "weight": 5,
+          "grade": null,
+          "description": "2025-11-05: Project Proposal - 5%",
+          "createdAt": "2025-07-20T04:45:20.630Z"
+        },
+        {
+          "id": 14,
+          "courseId": 1,
+          "title": "A 1-2 page write-up proposing the final group project",
+          "type": "assignment",
+          "dueDate": null,
+          "weight": null,
+          "grade": null,
+          "description": "A 1-2 page write-up proposing the final group project.",
+          "createdAt": "2025-07-20T04:45:20.630Z"
+        },
+        {
+          "id": 15,
+          "courseId": 1,
+          "title": "Assignment 4",
+          "type": "assignment",
+          "dueDate": "2025-11-13",
+          "weight": 6,
+          "grade": null,
+          "description": "2025-11-13: Assignment 4 - 6%",
+          "createdAt": "2025-07-20T04:45:20.630Z"
+        },
+        {
+          "id": 16,
+          "courseId": 1,
+          "title": "Building a simple text-based game in Python",
+          "type": "assignment",
+          "dueDate": null,
+          "weight": null,
+          "grade": null,
+          "description": "Building a simple text-based game in Python.",
+          "createdAt": "2025-07-20T04:45:20.630Z"
+        },
+        {
+          "id": 17,
+          "courseId": 1,
+          "title": "Midterm 1",
+          "type": "midterm",
+          "dueDate": "2025-10-14",
+          "weight": 18,
+          "grade": null,
+          "description": "2025-10-14: Midterm 1 - 18%",
+          "createdAt": "2025-07-20T04:45:20.630Z"
+        },
+        {
+          "id": 18,
+          "courseId": 1,
+          "title": "Final Exam",
+          "type": "final",
+          "dueDate": "2025-12-16",
+          "weight": 15,
+          "grade": null,
+          "description": "2025-12-16: Final Exam - 15%",
+          "createdAt": "2025-07-20T04:45:20.630Z"
+        }
+      ],
+      "officeHours": [
+        "Not specified"
+      ],
+      "textbooks": [
+        "Not specified"
+      ],
+      "otherInfo": [
+        "Participation is worth 10% and includes attendance, in-class engagement, and group contributions.  Students should bring a non-programmable calculator and cheat sheet to Midterm 1.  The Group Project is due December 3rd, 2025 and is worth 12%."
+      ],
+      "createdAt": "2025-07-20T04:45:20.630Z"
+    }
+  ],
+  "assessments": [
+    {
+      "id": 1,
+      "courseId": 1,
+      "title": "Syllabus Quiz",
+      "type": "quiz",
+      "dueDate": "2025-09-10",
+      "weight": 2,
+      "grade": null,
+      "description": "2025-09-10: Syllabus Quiz - 2%",
+      "createdAt": "2025-07-20T04:45:20.630Z"
+    },
+    {
+      "id": 2,
+      "courseId": 1,
+      "title": "A brief online quiz course expectations, policies, and grading",
+      "type": "quiz",
+      "dueDate": null,
+      "weight": null,
+      "grade": null,
+      "description": "A brief online quiz covering course expectations, policies, and grading.",
+      "createdAt": "2025-07-20T04:45:20.630Z"
+    },
+    {
+      "id": 3,
+      "courseId": 1,
+      "title": "Quiz 1",
+      "type": "quiz",
+      "dueDate": "2025-09-24",
+      "weight": 3,
+      "grade": null,
+      "description": "2025-09-24: Quiz 1 - 3%",
+      "createdAt": "2025-07-20T04:45:20.630Z"
+    },
+    {
+      "id": 4,
+      "courseId": 1,
+      "title": "Covers programming fundamentals, variables, data types, and basic operations",
+      "type": "quiz",
+      "dueDate": null,
+      "weight": null,
+      "grade": null,
+      "description": "Covers programming fundamentals, variables, data types, and basic operations.",
+      "createdAt": "2025-07-20T04:45:20.630Z"
+    },
+    {
+      "id": 5,
+      "courseId": 1,
+      "title": "Quiz 2",
+      "type": "quiz",
+      "dueDate": "2025-10-29",
+      "weight": 4,
+      "grade": null,
+      "description": "2025-10-29: Quiz 2 - 4%",
+      "createdAt": "2025-07-20T04:45:20.630Z"
+    },
+    {
+      "id": 6,
+      "courseId": 1,
+      "title": "Tests understanding of if-statements, loops, and program flow control",
+      "type": "quiz",
+      "dueDate": null,
+      "weight": null,
+      "grade": null,
+      "description": "Tests understanding of if-statements, loops, and program flow control.",
+      "createdAt": "2025-07-20T04:45:20.630Z"
+    },
+    {
+      "id": 7,
+      "courseId": 1,
+      "title": "Assignment 1",
+      "type": "assignment",
+      "dueDate": "2025-09-18",
+      "weight": 5,
+      "grade": null,
+      "description": "2025-09-18: Assignment 1 - 5%",
+      "createdAt": "2025-07-20T04:45:20.630Z"
+    },
+    {
+      "id": 8,
+      "courseId": 1,
+      "title": "Writing a Python script to solve simple math problems",
+      "type": "assignment",
+      "dueDate": null,
+      "weight": null,
+      "grade": null,
+      "description": "Writing a Python script to solve simple math problems.",
+      "createdAt": "2025-07-20T04:45:20.630Z"
+    },
+    {
+      "id": 9,
+      "courseId": 1,
+      "title": "Assignment 2",
+      "type": "assignment",
+      "dueDate": "2025-10-02",
+      "weight": 6,
+      "grade": null,
+      "description": "2025-10-02: Assignment 2 - 6%",
+      "createdAt": "2025-07-20T04:45:20.630Z"
+    },
+    {
+      "id": 10,
+      "courseId": 1,
+      "title": "Developing a simple calculator app using Python functions and user input",
+      "type": "assignment",
+      "dueDate": null,
+      "weight": null,
+      "grade": null,
+      "description": "Developing a simple calculator app using Python functions and user input.",
+      "createdAt": "2025-07-20T04:45:20.630Z"
+    },
+    {
+      "id": 11,
+      "courseId": 1,
+      "title": "Assignment 3",
+      "type": "assignment",
+      "dueDate": "2025-10-23",
+      "weight": 6,
+      "grade": null,
+      "description": "2025-10-23: Assignment 3 - 6%",
+      "createdAt": "2025-07-20T04:45:20.630Z"
+    },
+    {
+      "id": 12,
+      "courseId": 1,
+      "title": "Reading and writing data from files using Python",
+      "type": "assignment",
+      "dueDate": null,
+      "weight": null,
+      "grade": null,
+      "description": "Reading and writing data from files using Python.",
+      "createdAt": "2025-07-20T04:45:20.630Z"
+    },
+    {
+      "id": 13,
+      "courseId": 1,
+      "title": "Project Proposal",
+      "type": "assignment",
+      "dueDate": "2025-11-05",
+      "weight": 5,
+      "grade": null,
+      "description": "2025-11-05: Project Proposal - 5%",
+      "createdAt": "2025-07-20T04:45:20.630Z"
+    },
+    {
+      "id": 14,
+      "courseId": 1,
+      "title": "A 1-2 page write-up proposing the final group project",
+      "type": "assignment",
+      "dueDate": null,
+      "weight": null,
+      "grade": null,
+      "description": "A 1-2 page write-up proposing the final group project.",
+      "createdAt": "2025-07-20T04:45:20.630Z"
+    },
+    {
+      "id": 15,
+      "courseId": 1,
+      "title": "Assignment 4",
+      "type": "assignment",
+      "dueDate": "2025-11-13",
+      "weight": 6,
+      "grade": null,
+      "description": "2025-11-13: Assignment 4 - 6%",
+      "createdAt": "2025-07-20T04:45:20.630Z"
+    },
+    {
+      "id": 16,
+      "courseId": 1,
+      "title": "Building a simple text-based game in Python",
+      "type": "assignment",
+      "dueDate": null,
+      "weight": null,
+      "grade": null,
+      "description": "Building a simple text-based game in Python.",
+      "createdAt": "2025-07-20T04:45:20.630Z"
+    },
+    {
+      "id": 17,
+      "courseId": 1,
+      "title": "Midterm 1",
+      "type": "midterm",
+      "dueDate": "2025-10-14",
+      "weight": 18,
+      "grade": null,
+      "description": "2025-10-14: Midterm 1 - 18%",
+      "createdAt": "2025-07-20T04:45:20.630Z"
+    },
+    {
+      "id": 18,
+      "courseId": 1,
+      "title": "Final Exam",
+      "type": "final",
+      "dueDate": "2025-12-16",
+      "weight": 15,
+      "grade": null,
+      "description": "2025-12-16: Final Exam - 15%",
+      "createdAt": "2025-07-20T04:45:20.630Z"
+    }
+  ],
+  "nextCourseId": 2,
+  "nextAssessmentId": 19
 }

@@ -19,8 +19,7 @@ try {
     // Check if the database has valid structure and data
     if (parsedData && 
         Array.isArray(parsedData.courses) && 
-        Array.isArray(parsedData.assessments) &&
-        parsedData.courses.length > 0) {
+        Array.isArray(parsedData.assessments)) {
       db = parsedData;
       if (DEBUG_MODE) {
         console.log('📊 Loaded existing database with', db.courses.length, 'courses and', db.assessments.length, 'assessments');

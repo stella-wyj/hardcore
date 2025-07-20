@@ -343,6 +343,14 @@ function handleTextSubmit() {
           html += '<h3>Raw Backend Response</h3>';
           html += '<pre style="background:#f8f8f8;padding:10px;border-radius:8px;overflow:auto;max-height:400px;border:1px solid #e0e0e0;white-space:pre-wrap;word-wrap:break-word;max-width:100%;">' + JSON.stringify(data, null, 2) + '</pre>';
           backendResultsContent.innerHTML = html;
+          
+          // Refresh the courses list in Performance Summary
+          loadCoursesAndGrades();
+          
+          // Also refresh the grade calculator if we're on the grades page
+          if (window.location.pathname.includes('grades')) {
+            loadGradeCalculatorData();
+          }
         }, 1000);
               } else {
           updateProgress(100, 'Error!', '❌ ' + (data.error || 'Failed to analyze syllabus'));
@@ -513,8 +521,9 @@ async function updateAssessmentGrade(courseId, assessmentId) {
       renderCourseTabs(currentCourses);
       updateGradeCalculations(course);
       
-      // Refresh performance summary if on dashboard
+      // Clear cache and refresh performance summary if on dashboard
       if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
+        localStorage.removeItem('performanceSummaryCache');
         loadCoursesAndGrades();
       }
       
@@ -552,8 +561,9 @@ async function deleteAssessmentGrade(courseId, assessmentId) {
       renderCourseTabs(currentCourses);
       updateGradeCalculations(course);
       
-      // Refresh performance summary if on dashboard
+      // Clear cache and refresh performance summary if on dashboard
       if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
+        localStorage.removeItem('performanceSummaryCache');
         loadCoursesAndGrades();
       }
       
@@ -592,8 +602,9 @@ async function updateGoalGrade() {
       // Update grade calculations
       updateGradeCalculations(course);
       
-      // Refresh performance summary if on dashboard
+      // Clear cache and refresh performance summary if on dashboard
       if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
+        localStorage.removeItem('performanceSummaryCache');
         loadCoursesAndGrades();
       }
       
@@ -673,6 +684,11 @@ function updateGradeCalculations(course) {
       requiredGradeDisplay.style.display = 'none';
     }
   }
+  
+  // Refresh Performance Summary on dashboard if it exists
+  if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
+    loadCoursesAndGrades();
+  }
 }
 
 // Get CSS class for grade color
@@ -711,31 +727,161 @@ async function loadCoursesAndGrades() {
   const performanceSummary = document.getElementById('performance-summary');
   if (!performanceSummary) return;
   
+  // Prevent multiple simultaneous calls
+  if (loadCoursesAndGrades.isLoading) {
+    console.log('⏳ Performance summary update already in progress, skipping...');
+    return;
+  }
+  
+  loadCoursesAndGrades.isLoading = true;
+  
+  // Try to load cached data first if no content exists
+  const existingContent = performanceSummary.innerHTML;
+  if (!existingContent || existingContent.includes('No courses found') || existingContent.includes('Upload a syllabus')) {
+    try {
+      const cachedData = localStorage.getItem('performanceSummaryCache');
+      if (cachedData) {
+        const { courses, timestamp } = JSON.parse(cachedData);
+        const cacheAge = Date.now() - timestamp;
+        // Use cache if it's less than 5 minutes old
+        if (cacheAge < 5 * 60 * 1000) {
+          console.log('📦 Loading cached performance summary data');
+          displayCoursesInPerformanceSummary(courses);
+          return;
+        }
+      }
+    } catch (e) {
+      console.log('⚠️ Error loading cached data:', e);
+    }
+  }
+  
   try {
-    const res = await fetch('/api/courses');
+    // Add cache-busting parameter to prevent stale data
+    const timestamp = new Date().getTime();
+    const res = await fetch(`/api/courses?t=${timestamp}`, {
+      method: 'GET',
+      headers: {
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache'
+      }
+    });
+    
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
+    
     const courses = await res.json();
     
-    // Clear and rebuild the performance summary
-    performanceSummary.innerHTML = '';
-    
+    // Only clear and rebuild if we have valid data
     if (Array.isArray(courses) && courses.length > 0) {
-      courses.forEach(course => {
-        const currentGrade = calculateCurrentGrade(course);
-        const gradeDiv = document.createElement('div');
-        gradeDiv.className = 'grade';
-        gradeDiv.innerHTML = `
-          <span>${course.name}</span>
-          <span>${currentGrade ? currentGrade.toFixed(1) + '%' : '--'}</span>
+      // Cache the successful data
+      try {
+        localStorage.setItem('performanceSummaryCache', JSON.stringify({
+          courses: courses,
+          timestamp: Date.now()
+        }));
+      } catch (e) {
+        console.log('⚠️ Could not cache performance summary data:', e);
+      }
+      
+      // Display the courses
+      displayCoursesInPerformanceSummary(courses);
+      
+      // Log success for debugging
+      console.log(`✅ Performance Summary updated with ${courses.length} courses`);
+    } else if (Array.isArray(courses) && courses.length === 0) {
+      // Only show "no courses" message if we actually have no courses
+      // Don't clear existing content if there might be a loading issue
+      const existingContent = performanceSummary.innerHTML;
+      if (!existingContent || existingContent.includes('No courses found') || existingContent.includes('Upload a syllabus')) {
+        performanceSummary.innerHTML = `
+          <div style="
+            color: #888; 
+            text-align: center; 
+            padding: 20px;
+            font-style: italic;
+          ">
+            No courses found. Upload a syllabus to get started!
+          </div>
         `;
-        performanceSummary.appendChild(gradeDiv);
-      });
-    } else {
-      performanceSummary.innerHTML = '<div style="color:#888;">No courses found.</div>';
+      }
+      console.log('ℹ️ No courses found in database');
     }
+    // If courses is not an array, don't clear existing content - there might be an error
   } catch (e) {
-    console.error('Error loading courses for performance summary:', e);
-    performanceSummary.innerHTML = '<div style="color:#c00;">Error loading courses.</div>';
+    console.error('❌ Error loading courses for performance summary:', e);
+    
+    // Don't clear the existing content if there's an error, just show a small error indicator
+    const existingContent = performanceSummary.innerHTML;
+    if (!existingContent.includes('Error loading courses') && !existingContent.includes('Connection issue')) {
+      performanceSummary.innerHTML = `
+        <div style="
+          color: #dc3545; 
+          text-align: center; 
+          padding: 10px;
+          background: #f8d7da;
+          border-radius: 8px;
+          border: 1px solid #f5c6cb;
+          font-size: 0.9rem;
+          margin-bottom: 10px;
+        ">
+          ⚠️ Connection issue. Retrying...
+        </div>
+        ${existingContent}
+      `;
+    }
+  } finally {
+    loadCoursesAndGrades.isLoading = false;
   }
+}
+
+// Display courses in the performance summary
+function displayCoursesInPerformanceSummary(courses) {
+  const performanceSummary = document.getElementById('performance-summary');
+  if (!performanceSummary) return;
+  
+  // Clear and rebuild the performance summary
+  performanceSummary.innerHTML = '';
+  
+  courses.forEach(course => {
+    const currentGrade = calculateCurrentGrade(course);
+    const gradedAssessments = course.assessments ? course.assessments.filter(a => a.grade !== null && a.grade !== undefined) : [];
+    const totalAssessments = course.assessments ? course.assessments.filter(a => a.weight && a.weight > 0) : [];
+    
+    const gradeDiv = document.createElement('div');
+    gradeDiv.className = 'grade';
+    gradeDiv.style.cssText = `
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      margin: 8px 0;
+      background: #f8f9fa;
+      border-radius: 8px;
+      border-left: 4px solid ${course.color || '#4285f4'};
+    `;
+    
+    const courseInfo = document.createElement('div');
+    courseInfo.style.cssText = 'flex: 1;';
+    courseInfo.innerHTML = `
+      <div style="font-weight: 600; color: #333; margin-bottom: 4px;">${course.name}</div>
+      <div style="font-size: 0.85rem; color: #666;">
+        ${gradedAssessments.length} of ${totalAssessments.length} assessments graded
+      </div>
+    `;
+    
+    const gradeDisplay = document.createElement('div');
+    gradeDisplay.style.cssText = `
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: ${currentGrade ? (currentGrade >= 80 ? '#28a745' : currentGrade >= 70 ? '#ffc107' : '#dc3545') : '#666'};
+    `;
+    gradeDisplay.textContent = currentGrade ? currentGrade.toFixed(1) + '%' : '--';
+    
+    gradeDiv.appendChild(courseInfo);
+    gradeDiv.appendChild(gradeDisplay);
+    performanceSummary.appendChild(gradeDiv);
+  });
 }
 
 // Initialize on page load
@@ -751,14 +897,66 @@ document.addEventListener('DOMContentLoaded', function() {
   } else {
     // Default to dashboard (index.html)
     document.querySelector(".dashboard-btn").classList.add("active");
-    // Load dashboard data
+    // Load dashboard data immediately
     loadCoursesAndGrades();
   }
   
-  // Refresh performance summary when returning to dashboard
+  // Always refresh performance summary when on dashboard
   if (path === '/' || path === '/index.html') {
-    // Refresh performance summary every 5 seconds to keep it updated
-    setInterval(loadCoursesAndGrades, 5000);
+    // Initial load - load immediately
+    loadCoursesAndGrades();
+    
+    // Refresh performance summary every 5 seconds to keep it updated (less frequent)
+    const refreshInterval = setInterval(loadCoursesAndGrades, 5000);
+    
+    // Also refresh when the page becomes visible (user switches back to tab)
+    document.addEventListener('visibilitychange', function() {
+      if (!document.hidden) {
+        // Force immediate refresh when tab becomes visible
+        loadCoursesAndGrades();
+        // Single refresh after a short delay to ensure data is fresh
+        setTimeout(loadCoursesAndGrades, 500);
+      }
+    });
+    
+    // Refresh when user uploads a new syllabus
+    const originalHandleFile = window.handleFile;
+    window.handleFile = function(file) {
+      originalHandleFile(file);
+      // Clear cache and refresh performance summary after file processing
+      localStorage.removeItem('performanceSummaryCache');
+      setTimeout(loadCoursesAndGrades, 1000);
+    };
+    
+    // Also refresh on page focus (when user clicks back to the tab)
+    window.addEventListener('focus', function() {
+      loadCoursesAndGrades();
+      // Single refresh after a short delay
+      setTimeout(loadCoursesAndGrades, 500);
+    });
+    
+    // Refresh on window resize (sometimes helps with tab switching)
+    window.addEventListener('resize', function() {
+      setTimeout(loadCoursesAndGrades, 200);
+    });
+    
+    // Single refresh on page load to ensure data is loaded
+    setTimeout(loadCoursesAndGrades, 500);
+    
+    // Clean up interval when page is hidden to save resources
+    document.addEventListener('visibilitychange', function() {
+      if (document.hidden) {
+        clearInterval(refreshInterval);
+      } else {
+        // Restart interval when page becomes visible
+        setInterval(loadCoursesAndGrades, 5000);
+      }
+    });
+    
+    // Also refresh when the page is shown (for better reliability)
+    window.addEventListener('pageshow', function() {
+      loadCoursesAndGrades();
+    });
   }
 });
 
