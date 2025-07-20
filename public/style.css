@@ -142,6 +142,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  height: 500px; /* Fixed height */
 }
 
 .right-column {
@@ -1296,8 +1297,12 @@ body {
 }
 
 .assessment-weight {
+  background: #4CAF50;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
   font-weight: 600;
-  color: #059669;
 }
 
 .assessment-due-date {

@@ -56,7 +56,7 @@ function displayAllEventsPreview(events) {
         </div>
         <div style="flex: 1;">
           <div style="font-weight: 600; color: #333; margin-bottom: 2px;">${event.title}</div>
-          <div style="font-size: 0.8rem; color: #666;">${event.course} • ${event.type}</div>
+          <div style="font-size: 0.8rem; color: #666;">${event.course} • <strong>${event.type}</strong></div>
         </div>
         <div style="background: #e3f2fd; color: #1976d2; padding: 3px 6px; border-radius: 8px; font-size: 0.7rem; font-weight: 600;">${event.weight}%</div>
       </div>
@@ -220,6 +220,13 @@ function handleFile(file) {
         // Refresh the courses list in Performance Summary and calendar
         loadCoursesAndGrades(true); // Force reload after new upload
         loadAllEvents(); // Refresh calendar events
+        // Refresh calendar events
+        loadAllEvents();
+        
+        // Refresh current marks if on dashboard
+        if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
+          loadCurrentMarks();
+        }
         
         // Also refresh the grade calculator if we're on the grades page
         if (window.location.pathname.includes('grades')) {
@@ -526,9 +533,9 @@ async function updateAssessmentGrade(courseId, assessmentId) {
       renderCourseTabs(currentCourses);
       updateGradeCalculations(course);
       
-      // Refresh performance summary if on dashboard
+      // Refresh current marks if on dashboard
       if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
-        loadCoursesAndGrades();
+        loadCurrentMarks();
       }
       
       // Show success message
@@ -584,9 +591,9 @@ async function confirmDeleteAssessment() {
         renderCourseTabs(currentCourses);
         updateGradeCalculations(course);
         
-        // Refresh performance summary if on dashboard
+        // Refresh current marks if on dashboard
         if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
-          loadCoursesAndGrades();
+          loadCurrentMarks();
         }
         
         // Refresh calendar events
@@ -642,15 +649,15 @@ async function updateGoalGrade() {
       // Update grade calculations
       updateGradeCalculations(course);
       
-      // Refresh performance summary if on dashboard
+      // Refresh current marks if on dashboard
       if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
-        loadCoursesAndGrades();
+        loadCurrentMarks();
       }
       
       // Show success message
       goalGradeInput.style.borderColor = '#4CAF50';
       setTimeout(() => {
-        goalGradeInput.style.borderColor = '#ddd';
+        gradeInput.style.borderColor = '#ddd';
       }, 2000);
     } else {
       showMessage('Error', 'Error updating goal grade');
@@ -723,6 +730,8 @@ function updateGradeCalculations(course) {
       requiredGradeDisplay.style.display = 'none';
     }
   }
+  
+
 }
 
 // Get CSS class for grade color
@@ -1018,10 +1027,11 @@ async function confirmRemoveCourse() {
         selectCourse(currentCourses[0].id);
       }
       
-      // Refresh performance summary and calendar if on dashboard
+      // Refresh calendar and current marks if on dashboard
       if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
-        loadCoursesAndGrades(true); // Force reload after course removal
+        loadCoursesAndGrades();
         loadAllEvents(); // Refresh calendar events
+        loadCurrentMarks(); // Refresh current marks
       }
       
       // Close modal
@@ -1061,10 +1071,11 @@ async function confirmClearAll() {
       if (courseContent) courseContent.style.display = 'none';
       if (noCoursesMessage) noCoursesMessage.style.display = 'block';
       
-      // Refresh performance summary and calendar if on dashboard
+      // Refresh calendar and current marks if on dashboard
       if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
-        loadCoursesAndGrades(true); // Force reload after clearing all courses
+        loadCoursesAndGrades();
         loadAllEvents(); // Refresh calendar events
+        loadCurrentMarks(); // Refresh current marks
       }
       
       // Close modal
@@ -1125,7 +1136,7 @@ document.getElementById('addAssessmentForm').addEventListener('submit', async fu
       
       // Refresh performance summary if on dashboard
       if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
-        loadCoursesAndGrades(true); // Force reload after adding assessment
+        loadCoursesAndGrades();
       }
       
       // Close modal and reset form

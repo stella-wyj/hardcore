@@ -62,12 +62,10 @@ app.get('/api/courses', async (req, res) => {
     }
     
     // Only import and use file system operations if not on Vercel
-    const { getCourseById } = await import('./api/syllabusParser.js');
-    const dbData = JSON.parse(fs.readFileSync('database.json', 'utf8'));
-    const courses = dbData.courses.map(course => ({
-      ...course,
-      assessments: dbData.assessments.filter(a => a.courseId === course.id)
-    }));
+    const { getCourseById, getAllCourses } = await import('./api/syllabusParser.js');
+    
+    // Use the proper database loading function instead of direct file access
+    const courses = getAllCourses();
     res.json(courses);
   } catch (error) {
     console.error('Error fetching courses:', error);
@@ -268,11 +266,10 @@ app.get('/api/calendar/events', async (req, res) => {
   }
   try {
     const { generateCalendarViewData, getUpcomingEvents } = await import('./api/calendar.js');
-    const dbData = JSON.parse(fs.readFileSync('database.json', 'utf8'));
-    const courses = dbData.courses.map(course => ({
-      ...course,
-      assessments: dbData.assessments.filter(a => a.courseId === course.id)
-    }));
+    const { getAllCourses } = await import('./api/syllabusParser.js');
+    
+    // Use the proper database loading function instead of direct file access
+    const courses = getAllCourses();
     
     const allEvents = generateCalendarViewData(courses);
     const upcomingEvents = getUpcomingEvents(courses, 30);
@@ -294,15 +291,12 @@ app.get('/api/calendar/download/:courseId', async (req, res) => {
   }
   try {
     const { generateICalForCourse, saveICalFile } = await import('./api/calendar.js');
-    const dbData = JSON.parse(fs.readFileSync('database.json', 'utf8'));
+    const { getCourseById } = await import('./api/syllabusParser.js');
     
-    const course = dbData.courses.find(c => c.id === parseInt(req.params.courseId));
+    const course = getCourseById(parseInt(req.params.courseId));
     if (!course) {
       return res.status(404).json({ error: 'Course not found' });
     }
-    
-    // Add assessments to course object
-    course.assessments = dbData.assessments.filter(a => a.courseId === course.id);
     
     const icalContent = generateICalForCourse(course);
     const filename = `${course.name.replace(/[^a-zA-Z0-9]/g, '_')}_calendar.ics`;
@@ -324,12 +318,10 @@ app.get('/api/calendar/download-all', async (req, res) => {
   }
   try {
     const { generateICalForAllCourses, saveICalFile } = await import('./api/calendar.js');
-    const dbData = JSON.parse(fs.readFileSync('database.json', 'utf8'));
+    const { getAllCourses } = await import('./api/syllabusParser.js');
     
-    const courses = dbData.courses.map(course => ({
-      ...course,
-      assessments: dbData.assessments.filter(a => a.courseId === course.id)
-    }));
+    // Use the proper database loading function instead of direct file access
+    const courses = getAllCourses();
     
     const icalContent = generateICalForAllCourses(courses);
     const filename = 'all_courses_calendar.ics';

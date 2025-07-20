@@ -1,4 +1,4 @@
-import { getAllCourses, getCourseById, updateCourseGoalGrade, updateAssessmentGrade, deleteCourse, deleteAssessment, clearAllCourses, calculateGradeSummary } from './syllabusParser.js';
+import { getAllCourses, getCourseById, updateCourseGoalGrade, updateAssessmentGrade, deleteCourse, deleteAssessment, clearAllCourses, calculateGradeSummary, generateRandomColor } from './syllabusParser.js';
 
 export default function handler(req, res) {
   const { method } = req;
@@ -26,7 +26,7 @@ export default function handler(req, res) {
           id: Date.now(), // Simple ID generation
           name: name,
           instructor: instructor || 'Not specified',
-          color: color || '#4285f4',
+          color: color || generateRandomColor(),
           goalGrade: goalGrade || null,
           assessments: []
         };
