@@ -1,5 +1,6 @@
 // Syllabus Parser - Parses Gemini response and stores in database
 import fs from 'fs';
+import { CLEAR_DATA_ON_START, DEBUG_MODE } from './dev-config.js';
 
 // In-memory database (replace with real database in production)
 let db = {
@@ -11,18 +12,51 @@ let db = {
 
 // Load existing data if available
 try {
-  if (fs.existsSync('database.json')) {
+  if (fs.existsSync('database.json') && !CLEAR_DATA_ON_START) {
     const data = fs.readFileSync('database.json', 'utf8');
-    db = JSON.parse(data);
+    const parsedData = JSON.parse(data);
+    
+    // Check if the database has valid structure and data
+    if (parsedData && 
+        Array.isArray(parsedData.courses) && 
+        Array.isArray(parsedData.assessments) &&
+        parsedData.courses.length > 0) {
+      db = parsedData;
+      if (DEBUG_MODE) {
+        console.log('📊 Loaded existing database with', db.courses.length, 'courses and', db.assessments.length, 'assessments');
+      }
+    } else {
+      console.log('Database file exists but is empty or invalid, starting fresh');
+    }
+  } else {
+    if (CLEAR_DATA_ON_START) {
+      console.log('🧹 Development mode: Starting with fresh database');
+      // Clear the database file if it exists
+      if (fs.existsSync('database.json')) {
+        const emptyDatabase = {
+          courses: [],
+          assessments: [],
+          nextCourseId: 1,
+          nextAssessmentId: 1
+        };
+        fs.writeFileSync('database.json', JSON.stringify(emptyDatabase, null, 2));
+        console.log('🗑️ Cleared existing database.json file');
+      }
+    } else {
+      console.log('No existing database found, starting fresh');
+    }
   }
 } catch (error) {
-  console.log('No existing database found, starting fresh');
+  console.log('Error loading database, starting fresh:', error.message);
 }
 
 // Save database to file
 function saveDatabase() {
   try {
     fs.writeFileSync('database.json', JSON.stringify(db, null, 2));
+    if (DEBUG_MODE) {
+      console.log(`💾 Database saved: ${db.courses.length} courses, ${db.assessments.length} assessments`);
+    }
   } catch (error) {
     console.error('Error saving database:', error);
   }
@@ -62,13 +96,26 @@ function cleanAssessmentName(assessmentName) {
   
   let cleaned = assessmentName.trim();
   
-  // Remove dates in various formats
+  // Remove dates in various formats (more aggressive patterns)
   cleaned = cleaned.replace(/\b\d{1,2}\/\d{1,2}\/\d{2,4}\b/g, ''); // MM/DD/YYYY or MM/DD/YY
   cleaned = cleaned.replace(/\b\d{4}-\d{1,2}-\d{1,2}\b/g, ''); // YYYY-MM-DD
   cleaned = cleaned.replace(/\b(January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2},?\s+\d{4}\b/gi, ''); // Month DD, YYYY
   cleaned = cleaned.replace(/\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d{1,2},?\s+\d{4}\b/gi, ''); // Abbreviated month
   cleaned = cleaned.replace(/\b(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)\s*,?\s*\d{1,2}\b/gi, ''); // Weekday DD
   cleaned = cleaned.replace(/\b(Mon|Tue|Wed|Thu|Fri|Sat|Sun)\s*,?\s*\d{1,2}\b/gi, ''); // Abbreviated weekday
+  
+  // Remove date patterns that might be included in names (like "YYYY-MM-DD]")
+  cleaned = cleaned.replace(/\[\d{4}-\d{2}-\d{2}\]/g, ''); // [YYYY-MM-DD]
+  cleaned = cleaned.replace(/\(\d{4}-\d{2}-\d{2}\)/g, ''); // (YYYY-MM-DD)
+  cleaned = cleaned.replace(/\d{4}-\d{2}-\d{2}\]/g, ''); // YYYY-MM-DD]
+  cleaned = cleaned.replace(/\[\d{4}-\d{2}-\d{2}/g, ''); // [YYYY-MM-DD
+  cleaned = cleaned.replace(/\d{4}-\d{2}-\d{2}\s*[-–—]\s*/g, ''); // YYYY-MM-DD followed by dash
+  cleaned = cleaned.replace(/\s*[-–—]\s*\d{4}-\d{2}-\d{2}/g, ''); // Dash followed by YYYY-MM-DD
+  
+  // Remove any remaining date-like patterns
+  cleaned = cleaned.replace(/\b\d{4}-\d{2}-\d{2}\b/g, ''); // Any remaining YYYY-MM-DD
+  cleaned = cleaned.replace(/\b\d{2}-\d{2}-\d{4}\b/g, ''); // MM-DD-YYYY
+  cleaned = cleaned.replace(/\b\d{2}\/\d{2}\/\d{4}\b/g, ''); // MM/DD/YYYY
   
   // Remove course codes
   cleaned = cleaned.replace(/\b[A-Z]{2,4}\s*\d{3,4}[A-Z]?\b/g, ''); // Course codes like MATH 101, CS 101A
@@ -87,6 +134,10 @@ function cleanAssessmentName(assessmentName) {
   cleaned = cleaned.replace(/^[-–—]\s*/, ''); // Remove leading dashes
   cleaned = cleaned.replace(/[:]\s*$/, ''); // Remove trailing colons
   cleaned = cleaned.replace(/^[:]\s*/, ''); // Remove leading colons
+  
+  // Remove brackets and parentheses that might contain dates
+  cleaned = cleaned.replace(/\[[^\]]*\d{4}[^\]]*\]/g, ''); // [anything with year]
+  cleaned = cleaned.replace(/\([^)]*\d{4}[^)]*\)/g, ''); // (anything with year)
   
   // Remove extra whitespace and punctuation
   cleaned = cleaned.replace(/\s+/g, ' ').trim(); // Multiple spaces to single space
@@ -347,47 +398,115 @@ function updateAssessmentGrade(courseId, assessmentId, grade) {
 
 // Delete course
 function deleteCourse(courseId) {
-  const courseIndex = db.courses.findIndex(course => course.id === parseInt(courseId));
+  const courseIdInt = parseInt(courseId);
+  const courseIndex = db.courses.findIndex(course => course.id === courseIdInt);
+  
   if (courseIndex !== -1) {
-    // Remove all assessments for this course
-    db.assessments = db.assessments.filter(a => a.courseId !== parseInt(courseId));
+    const course = db.courses[courseIndex];
+    
+    if (DEBUG_MODE) {
+      console.log(`🗑️ Deleting course: ${course.name} (ID: ${courseIdInt})`);
+      console.log(`📊 Course had ${course.assessments?.length || 0} assessments`);
+    }
+    
+    // Remove all assessments for this course from the global assessments array
+    const assessmentsToRemove = db.assessments.filter(a => a.courseId === courseIdInt);
+    db.assessments = db.assessments.filter(a => a.courseId !== courseIdInt);
+    
+    if (DEBUG_MODE) {
+      console.log(`🗑️ Removed ${assessmentsToRemove.length} assessments from global array`);
+    }
+    
     // Remove the course
     db.courses.splice(courseIndex, 1);
+    
+    // Save to database
     saveDatabase();
+    
+    if (DEBUG_MODE) {
+      console.log(`✅ Course deleted successfully. Remaining courses: ${db.courses.length}`);
+    }
+    
     return true;
   }
+  
+  if (DEBUG_MODE) {
+    console.log(`❌ Course with ID ${courseIdInt} not found`);
+  }
+  
   return false;
 }
 
 // Delete assessment
 function deleteAssessment(courseId, assessmentId) {
+  const courseIdInt = parseInt(courseId);
+  const assessmentIdInt = parseInt(assessmentId);
+  
+  if (DEBUG_MODE) {
+    console.log(`🗑️ Attempting to delete assessment ${assessmentIdInt} from course ${courseIdInt}`);
+  }
+  
+  // Find the assessment in the global assessments array
   const assessmentIndex = db.assessments.findIndex(a => 
-    a.courseId === parseInt(courseId) && a.id === parseInt(assessmentId)
+    a.courseId === courseIdInt && a.id === assessmentIdInt
   );
   
   if (assessmentIndex !== -1) {
-    // Remove from assessments array
+    const assessment = db.assessments[assessmentIndex];
+    
+    if (DEBUG_MODE) {
+      console.log(`🗑️ Found assessment: ${assessment.title}`);
+    }
+    
+    // Remove from global assessments array
     db.assessments.splice(assessmentIndex, 1);
     
     // Remove from course assessments
     const course = getCourseById(courseId);
     if (course) {
-      course.assessments = course.assessments.filter(a => a.id !== parseInt(assessmentId));
+      const courseAssessmentIndex = course.assessments.findIndex(a => a.id === assessmentIdInt);
+      if (courseAssessmentIndex !== -1) {
+        course.assessments.splice(courseAssessmentIndex, 1);
+        if (DEBUG_MODE) {
+          console.log(`🗑️ Removed assessment from course. Remaining assessments: ${course.assessments.length}`);
+        }
+      }
     }
     
     saveDatabase();
+    
+    if (DEBUG_MODE) {
+      console.log(`✅ Assessment deleted successfully`);
+    }
+    
     return true;
   }
+  
+  if (DEBUG_MODE) {
+    console.log(`❌ Assessment with ID ${assessmentIdInt} not found in course ${courseIdInt}`);
+  }
+  
   return false;
 }
 
 // Clear all courses
 function clearAllCourses() {
+  if (DEBUG_MODE) {
+    console.log(`🧹 Clearing all courses and assessments`);
+    console.log(`📊 Before clearing: ${db.courses.length} courses, ${db.assessments.length} assessments`);
+  }
+  
   db.courses = [];
   db.assessments = [];
   db.nextCourseId = 1;
   db.nextAssessmentId = 1;
+  
   saveDatabase();
+  
+  if (DEBUG_MODE) {
+    console.log(`✅ All data cleared successfully`);
+  }
+  
   return true;
 }
 
@@ -486,7 +605,8 @@ async function syncAllCoursesToGradeCalc() {
     console.log('🔄 Course sync to gradeCalc completed');
     
   } catch (error) {
-    console.error('❌ Error syncing courses to gradeCalc:', error);
+    console.warn('⚠️ gradeCalc backend not available:', error.message);
+    console.log('💡 gradeCalc backend is not required for main functionality');
   }
 }
 

@@ -9,6 +9,11 @@ import path from 'path';
 import os from 'os';
 import 'dotenv/config';
 
+// Import OCR and PDF processing libraries
+import Tesseract from 'tesseract.js';
+import sharp from 'sharp';
+import { spawn } from 'child_process';
+
 // Check if API key is available
 if (!process.env.GEMINI_API_KEY) {
   console.error('❌ GEMINI_API_KEY environment variable is not set!');
@@ -18,65 +23,166 @@ if (!process.env.GEMINI_API_KEY) {
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 console.log('✅ Gemini API key loaded successfully');
 
-// Function to read PDF and extract text
+// Function to convert PDF to images using Poppler
+const convertPDFToImages = async (pdfPath, outputDir) => {
+  return new Promise((resolve, reject) => {
+    console.log('🔄 Converting PDF to images using Poppler...');
+    
+    // Use pdftoppm command from Poppler
+    const pdftoppm = spawn('pdftoppm', [
+      '-png',           // Output format
+      '-r', '300',      // Resolution (300 DPI for good OCR quality)
+      '-cropbox',       // Use crop box for page boundaries
+      pdfPath,          // Input PDF
+      path.join(outputDir, 'page') // Output prefix
+    ]);
+    
+    let stdout = '';
+    let stderr = '';
+    
+    pdftoppm.stdout.on('data', (data) => {
+      stdout += data.toString();
+    });
+    
+    pdftoppm.stderr.on('data', (data) => {
+      stderr += data.toString();
+    });
+    
+    pdftoppm.on('close', (code) => {
+      if (code === 0) {
+        console.log('✅ PDF converted to images successfully');
+        resolve();
+      } else {
+        console.error('❌ PDF to image conversion failed:', stderr);
+        reject(new Error(`pdftoppm failed with code ${code}: ${stderr}`));
+      }
+    });
+    
+    pdftoppm.on('error', (error) => {
+      console.error('❌ pdftoppm command not found. Please install Poppler:', error.message);
+      reject(new Error('Poppler (pdftoppm) is not installed. Please install Poppler utilities.'));
+    });
+  });
+};
+
+// Function to enhance image for better OCR
+const enhanceImageForOCR = async (imagePath) => {
+  try {
+    console.log('🔧 Enhancing image for OCR...');
+    
+    const enhancedImagePath = imagePath.replace('.png', '_enhanced.png');
+    
+    await sharp(imagePath)
+      .resize(2000, null, { withoutEnlargement: true }) // Resize to max 2000px width
+      .sharpen() // Sharpen the image
+      .normalize() // Normalize contrast
+      .threshold(128) // Convert to black and white for better OCR
+      .png()
+      .toFile(enhancedImagePath);
+    
+    return enhancedImagePath;
+  } catch (error) {
+    console.error('❌ Image enhancement failed:', error);
+    return imagePath; // Return original if enhancement fails
+  }
+};
+
+// Function to perform OCR on an image
+const performOCR = async (imagePath) => {
+  try {
+    const result = await Tesseract.recognize(imagePath, 'eng', {
+      logger: m => {
+        // Silent logger - no progress output
+      }
+    });
+    
+    return result.data.text;
+  } catch (error) {
+    console.error(`❌ OCR failed for ${path.basename(imagePath)}:`, error);
+    throw error;
+  }
+};
+
+// Function to read PDF and extract text using OCR
 const readPDF = async (filePath) => {
   try {
     const fileExtension = path.extname(filePath).toLowerCase();
     
     if (fileExtension === '.txt') {
       // Read text file directly
+      console.log('📄 Reading text file directly...');
       return fs.readFileSync(filePath, 'utf8');
     } else if (fileExtension === '.pdf') {
-      // Use pdfjs-dist to extract text from PDF
-      console.log('📄 Using pdfjs-dist for PDF extraction...');
+      console.log('📄 Using OCR technology for PDF extraction...');
+      
+      // Create temporary directory for images
+      const tempDir = path.join(os.tmpdir(), 'ocr_temp_' + Date.now());
+      fs.mkdirSync(tempDir, { recursive: true });
       
       try {
-        const dataBuffer = fs.readFileSync(filePath);
+        // Convert PDF to images using Poppler
+        await convertPDFToImages(filePath, tempDir);
         
-        // Import pdfjs-dist dynamically
-        const pdfjsLib = await import('pdfjs-dist');
+        // Get list of generated image files
+        const imageFiles = fs.readdirSync(tempDir)
+          .filter(file => file.endsWith('.png'))
+          .sort((a, b) => {
+            // Sort by page number
+            const pageA = parseInt(a.match(/page-(\d+)\.png/)?.[1] || '0');
+            const pageB = parseInt(b.match(/page-(\d+)\.png/)?.[1] || '0');
+            return pageA - pageB;
+          });
         
-        // Set up the worker - use a simpler approach for Node.js
-        pdfjsLib.GlobalWorkerOptions.workerSrc = false;
-        
-        // Load the PDF document
-        const loadingTask = pdfjsLib.getDocument({ data: dataBuffer });
-        const pdf = await loadingTask.promise;
-        
-        console.log(`📄 PDF loaded successfully with ${pdf.numPages} pages`);
+        console.log(`📄 Found ${imageFiles.length} pages to process`);
         
         let fullText = '';
         
-        // Extract text from each page
-        for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
-          console.log(`📄 Processing page ${pageNum}/${pdf.numPages}...`);
-          const page = await pdf.getPage(pageNum);
-          const textContent = await page.getTextContent();
+        // Process each page with OCR
+        for (let i = 0; i < imageFiles.length; i++) {
+          const imageFile = imageFiles[i];
+          const imagePath = path.join(tempDir, imageFile);
           
-          // Combine text items
-          const pageText = textContent.items
-            .map(item => item.str)
-            .join(' ');
+          console.log(`📄 Processing page ${i + 1}/${imageFiles.length}: ${imageFile}`);
+          
+          // Enhance image for better OCR
+          const enhancedImagePath = await enhanceImageForOCR(imagePath);
+          
+          // Perform OCR
+          const pageText = await performOCR(enhancedImagePath);
           
           fullText += pageText + '\n\n';
+          
+          // Clean up enhanced image
+          if (enhancedImagePath !== imagePath) {
+            fs.unlinkSync(enhancedImagePath);
+          }
         }
         
+        // Clean up temporary directory
+        fs.rmSync(tempDir, { recursive: true, force: true });
+        
         if (fullText.trim().length > 50) {
-          console.log('✅ PDF text extraction successful');
+          console.log('✅ OCR text extraction successful');
           console.log(`📝 Extracted ${fullText.length} characters`);
           console.log(`📋 Sample text: ${fullText.substring(0, 200)}...`);
           return fullText;
         } else {
-          throw new Error('PDF text extraction resulted in very little text');
+          throw new Error('OCR text extraction resulted in very little text');
         }
         
-      } catch (pdfError) {
-        console.error('❌ PDF parsing failed:', pdfError.message);
-        console.log('⚠️ PDF parsing failed, throwing error to indicate manual input needed');
-        throw new Error('PDF could not be parsed automatically. Please use the text input option to manually enter the syllabus information.');
+      } catch (ocrError) {
+        console.error('❌ OCR processing failed:', ocrError.message);
+        
+        // Clean up temporary directory if it exists
+        if (fs.existsSync(tempDir)) {
+          fs.rmSync(tempDir, { recursive: true, force: true });
+        }
+        
+        throw new Error('PDF could not be processed with OCR. Please ensure Poppler is installed and the PDF is readable.');
       }
     } else {
       // Try to read as text
+      console.log('📄 Attempting to read as text file...');
       return fs.readFileSync(filePath, 'utf8');
     }
   } catch (error) {
@@ -304,7 +410,7 @@ const syncToGradeCalc = async (course, parsedData) => {
     
   } catch (error) {
     console.warn('⚠️ Failed to sync with gradeCalc backend:', error.message);
-    console.log('💡 Make sure gradeCalc backend is running on port 3001');
+    console.log('💡 gradeCalc backend is not required for main functionality');
     // Don't throw error - this shouldn't break the main flow
     return null;
   }
