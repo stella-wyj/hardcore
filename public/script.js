@@ -667,5 +667,25 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelector(".gradecalc-btn").classList.add("active");
   }
 });
+
+// Simulated response from backend (replace with real fetch result)
+const extractedGrades = {
+  "ENGL 203": "89%",
+  "BIOL 101": "75%",
+  "HIST 300": "92%"
+};
+
+function displayGrades(grades) {
+  const gradesList = document.getElementById("grades-list");
+  gradesList.innerHTML = ""; // Clear placeholder or old results
+
+  // Loop through courses and create grade rows
+  Object.entries(grades).forEach(([course, grade]) => {
+    const gradeDiv = document.createElement("div");
+    gradeDiv.classList.add("grade");
+    gradeDiv.innerHTML = `<span>${course}</span><span>${grade}</span>`;
+    gradesList.appendChild(gradeDiv);
+  });
+}
   
   
