@@ -40,7 +40,39 @@ function handleFile(file) {
   }
   showError('');
   backendResults.style.display = 'block';
-  backendResultsContent.innerHTML = '<div class="loading">🤖 Analyzing syllabus with AI...</div>';
+  
+  // Show detailed progress bar
+  let progressHtml = `
+    <div class="progress-container" style="margin: 20px 0;">
+      <h3>📄 Processing Syllabus</h3>
+      <div class="progress-bar" style="width: 100%; height: 20px; background-color: #f0f0f0; border-radius: 10px; overflow: hidden; margin: 10px 0;">
+        <div class="progress-fill" style="width: 0%; height: 100%; background: linear-gradient(90deg, #4CAF50, #45a049); transition: width 0.3s ease;"></div>
+      </div>
+      <div class="progress-text" style="text-align: center; margin-top: 5px; font-weight: bold; color: #666;">Starting...</div>
+      <div class="progress-details" style="margin-top: 10px; font-size: 0.9em; color: #888;"></div>
+    </div>
+  `;
+  backendResultsContent.innerHTML = progressHtml;
+  
+  const progressFill = backendResultsContent.querySelector('.progress-fill');
+  const progressText = backendResultsContent.querySelector('.progress-text');
+  const progressDetails = backendResultsContent.querySelector('.progress-details');
+  
+  // Update progress function
+  function updateProgress(percent, text, details = '') {
+    progressFill.style.width = percent + '%';
+    progressText.textContent = text;
+    if (details) {
+      progressDetails.innerHTML = details;
+    }
+  }
+  
+  // Simulate progress updates
+  updateProgress(10, 'Uploading file...', '📤 Sending PDF to server');
+  setTimeout(() => updateProgress(20, 'Converting PDF to images...', '🔄 Using OCR to extract text'), 500);
+  setTimeout(() => updateProgress(40, 'Extracting text with OCR...', '🔍 Processing each page'), 1000);
+  setTimeout(() => updateProgress(60, 'Analyzing with AI...', '🤖 Sending to Gemini for analysis'), 1500);
+  setTimeout(() => updateProgress(80, 'Processing results...', '📋 Parsing and organizing data'), 2000);
   const formData = new FormData();
   formData.append('syllabus', file);
   fetch('/upload', {
@@ -50,15 +82,20 @@ function handleFile(file) {
     .then(response => response.json())
     .then(data => {
       if (data.success) {
-        let html = '';
+        // Show 100% completion
+        updateProgress(100, 'Complete!', '✅ Syllabus processed successfully');
         
-        // Show success message with course info
-        html += '<div style="background:#d4edda;color:#155724;padding:1em;border-radius:8px;margin-bottom:1em;">';
-        html += `✅ <strong>Course created successfully!</strong><br>`;
-        html += `📚 Course: ${data.course.name}<br>`;
-        html += `👨‍🏫 Instructor: ${data.course.instructor}<br>`;
-        html += `📊 Assessments: ${data.assessmentCount} items added`;
-        html += '</div>';
+        // Wait a moment to show completion, then display results
+        setTimeout(() => {
+          let html = '';
+          
+          // Show success message with course info
+          html += '<div style="background:#d4edda;color:#155724;padding:1em;border-radius:8px;margin-bottom:1em;">';
+          html += `✅ <strong>Course created successfully!</strong><br>`;
+          html += `📚 Course: ${data.course.name}<br>`;
+          html += `👨‍🏫 Instructor: ${data.course.instructor}<br>`;
+          html += `📊 Assessments: ${data.assessmentCount} items added`;
+          html += '</div>';
         
         // Show structured course data
         html += '<h3>📋 Course Overview</h3>';
@@ -121,15 +158,22 @@ function handleFile(file) {
         
         // Refresh the courses list in Performance Summary
         loadCoursesAndGrades();
+        }, 1000); // Close setTimeout
         
       } else {
-        showError(data.error || 'Failed to process syllabus');
-        backendResults.style.display = 'none';
+        updateProgress(100, 'Error!', '❌ ' + (data.error || 'Failed to process syllabus'));
+        setTimeout(() => {
+          showError(data.error || 'Failed to process syllabus');
+          backendResults.style.display = 'none';
+        }, 2000);
       }
     })
     .catch(err => {
-      showError('Error uploading file: ' + err.message);
-      backendResults.style.display = 'none';
+      updateProgress(100, 'Error!', '❌ Error uploading file: ' + err.message);
+      setTimeout(() => {
+        showError('Error uploading file: ' + err.message);
+        backendResults.style.display = 'none';
+      }, 2000);
     });
 }
 
@@ -163,7 +207,37 @@ function handleTextSubmit() {
   }
   showError('');
   backendResults.style.display = 'block';
-  backendResultsContent.innerHTML = '<div class="loading">🤖 Analyzing syllabus with AI...</div>';
+  
+  // Show progress bar for text analysis
+  let progressHtml = `
+    <div class="progress-container" style="margin: 20px 0;">
+      <h3>📝 Processing Text</h3>
+      <div class="progress-bar" style="width: 100%; height: 20px; background-color: #f0f0f0; border-radius: 10px; overflow: hidden; margin: 10px 0;">
+        <div class="progress-fill" style="width: 0%; height: 100%; background: linear-gradient(90deg, #4CAF50, #45a049); transition: width 0.3s ease;"></div>
+      </div>
+      <div class="progress-text" style="text-align: center; margin-top: 5px; font-weight: bold; color: #666;">Starting...</div>
+      <div class="progress-details" style="margin-top: 10px; font-size: 0.9em; color: #888;"></div>
+    </div>
+  `;
+  backendResultsContent.innerHTML = progressHtml;
+  
+  const progressFill = backendResultsContent.querySelector('.progress-fill');
+  const progressText = backendResultsContent.querySelector('.progress-text');
+  const progressDetails = backendResultsContent.querySelector('.progress-details');
+  
+  // Update progress function
+  function updateProgress(percent, text, details = '') {
+    progressFill.style.width = percent + '%';
+    progressText.textContent = text;
+    if (details) {
+      progressDetails.innerHTML = details;
+    }
+  }
+  
+  // Simulate progress updates
+  updateProgress(20, 'Sending text to server...', '📤 Uploading syllabus text');
+  setTimeout(() => updateProgress(50, 'Analyzing with AI...', '🤖 Processing with Gemini'), 500);
+  setTimeout(() => updateProgress(80, 'Processing results...', '📋 Organizing data'), 1000);
   fetch('/analyze-text', {
     method: 'POST',
     headers: {
@@ -174,25 +248,37 @@ function handleTextSubmit() {
     .then(response => response.json())
     .then(data => {
       if (data.success) {
-        let html = '';
-        html += '<h3>Extracted Syllabus Information</h3>';
-        html += '<div style="margin-bottom:1em;white-space:pre-line;">' + (data.extractedInfo ? data.extractedInfo.replace(/\n/g, '<br>') : '') + '</div>';
-        html += '<h4>Numbers Found</h4>';
-        html += '<ul>' + (data.numbers && data.numbers.length ? data.numbers.map(n => `<li>${n}</li>`).join('') : '<li>None</li>') + '</ul>';
-        html += '<h4>Words Found</h4>';
-        html += '<ul style="max-height:150px;overflow:auto;">' + (data.words && data.words.length ? data.words.map(w => `<li>${w}</li>`).join('') : '<li>None</li>') + '</ul>';
-        html += '<h3>Raw Backend Response</h3>';
-        html += '<pre style="background:#f8f8f8;padding:10px;border-radius:8px;overflow:auto;">' + JSON.stringify(data, null, 2) + '</pre>';
-        backendResultsContent.innerHTML = html;
-      } else {
-        showError(data.error || 'Failed to analyze syllabus');
-        backendResults.style.display = 'none';
-      }
-    })
-    .catch(err => {
-      showError('Error analyzing text: ' + err.message);
-      backendResults.style.display = 'none';
-    });
+        // Show 100% completion
+        updateProgress(100, 'Complete!', '✅ Text analysis completed');
+        
+        // Wait a moment to show completion, then display results
+        setTimeout(() => {
+          let html = '';
+          html += '<h3>Extracted Syllabus Information</h3>';
+          html += '<div style="margin-bottom:1em;white-space:pre-line;">' + (data.extractedInfo ? data.extractedInfo.replace(/\n/g, '<br>') : '') + '</div>';
+          html += '<h4>Numbers Found</h4>';
+          html += '<ul>' + (data.numbers && data.numbers.length ? data.numbers.map(n => `<li>${n}</li>`).join('') : '<li>None</li>') + '</ul>';
+          html += '<h4>Words Found</h4>';
+          html += '<ul style="max-height:150px;overflow:auto;">' + (data.words && data.words.length ? data.words.map(w => `<li>${w}</li>`).join('') : '<li>None</li>') + '</ul>';
+          html += '<h3>Raw Backend Response</h3>';
+          html += '<pre style="background:#f8f8f8;padding:10px;border-radius:8px;overflow:auto;">' + JSON.stringify(data, null, 2) + '</pre>';
+          backendResultsContent.innerHTML = html;
+        }, 1000);
+              } else {
+          updateProgress(100, 'Error!', '❌ ' + (data.error || 'Failed to analyze syllabus'));
+          setTimeout(() => {
+            showError(data.error || 'Failed to analyze syllabus');
+            backendResults.style.display = 'none';
+          }, 2000);
+        }
+      })
+      .catch(err => {
+        updateProgress(100, 'Error!', '❌ Error analyzing text: ' + err.message);
+        setTimeout(() => {
+          showError('Error analyzing text: ' + err.message);
+          backendResults.style.display = 'none';
+        }, 2000);
+      });
 }
 // --- End Syllabus Analyzer Functionality ---
 
