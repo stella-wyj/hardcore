@@ -1,4 +1,4 @@
-import { getCourseById } from '../../../../syllabusParser.js';
+import { getCourseById, deleteAssessment } from '../../../../syllabusParser.js';
 
 export default function handler(req, res) {
   const { method } = req;
@@ -29,9 +29,12 @@ export default function handler(req, res) {
 
     case 'DELETE':
       try {
-        // Delete assessment logic (you'll need to implement this in syllabusParser.js)
-        // For now, we'll return success
-        res.status(200).json({ message: 'Assessment deleted successfully' });
+        const success = deleteAssessment(id, aid);
+        if (success) {
+          res.status(200).json({ message: 'Assessment deleted successfully' });
+        } else {
+          res.status(404).json({ error: 'Assessment not found' });
+        }
       } catch (error) {
         res.status(500).json({ error: 'Failed to delete assessment' });
       }

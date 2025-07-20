@@ -124,7 +124,7 @@ const extractSyllabusInfo = async (pdfText, fileName) => {
 
     const prompt = `
     You are an expert at analyzing academic syllabi. Extract and organize the following information from this syllabus text:
-
+      
     ${pdfText}
 
     Please organize the information in this exact format:
@@ -172,7 +172,9 @@ const extractSyllabusInfo = async (pdfText, fileName) => {
     5. Pay special attention to phrases like "due on", "due by", "submission date", "exam date", "quiz date" - these indicate due dates.
     6. For assignments without specific names, create descriptive names based on content or week number.
     7. Ensure each assessment has a clear weight percentage. If not specified, use "Not specified" for the weight.
-    8. ASSIGNMENT NAMES should NOT include dates, course codes, or extra punctuation. Only include the actual assignment name/number (e.g., "Assignment 1", "Linear Algebra Quiz", "Midterm Exam", not "Assignment 1 - March 15" or "MATH 101 Assignment 1").
+    8. do NOT include the course description in the course name, the assignment names should be at most 2 words (ie. Assignment 1, or Final Exam, or Quiz 1 etc)
+    9. do NOT include the assignment date in the assignment name 
+    10. assignment dates are DUE DATES, if it does have a year leave it as is a just put the month and day
 
     IMPORTANT: This syllabus document is for ONE COURSE ONLY. Extract information for a single course, even if the document mentions multiple topics or sections. If the document contains information for multiple separate courses, only extract the information for the main/primary course that this syllabus represents.
 

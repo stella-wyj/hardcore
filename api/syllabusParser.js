@@ -56,7 +56,7 @@ function cleanCourseName(courseName) {
   return cleaned;
 }
 
-// Clean assignment name by removing dates, course codes, and extra punctuation
+// Clean assignment name by removing dates, course codes, descriptions, and extra punctuation
 function cleanAssessmentName(assessmentName) {
   if (!assessmentName) return '';
   
@@ -75,6 +75,12 @@ function cleanAssessmentName(assessmentName) {
   
   // Remove common date-related phrases
   cleaned = cleaned.replace(/\b(due|due on|due by|submission|submitted|deadline|exam date|quiz date)\s*:?\s*/gi, '');
+  
+  // Remove "not specified" and similar phrases
+  cleaned = cleaned.replace(/\b(not specified|not set|tbd|tba|to be announced|to be determined)\b/gi, '');
+  
+  // Remove descriptions that start with common words
+  cleaned = cleaned.replace(/\b(description|desc|details|about|regarding|concerning|related to|involving|covering|including|consisting of|comprising|containing)\s*:?\s*/gi, '');
   
   // Remove extra punctuation and separators
   cleaned = cleaned.replace(/[-–—]\s*$/, ''); // Remove trailing dashes
@@ -303,6 +309,8 @@ function getAllCourses() {
     name: course.name,
     instructor: course.instructor,
     color: course.color,
+    goalGrade: course.goalGrade,
+    assessments: course.assessments,
     assessmentCount: course.assessments.length
   }));
 }
@@ -335,6 +343,52 @@ function updateAssessmentGrade(courseId, assessmentId, grade) {
     return true;
   }
   return false;
+}
+
+// Delete course
+function deleteCourse(courseId) {
+  const courseIndex = db.courses.findIndex(course => course.id === parseInt(courseId));
+  if (courseIndex !== -1) {
+    // Remove all assessments for this course
+    db.assessments = db.assessments.filter(a => a.courseId !== parseInt(courseId));
+    // Remove the course
+    db.courses.splice(courseIndex, 1);
+    saveDatabase();
+    return true;
+  }
+  return false;
+}
+
+// Delete assessment
+function deleteAssessment(courseId, assessmentId) {
+  const assessmentIndex = db.assessments.findIndex(a => 
+    a.courseId === parseInt(courseId) && a.id === parseInt(assessmentId)
+  );
+  
+  if (assessmentIndex !== -1) {
+    // Remove from assessments array
+    db.assessments.splice(assessmentIndex, 1);
+    
+    // Remove from course assessments
+    const course = getCourseById(courseId);
+    if (course) {
+      course.assessments = course.assessments.filter(a => a.id !== parseInt(assessmentId));
+    }
+    
+    saveDatabase();
+    return true;
+  }
+  return false;
+}
+
+// Clear all courses
+function clearAllCourses() {
+  db.courses = [];
+  db.assessments = [];
+  db.nextCourseId = 1;
+  db.nextAssessmentId = 1;
+  saveDatabase();
+  return true;
 }
 
 // Calculate course grade summary
@@ -443,6 +497,9 @@ export {
   getCourseById,
   updateCourseGoalGrade,
   updateAssessmentGrade,
+  deleteCourse,
+  deleteAssessment,
+  clearAllCourses,
   calculateGradeSummary,
   syncAllCoursesToGradeCalc
 }; 

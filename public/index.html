@@ -18,13 +18,13 @@
         <img src="images/dashboard_icon.png" alt="Dashboard" />
         <span>Dashboard</span>
       </a>
-      <a href="#" class="nav-btn calendar-btn" onclick="showSection('calendar')">
+      <a href="calendar.html" class="nav-btn calendar-btn">
         <img src="images/mingcute_calendar-fill.png" alt="Calendar" />
         <span>Calendar</span>
       </a>
-      <a href="#" class="nav-btn gradecalc-btn" onclick="showSection('gradecalc')">
-        <img src="images/mdi_pencil.png" alt="Grade Calculator" />
-        <span>Grade Calculator</span>
+      <a href="grades.html" class="nav-btn grades-btn">
+        <img src="images/mdi_pencil.png" alt="Grades" />
+        <span>Grades</span>
       </a>
       <img src="images/cat.png">
     </div>
@@ -45,7 +45,7 @@
       </div>
 
       <!-- Dashboard Section -->
-      <main class="main-content" id="dashboard-section">
+      <main class="main-content">
         <div class="main-grid">
           <section class="calendar-preview">
             <div class="box-header">
@@ -75,10 +75,10 @@
                 <!-- Performance summary will be dynamically generated here -->
               </div>
               
-              <button class="nav-btn gradecalc-btn" onclick="showSection('gradecalc')" style="margin-top: 15px;">
-                <img src="images/mdi_pencil.png" alt="Grade Calculator" />
+              <a href="grades.html" class="nav-btn grades-btn" style="margin-top: 15px; text-decoration: none; display: inline-flex;">
+                <img src="images/mdi_pencil.png" alt="Grades" />
                 <span>Open Grade Calculator</span>
-              </button>
+              </a>
             </section>
 
             <section class="upload-box">
@@ -98,74 +98,7 @@
         </div>  
       </main>
 
-      <!-- Calendar Section -->
-      <main class="main-content" id="calendar-section" style="display: none;">
-        <div class="calendar-full">
-          <h2>Full Calendar View</h2>
-          <iframe 
-            src="https://calendar.google.com/calendar/embed?src=jessicafu1108%40gmail.com&ctz=America%2FToronto"
-            style="border-radius: 20px; width: 100%; height: 600px;" 
-            frameborder="0" 
-            scrolling="no">
-          </iframe>
-        </div>
-      </main>
 
-      <!-- Grade Calculator Section -->
-      <main class="main-content" id="gradecalc-section" style="display: none;">
-        <div class="gradecalc-container">
-          <div class="gradecalc-header">
-            <h2>Grade Calculator</h2>
-            <p>Track your grades and see what you need to achieve your goals</p>
-          </div>
-
-          <!-- Course Tabs -->
-          <div class="course-tabs" id="courseTabs">
-            <!-- Course tabs will be dynamically generated here -->
-          </div>
-
-          <!-- Grade Calculator Content -->
-          <div class="gradecalc-content">
-            <div id="noCoursesMessage" class="no-courses-message">
-              <h3>No Courses Found</h3>
-              <p>Upload syllabus files to see your courses here</p>
-              <button onclick="showSection('dashboard')" class="upload-btn">Go to Dashboard</button>
-            </div>
-
-            <div id="courseContent" class="course-content" style="display: none;">
-              <!-- Course Info -->
-              <div class="course-info">
-                <h3 id="currentCourseName">Course Name</h3>
-                <div class="course-stats">
-                  <div class="stat">
-                    <span class="stat-label">Current Grade:</span>
-                    <span class="stat-value" id="currentGrade">--</span>
-                  </div>
-                  <div class="stat">
-                    <span class="stat-label">Goal Grade:</span>
-                    <div class="goal-input">
-                      <input type="number" id="goalGradeInput" placeholder="Set goal" min="0" max="100" />
-                      <button onclick="updateGoalGrade()">Update</button>
-                    </div>
-                  </div>
-                  <div class="stat" id="requiredGradeStat" style="display: none;">
-                    <span class="stat-label">Required Average:</span>
-                    <span class="stat-value" id="requiredGrade">--</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Assessments List -->
-              <div class="assessments-section">
-                <h4>Assessments</h4>
-                <div id="assessmentsList" class="assessments-list">
-                  <!-- Assessments will be dynamically generated here -->
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
     </div>
   </div>
 

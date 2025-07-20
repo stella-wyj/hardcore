@@ -54,6 +54,15 @@
               <button class="add-course-btn" onclick="showAddCourseModal()">
                 <span>+</span> Add Course
               </button>
+              <button class="remove-course-btn" onclick="showRemoveCourseModal()">
+                <span>🗑️</span> Remove Course
+              </button>
+              <button class="remove-assessment-btn" onclick="showRemoveAssessmentModal()">
+                <span>🗑️</span> Remove Assessment
+              </button>
+              <button class="clear-all-btn" onclick="showClearAllModal()">
+                <span>🗑️</span> Clear All
+              </button>
             </div>
           </div>
           
@@ -177,6 +186,76 @@
             <button type="submit">Add Assessment</button>
           </div>
         </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Remove Course Modal -->
+  <div id="removeCourseModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Remove Course</h3>
+        <span class="close" onclick="closeModal('removeCourseModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="courseToRemove">Select Course to Remove:</label>
+          <select id="courseToRemove" required>
+            <option value="">Choose a course...</option>
+          </select>
+        </div>
+        <div class="warning-message">
+          <p>⚠️ Warning: This action cannot be undone. All assessments and grades for this course will be permanently deleted.</p>
+        </div>
+        <div class="form-actions">
+          <button type="button" onclick="closeModal('removeCourseModal')">Cancel</button>
+          <button type="button" onclick="confirmRemoveCourse()" class="danger-btn">Remove Course</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Remove Assessment Modal -->
+  <div id="removeAssessmentModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Remove Assessment</h3>
+        <span class="close" onclick="closeModal('removeAssessmentModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="assessmentToRemove">Select Assessment to Remove:</label>
+          <select id="assessmentToRemove" required>
+            <option value="">Choose an assessment...</option>
+          </select>
+        </div>
+        <div class="warning-message">
+          <p>⚠️ Warning: This action cannot be undone. The assessment and its grade will be permanently deleted.</p>
+        </div>
+        <div class="form-actions">
+          <button type="button" onclick="closeModal('removeAssessmentModal')">Cancel</button>
+          <button type="button" onclick="confirmRemoveAssessment()" class="danger-btn">Remove Assessment</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Clear All Modal -->
+  <div id="clearAllModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Clear All Courses</h3>
+        <span class="close" onclick="closeModal('clearAllModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="warning-message">
+          <p>⚠️ <strong>DANGER:</strong> This action will permanently delete ALL courses and ALL assessments from your grade calculator.</p>
+          <p>This action cannot be undone. Are you absolutely sure you want to clear everything?</p>
+        </div>
+        <div class="form-actions">
+          <button type="button" onclick="closeModal('clearAllModal')">Cancel</button>
+          <button type="button" onclick="confirmClearAll()" class="danger-btn">Clear All Courses</button>
+        </div>
       </div>
     </div>
   </div>

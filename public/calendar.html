@@ -46,23 +46,25 @@
       </div>
 
       <main class="main-content">
-        <section class="calendar-preview">
-          <div class="box-header">
-            <img src="images/mingcute_calendar-fill.png" alt="Calendar Icon">
-            <h2>Calendar</h2>
-          </div>
-          <div id="calendar" >
-            <div class="calendar-header">
-              <span id="monthYear"></span>
+        <div class="calendar-container">
+          <section class="calendar-preview">
+            <div class="box-header">
+              <img src="images/mingcute_calendar-fill.png" alt="Calendar Icon">
+              <h2>Calendar</h2>
             </div>
-            <div class="calendar-grid" id="calendarGrid">
-              <iframe src="https://calendar.google.com/calendar/embed?src=snow.studyinspo%40gmail.com&ctz=UTC" style="border: 0" width="1300" height="600" frameborder="0" scrolling="no"></iframe>
+            <div id="calendar">
+              <div class="calendar-grid" id="calendarGrid">
+                <iframe 
+                  src="https://calendar.google.com/calendar/embed?src=snow.studyinspo%40gmail.com&ctz=UTC" 
+                  style="border: 0; width: 100%; height: 600px; border-radius: 20px;" 
+                  frameborder="0" 
+                  scrolling="no">
+                </iframe>
+              </div>
             </div>
-          </div>
-        </section>
-
-        
-      
+          </section>
+        </div>
+      </main>
     </div>
   </div>
 

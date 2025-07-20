@@ -884,3 +884,84 @@ body {
 .remove-course-btn:hover {
   background: #dc2626;
 }
+
+/* Header remove buttons */
+.header-actions .remove-course-btn,
+.header-actions .remove-assessment-btn,
+.header-actions .clear-all-btn {
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+  margin-left: 10px;
+}
+
+.header-actions .remove-course-btn:hover,
+.header-actions .remove-assessment-btn:hover,
+.header-actions .clear-all-btn:hover {
+  background: #dc2626;
+  transform: translateY(-1px);
+}
+
+.header-actions .remove-course-btn span,
+.header-actions .remove-assessment-btn span,
+.header-actions .clear-all-btn span {
+  font-size: 1rem;
+}
+
+/* Warning message */
+.warning-message {
+  background: #fef3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 8px;
+  padding: 12px;
+  margin: 16px 0;
+}
+
+.warning-message p {
+  margin: 0;
+  color: #856404;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+/* Danger button */
+.danger-btn {
+  background: #dc3545 !important;
+  color: white !important;
+}
+
+.danger-btn:hover {
+  background: #c82333 !important;
+}
+
+/* Calendar page specific styles */
+.calendar-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.calendar-container .calendar-preview {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  overflow: hidden;
+}
+
+.calendar-container .calendar-grid {
+  padding: 20px;
+}
+
+.calendar-container iframe {
+  max-width: 100%;
+  border-radius: 20px;
+}

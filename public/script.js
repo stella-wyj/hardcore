@@ -284,30 +284,7 @@ function handleTextSubmit() {
 }
 // --- End Syllabus Analyzer Functionality ---
 
-// --- Navigation and Section Management ---
-function showSection(sectionName) {
-  // Hide all sections
-  document.getElementById('dashboard-section').style.display = 'none';
-  document.getElementById('calendar-section').style.display = 'none';
-  document.getElementById('gradecalc-section').style.display = 'none';
-  
-  // Show selected section
-  document.getElementById(sectionName + '-section').style.display = 'flex';
-  
-  // Update navigation active state
-  document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-  document.querySelector('.' + sectionName + '-btn').classList.add('active');
-  
-  // Load data for grade calculator section
-  if (sectionName === 'gradecalc') {
-    loadGradeCalculatorData();
-  }
-  
-  // Load data for dashboard section
-  if (sectionName === 'dashboard') {
-    loadCoursesAndGrades();
-  }
-}
+
 
 // --- Grade Calculator Functionality ---
 let currentCourses = [];
@@ -664,12 +641,345 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Set up navigation based on current path
   const path = window.location.pathname;
-  if (path.includes("dashboard")) {
-    document.querySelector(".dashboard-btn").classList.add("active");
-  } else if (path.includes("calendar")) {
+  if (path.includes("calendar")) {
     document.querySelector(".calendar-btn").classList.add("active");
   } else if (path.includes("grades")) {
-    document.querySelector(".gradecalc-btn").classList.add("active");
+    document.querySelector(".grades-btn").classList.add("active");
+    // Clear the grade calculator to start fresh
+    clearGradeCalculator();
+  } else {
+    // Default to dashboard (index.html)
+    document.querySelector(".dashboard-btn").classList.add("active");
+    // Load dashboard data
+    loadCoursesAndGrades();
+  }
+});
+
+// Clear the grade calculator
+function clearGradeCalculator() {
+  // Clear local data
+  currentCourses = [];
+  selectedCourseId = null;
+  
+  // Clear the UI
+  const courseTabs = document.getElementById('courseTabs');
+  const courseContent = document.getElementById('courseContent');
+  const noCoursesMessage = document.getElementById('noCoursesMessage');
+  const assessmentsList = document.getElementById('assessmentsList');
+  const gradeSummary = document.getElementById('gradeSummary');
+  
+  if (courseTabs) courseTabs.innerHTML = '';
+  if (courseContent) courseContent.style.display = 'none';
+  if (assessmentsList) assessmentsList.innerHTML = '';
+  if (gradeSummary) gradeSummary.innerHTML = '';
+  if (noCoursesMessage) noCoursesMessage.style.display = 'block';
+}
+
+// --- Modal Functions ---
+function showAddCourseModal() {
+  document.getElementById('addCourseModal').style.display = 'flex';
+}
+
+function showAddAssessmentModal() {
+  document.getElementById('addAssessmentModal').style.display = 'flex';
+}
+
+function showRemoveCourseModal() {
+  const courseSelect = document.getElementById('courseToRemove');
+  courseSelect.innerHTML = '<option value="">Choose a course...</option>';
+  
+  // Populate course dropdown
+  currentCourses.forEach(course => {
+    const option = document.createElement('option');
+    option.value = course.id;
+    option.textContent = course.name;
+    courseSelect.appendChild(option);
+  });
+  
+  document.getElementById('removeCourseModal').style.display = 'flex';
+}
+
+function showRemoveAssessmentModal() {
+  if (!selectedCourseId) {
+    alert('Please select a course first');
+    return;
+  }
+  
+  const course = currentCourses.find(c => c.id === selectedCourseId);
+  if (!course || !course.assessments || course.assessments.length === 0) {
+    alert('No assessments found in the selected course');
+    return;
+  }
+  
+  const assessmentSelect = document.getElementById('assessmentToRemove');
+  assessmentSelect.innerHTML = '<option value="">Choose an assessment...</option>';
+  
+  // Populate assessment dropdown with assessments from current course
+  course.assessments.forEach(assessment => {
+    const option = document.createElement('option');
+    option.value = assessment.id;
+    option.textContent = `${assessment.title} (${assessment.weight}%)`;
+    assessmentSelect.appendChild(option);
+  });
+  
+  document.getElementById('removeAssessmentModal').style.display = 'flex';
+}
+
+function showClearAllModal() {
+  document.getElementById('clearAllModal').style.display = 'flex';
+}
+
+function closeModal(modalId) {
+  document.getElementById(modalId).style.display = 'none';
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+  if (event.target.classList.contains('modal')) {
+    event.target.style.display = 'none';
+  }
+}
+
+
+
+// Confirm and remove course
+async function confirmRemoveCourse() {
+  const courseSelect = document.getElementById('courseToRemove');
+  const courseId = courseSelect.value;
+  
+  if (!courseId) {
+    alert('Please select a course to remove');
+    return;
+  }
+  
+  const course = currentCourses.find(c => c.id === parseInt(courseId));
+  if (!course) {
+    alert('Course not found');
+    return;
+  }
+  
+  if (!confirm(`Are you sure you want to remove "${course.name}"? This action cannot be undone.`)) {
+    return;
+  }
+  
+  try {
+    const response = await fetch(`/api/courses/${courseId}`, {
+      method: 'DELETE'
+    });
+    
+    if (response.ok) {
+      // Remove from local data
+      currentCourses = currentCourses.filter(c => c.id !== parseInt(courseId));
+      
+      // Re-render course tabs
+      renderCourseTabs(currentCourses);
+      
+      // If no courses left, show no courses message
+      if (currentCourses.length === 0) {
+        showNoCoursesMessage();
+      } else {
+        // Select the first available course
+        selectCourse(currentCourses[0].id);
+      }
+      
+      // Close modal
+      closeModal('removeCourseModal');
+      
+      alert('Course removed successfully!');
+    } else {
+      alert('Error removing course');
+    }
+  } catch (error) {
+    console.error('Error removing course:', error);
+    alert('Error removing course');
+  }
+}
+
+// Confirm and remove assessment
+async function confirmRemoveAssessment() {
+  const assessmentSelect = document.getElementById('assessmentToRemove');
+  const assessmentId = assessmentSelect.value;
+  
+  if (!assessmentId) {
+    alert('Please select an assessment to remove');
+    return;
+  }
+  
+  const course = currentCourses.find(c => c.id === selectedCourseId);
+  const assessment = course?.assessments.find(a => a.id === parseInt(assessmentId));
+  
+  if (!course || !assessment) {
+    alert('Assessment not found');
+    return;
+  }
+  
+  if (!confirm(`Are you sure you want to remove "${assessment.title}" from "${course.name}"? This action cannot be undone.`)) {
+    return;
+  }
+  
+  try {
+    const response = await fetch(`/api/courses/${selectedCourseId}/assessments/${assessmentId}`, {
+      method: 'DELETE'
+    });
+    
+    if (response.ok) {
+      // Remove from local data
+      course.assessments = course.assessments.filter(a => a.id !== parseInt(assessmentId));
+      
+      // Re-render assessments
+      renderAssessments(course);
+      
+      // Update grade calculations
+      updateGradeCalculations(course);
+      
+      // Close modal
+      closeModal('removeAssessmentModal');
+      
+      alert('Assessment removed successfully!');
+    } else {
+      alert('Error removing assessment');
+    }
+  } catch (error) {
+    console.error('Error removing assessment:', error);
+    alert('Error removing assessment');
+  }
+}
+
+// Confirm and clear all courses
+async function confirmClearAll() {
+  if (!confirm('Are you absolutely sure you want to delete ALL courses and ALL assessments? This action cannot be undone.')) {
+    return;
+  }
+  
+  try {
+    const response = await fetch('/api/clear-all', {
+      method: 'DELETE'
+    });
+    
+    if (response.ok) {
+      // Clear all courses from local data
+      currentCourses = [];
+      selectedCourseId = null;
+      
+      // Clear the UI
+      const courseTabs = document.getElementById('courseTabs');
+      const courseContent = document.getElementById('courseContent');
+      const noCoursesMessage = document.getElementById('noCoursesMessage');
+      
+      if (courseTabs) courseTabs.innerHTML = '';
+      if (courseContent) courseContent.style.display = 'none';
+      if (noCoursesMessage) noCoursesMessage.style.display = 'block';
+      
+      // Close modal
+      closeModal('clearAllModal');
+      
+      alert('All courses have been cleared successfully!');
+    } else {
+      alert('Error clearing all courses');
+    }
+  } catch (error) {
+    console.error('Error clearing all courses:', error);
+    alert('Error clearing courses');
+  }
+}
+
+// --- Add Course Functionality ---
+document.getElementById('addCourseForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  
+  const courseName = document.getElementById('courseName').value;
+  const courseInstructor = document.getElementById('courseInstructor').value;
+  const courseColor = document.getElementById('courseColor').value;
+  
+  try {
+    const response = await fetch('/api/courses', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: courseName,
+        instructor: courseInstructor,
+        color: courseColor,
+        assessments: []
+      })
+    });
+    
+    if (response.ok) {
+      const newCourse = await response.json();
+      
+      // Add to local data
+      currentCourses.push(newCourse);
+      
+      // Re-render course tabs
+      renderCourseTabs(currentCourses);
+      
+      // Select the new course
+      selectCourse(newCourse.id);
+      
+      // Close modal and reset form
+      closeModal('addCourseModal');
+      document.getElementById('addCourseForm').reset();
+      
+      alert('Course added successfully!');
+    } else {
+      alert('Error adding course');
+    }
+  } catch (error) {
+    console.error('Error adding course:', error);
+    alert('Error adding course');
+  }
+});
+
+// --- Add Assessment Functionality ---
+document.getElementById('addAssessmentForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  
+  const assessmentTitle = document.getElementById('assessmentTitle').value;
+  const assessmentType = document.getElementById('assessmentType').value;
+  const assessmentWeight = parseFloat(document.getElementById('assessmentWeight').value);
+  const assessmentDueDate = document.getElementById('assessmentDueDate').value;
+  
+  if (!selectedCourseId) {
+    alert('Please select a course first');
+    return;
+  }
+  
+  try {
+    const response = await fetch(`/api/courses/${selectedCourseId}/assessments`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        title: assessmentTitle,
+        type: assessmentType,
+        weight: assessmentWeight,
+        dueDate: assessmentDueDate || null,
+        grade: null
+      })
+    });
+    
+    if (response.ok) {
+      const newAssessment = await response.json();
+      
+      // Add to local data
+      const course = currentCourses.find(c => c.id === selectedCourseId);
+      course.assessments.push(newAssessment);
+      
+      // Re-render assessments
+      renderAssessments(course);
+      
+      // Update grade calculations
+      updateGradeCalculations(course);
+      
+      // Close modal and reset form
+      closeModal('addAssessmentModal');
+      document.getElementById('addAssessmentForm').reset();
+      
+      alert('Assessment added successfully!');
+    } else {
+      alert('Error adding assessment');
+    }
+  } catch (error) {
+    console.error('Error adding assessment:', error);
+    alert('Error adding assessment');
   }
 });
   
