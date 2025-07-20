@@ -28,6 +28,74 @@ function saveDatabase() {
   }
 }
 
+// Clean course name by removing unnecessary punctuation and details
+function cleanCourseName(courseName) {
+  if (!courseName) return '';
+  
+  let cleaned = courseName.trim();
+  
+  // Remove common unnecessary patterns
+  cleaned = cleaned.replace(/^[A-Z]{2,4}\s*\d{3,4}[A-Z]?\s*[-–—]\s*/i, ''); // Remove course codes like "MATH 133 -" or "CS 101 -"
+  cleaned = cleaned.replace(/^[A-Z]{2,4}\s*\d{3,4}[A-Z]?\s*[:]\s*/i, ''); // Remove course codes with colons
+  cleaned = cleaned.replace(/^[A-Z]{2,4}\s*\d{3,4}[A-Z]?\s*[\(\)]/i, ''); // Remove course codes with parentheses
+  cleaned = cleaned.replace(/^[A-Z]{2,4}\s*\d{3,4}[A-Z]?\s*$/i, ''); // Remove standalone course codes
+  
+  // Remove extra punctuation at the beginning and end
+  cleaned = cleaned.replace(/^[^\w\s]*/, ''); // Remove leading punctuation
+  cleaned = cleaned.replace(/[^\w\s]*$/, ''); // Remove trailing punctuation
+  
+  // Remove quotes around the course name
+  cleaned = cleaned.replace(/^["'""]|["'""]$/g, '');
+  
+  // Remove extra whitespace
+  cleaned = cleaned.replace(/\s+/g, ' ').trim();
+  
+  // If we ended up with nothing, return the original
+  if (!cleaned) return courseName.trim();
+  
+  return cleaned;
+}
+
+// Clean assignment name by removing dates, course codes, and extra punctuation
+function cleanAssessmentName(assessmentName) {
+  if (!assessmentName) return '';
+  
+  let cleaned = assessmentName.trim();
+  
+  // Remove dates in various formats
+  cleaned = cleaned.replace(/\b\d{1,2}\/\d{1,2}\/\d{2,4}\b/g, ''); // MM/DD/YYYY or MM/DD/YY
+  cleaned = cleaned.replace(/\b\d{4}-\d{1,2}-\d{1,2}\b/g, ''); // YYYY-MM-DD
+  cleaned = cleaned.replace(/\b(January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2},?\s+\d{4}\b/gi, ''); // Month DD, YYYY
+  cleaned = cleaned.replace(/\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d{1,2},?\s+\d{4}\b/gi, ''); // Abbreviated month
+  cleaned = cleaned.replace(/\b(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)\s*,?\s*\d{1,2}\b/gi, ''); // Weekday DD
+  cleaned = cleaned.replace(/\b(Mon|Tue|Wed|Thu|Fri|Sat|Sun)\s*,?\s*\d{1,2}\b/gi, ''); // Abbreviated weekday
+  
+  // Remove course codes
+  cleaned = cleaned.replace(/\b[A-Z]{2,4}\s*\d{3,4}[A-Z]?\b/g, ''); // Course codes like MATH 101, CS 101A
+  
+  // Remove common date-related phrases
+  cleaned = cleaned.replace(/\b(due|due on|due by|submission|submitted|deadline|exam date|quiz date)\s*:?\s*/gi, '');
+  
+  // Remove extra punctuation and separators
+  cleaned = cleaned.replace(/[-–—]\s*$/, ''); // Remove trailing dashes
+  cleaned = cleaned.replace(/^[-–—]\s*/, ''); // Remove leading dashes
+  cleaned = cleaned.replace(/[:]\s*$/, ''); // Remove trailing colons
+  cleaned = cleaned.replace(/^[:]\s*/, ''); // Remove leading colons
+  
+  // Remove extra whitespace and punctuation
+  cleaned = cleaned.replace(/\s+/g, ' ').trim(); // Multiple spaces to single space
+  cleaned = cleaned.replace(/^[^\w\s]*/, ''); // Remove leading punctuation
+  cleaned = cleaned.replace(/[^\w\s]*$/, ''); // Remove trailing punctuation
+  
+  // Remove quotes
+  cleaned = cleaned.replace(/^["'""]|["'""]$/g, '');
+  
+  // If we ended up with nothing, return a generic name
+  if (!cleaned) return 'Unnamed Assessment';
+  
+  return cleaned;
+}
+
 // Parse Gemini response into structured data
 function parseGeminiResponse(response) {
   const parsed = {
@@ -52,7 +120,8 @@ function parseGeminiResponse(response) {
 
     // Course Name
     if (line.includes('Course Name:')) {
-      parsed.courseName = line.split('Course Name:')[1].trim();
+      const rawCourseName = line.split('Course Name:')[1].trim();
+      parsed.courseName = cleanCourseName(rawCourseName);
     }
     // Instructor
     else if (line.includes('Instructor:')) {
@@ -112,7 +181,7 @@ function parseAssessmentItem(item, type) {
   if (dateMatch) {
     return {
       date: dateMatch[1],
-      name: dateMatch[2].trim(),
+      name: cleanAssessmentName(dateMatch[2].trim()),
       weight: parseInt(dateMatch[3]),
       type: type,
       description: item
@@ -124,7 +193,7 @@ function parseAssessmentItem(item, type) {
   if (weightMatch) {
     return {
       date: null,
-      name: weightMatch[1].trim(),
+      name: cleanAssessmentName(weightMatch[1].trim()),
       weight: parseInt(weightMatch[2]),
       type: type,
       description: item
@@ -134,7 +203,7 @@ function parseAssessmentItem(item, type) {
   // Fallback - just store the raw item
   return {
     date: null,
-    name: item,
+    name: cleanAssessmentName(item),
     weight: null,
     type: type,
     description: item
@@ -144,6 +213,22 @@ function parseAssessmentItem(item, type) {
 // Save parsed syllabus data to database
 function saveSyllabusToDatabase(parsedData) {
   try {
+    // Check if a course with the same name already exists
+    const existingCourse = db.courses.find(c => 
+      c.name.toLowerCase().trim() === (parsedData.courseName || 'Unnamed Course').toLowerCase().trim()
+    );
+    
+    if (existingCourse) {
+      console.log(`⚠️ Course "${parsedData.courseName}" already exists. Skipping duplicate creation.`);
+      return {
+        success: false,
+        error: 'Course already exists',
+        courseId: existingCourse.id,
+        course: existingCourse,
+        assessmentCount: existingCourse.assessments.length
+      };
+    }
+    
     // Create course record
     const course = {
       id: db.nextCourseId++,
@@ -301,6 +386,56 @@ function calculateGradeSummary(courseId) {
   };
 }
 
+// Function to sync all courses to gradeCalc backend
+async function syncAllCoursesToGradeCalc() {
+  try {
+    const gradeCalcUrl = 'http://localhost:3001';
+    
+    console.log('🔄 Syncing all courses to gradeCalc backend...');
+    
+    for (const course of db.courses) {
+      const assessments = db.assessments.filter(a => a.courseId === course.id);
+      
+      const gradeCalcCourse = {
+        name: course.name,
+        color: course.color,
+        goalGrade: course.goalGrade,
+        assessments: assessments.map(assessment => ({
+          title: assessment.title,
+          type: assessment.type,
+          dueDate: assessment.dueDate,
+          weight: assessment.weight,
+          grade: assessment.grade
+        }))
+      };
+      
+      try {
+        const response = await fetch(`${gradeCalcUrl}/courses`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(gradeCalcCourse)
+        });
+        
+        if (response.ok) {
+          const result = await response.json();
+          console.log(`✅ Synced course "${course.name}" to gradeCalc backend`);
+        } else {
+          console.warn(`⚠️ Failed to sync course "${course.name}": ${response.status}`);
+        }
+      } catch (error) {
+        console.warn(`⚠️ Error syncing course "${course.name}":`, error.message);
+      }
+    }
+    
+    console.log('🔄 Course sync to gradeCalc completed');
+    
+  } catch (error) {
+    console.error('❌ Error syncing courses to gradeCalc:', error);
+  }
+}
+
 export {
   parseGeminiResponse,
   saveSyllabusToDatabase,
@@ -308,5 +443,6 @@ export {
   getCourseById,
   updateCourseGoalGrade,
   updateAssessmentGrade,
-  calculateGradeSummary
+  calculateGradeSummary,
+  syncAllCoursesToGradeCalc
 }; 

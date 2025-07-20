@@ -129,26 +129,26 @@ const extractSyllabusInfo = async (pdfText, fileName) => {
 
     Please organize the information in this exact format:
 
-    [Course Name: Extract the actual course name/title]
+    Course Name: [Extract the actual course name/title - clean format without extra punctuation, course codes, or unnecessary details]
     Instructor: [Instructor's name(s)]
 
     Quizzes: 
-    - [date]: [Quiz name/number] - [weight percentage]%
+    - [YYYY-MM-DD date]: [Specific Quiz name/number] - [weight percentage]%
         - [description if available]
 
     Assignments:
-    - [date]: [Assignment name/number] - [weight percentage]%
+    - [YYYY-MM-DD date]: [Specific Assignment name/number] - [weight percentage]%
         - [description if available]
 
     Midterm:
-    - [date]: [Midterm name/number] - [weight percentage]%
+    - [YYYY-MM-DD date]: [Specific Midterm name/number] - [weight percentage]%
         - [key topics covered if available]
         - [length of midterm] 
         - [format of midterm]
         - [location if available]
 
     Final:
-    - [date]: [Final name/number] - [weight percentage]%
+    - [YYYY-MM-DD date]: [Specific Final name/number] - [weight percentage]%
       - [length of final] 
         - [format of final]
         - [location if available]
@@ -164,11 +164,22 @@ const extractSyllabusInfo = async (pdfText, fileName) => {
     Other Key Information: 
     - [Any other important details or notes]
 
-    If there are multiple courses in the same document, separate them clearly with the course name as a header.
+    IMPORTANT DATE AND ASSIGNMENT PARSING RULES:
+    1. ANY date that mentions a month (January, Feb, March, etc.) or weekday (Monday, Tuesday, etc.) followed by a day number is likely a DUE DATE for an assignment, quiz, or exam.
+    2. Each assignment, quiz, midterm, and final should have a UNIQUE, SPECIFIC name that clearly differentiates it from others.
+    3. Convert all dates to YYYY-MM-DD format. If the year is not specified, assume the current academic year.
+    4. If multiple assignments are mentioned with the same date, list them as separate items with distinct names.
+    5. Pay special attention to phrases like "due on", "due by", "submission date", "exam date", "quiz date" - these indicate due dates.
+    6. For assignments without specific names, create descriptive names based on content or week number.
+    7. Ensure each assessment has a clear weight percentage. If not specified, use "Not specified" for the weight.
+    8. ASSIGNMENT NAMES should NOT include dates, course codes, or extra punctuation. Only include the actual assignment name/number (e.g., "Assignment 1", "Linear Algebra Quiz", "Midterm Exam", not "Assignment 1 - March 15" or "MATH 101 Assignment 1").
+
+    IMPORTANT: This syllabus document is for ONE COURSE ONLY. Extract information for a single course, even if the document mentions multiple topics or sections. If the document contains information for multiple separate courses, only extract the information for the main/primary course that this syllabus represents.
+
     If any information is not available, indicate with "Not specified" or skip that line.
     Be precise with dates, times, and percentages. Extract actual course names, not generic "Course #1". If there is no location or description or other information is missing, put down [location] or [description], or [time] as an user prompt placeholder.
     If there are any special instructions or notes, include them under "Other Key Information".
-    Make sure to format the output clearly and concisely.  Ensure that the other key information does not contain information about things that are already under a section. 
+    Make sure to format the output clearly and concisely. Ensure that the other key information does not contain information about things that are already under a section.
     `;
 
     console.log('📤 Sending request to Gemini...');
@@ -236,8 +247,26 @@ const processAndStoreSyllabus = async (filePath) => {
     console.log('Saving to database...');
     const result = saveSyllabusToDatabase(parsedData);
     
+    if (result.success === false) {
+      console.log(`⚠️ ${result.error}: Course "${result.course.name}" already exists`);
+      return {
+        success: false,
+        error: result.error,
+        rawResponse: extractedInfo,
+        parsedData: parsedData,
+        courseId: result.courseId,
+        course: result.course,
+        assessmentCount: result.assessmentCount
+      };
+    }
+    
+    // Send data to gradeCalc backend
+    console.log('Syncing with gradeCalc backend...');
+    await syncToGradeCalc(result.course, parsedData);
+    
     console.log(`✅ Course created with ID: ${result.courseId}`);
     console.log(`📊 ${result.assessmentCount} assessments added`);
+    console.log(`🔄 Synced with gradeCalc backend`);
     
     return {
       success: true,
@@ -251,6 +280,54 @@ const processAndStoreSyllabus = async (filePath) => {
   } catch (error) {
     console.error('Error processing and storing syllabus:', error);
     throw error;
+  }
+};
+
+// Function to sync course data to gradeCalc backend
+const syncToGradeCalc = async (course, parsedData) => {
+  try {
+    const gradeCalcUrl = 'http://localhost:3001'; // gradeCalc backend URL
+    
+    // Prepare course data for gradeCalc
+    const gradeCalcCourse = {
+      name: course.name,
+      color: course.color,
+      goalGrade: course.goalGrade,
+      assessments: course.assessments.map(assessment => ({
+        title: assessment.title,
+        type: assessment.type,
+        dueDate: assessment.dueDate,
+        weight: assessment.weight,
+        grade: assessment.grade
+      }))
+    };
+    
+    console.log('📤 Sending course data to gradeCalc backend...');
+    
+    // Send course data to gradeCalc
+    const response = await fetch(`${gradeCalcUrl}/courses`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(gradeCalcCourse)
+    });
+    
+    if (!response.ok) {
+      throw new Error(`gradeCalc API responded with status: ${response.status}`);
+    }
+    
+    const result = await response.json();
+    console.log(`✅ Successfully synced course "${course.name}" to gradeCalc backend`);
+    console.log(`🆔 gradeCalc course ID: ${result.id}`);
+    
+    return result;
+    
+  } catch (error) {
+    console.warn('⚠️ Failed to sync with gradeCalc backend:', error.message);
+    console.log('💡 Make sure gradeCalc backend is running on port 3001');
+    // Don't throw error - this shouldn't break the main flow
+    return null;
   }
 };
 
@@ -271,7 +348,7 @@ const saveExtractedInfo = async (extractedInfo, originalFileName) => {
 };
 
 // Export functions for use in other modules
-export { processSyllabus, processAndStoreSyllabus, saveExtractedInfo, readPDF, extractSyllabusInfo };
+export { processSyllabus, processAndStoreSyllabus, saveExtractedInfo, readPDF, extractSyllabusInfo, syncToGradeCalc };
 
 // If running this file directly, process the syllabus.pdf file
 if (import.meta.url === `file://${process.argv[1]}`) {
