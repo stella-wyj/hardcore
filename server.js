@@ -185,6 +185,33 @@ app.delete('/api/courses/:id/assessments/:aid/grade', async (req, res) => {
   }
 });
 
+// Delete individual assessment
+app.delete('/api/courses/:id/assessments/:aid', async (req, res) => {
+  if (isVercel) {
+    res.status(404).json({ error: 'Not available on Vercel' });
+    return;
+  }
+  try {
+    const { deleteAssessment } = await import('./api/syllabusParser.js');
+    const courseId = parseInt(req.params.id);
+    const assessmentId = parseInt(req.params.aid);
+    
+    const success = deleteAssessment(courseId, assessmentId);
+    if (!success) {
+      return res.status(404).json({ error: 'Course or assessment not found' });
+    }
+
+    res.json({
+      message: 'Assessment deleted successfully',
+      courseId: courseId,
+      assessmentId: assessmentId
+    });
+  } catch (error) {
+    console.error('Error deleting assessment:', error);
+    res.status(500).json({ error: 'Failed to delete assessment' });
+  }
+});
+
 // Delete individual course
 app.delete('/api/courses/:id', async (req, res) => {
   if (isVercel) {

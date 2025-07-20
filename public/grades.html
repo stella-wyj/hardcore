@@ -231,6 +231,42 @@
     </div>
   </div>
 
+  <!-- Delete Assessment Confirmation Modal -->
+  <div id="deleteAssessmentModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Delete Assessment</h3>
+        <span class="close" onclick="closeModal('deleteAssessmentModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="warning-message">
+          <p>⚠️ Are you sure you want to delete this assessment?</p>
+          <p>This action cannot be undone.</p>
+        </div>
+        <div class="form-actions">
+          <button type="button" onclick="closeModal('deleteAssessmentModal')">Cancel</button>
+          <button type="button" onclick="confirmDeleteAssessment()" class="danger-btn">Delete Assessment</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success/Error Message Modal -->
+  <div id="messageModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="messageModalTitle">Message</h3>
+        <span class="close" onclick="closeModal('messageModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <p id="messageModalText"></p>
+        <div class="form-actions">
+          <button type="button" onclick="closeModal('messageModal')">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="script.js"></script>
   <script>
     // Initialize grade calculator when grades page loads

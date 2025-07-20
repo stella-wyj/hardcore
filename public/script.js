@@ -5,6 +5,9 @@ const error = document.getElementById('error');
 const backendResults = document.getElementById('backend-results');
 const backendResultsContent = document.getElementById('backendResultsContent');
 
+// Track if performance summary has been loaded
+let performanceSummaryLoaded = false;
+
 // Load all events on page load
 document.addEventListener('DOMContentLoaded', function() {
   loadAllEvents();
@@ -215,7 +218,7 @@ function handleFile(file) {
         backendResultsContent.innerHTML = html;
         
         // Refresh the courses list in Performance Summary and calendar
-        loadCoursesAndGrades();
+        loadCoursesAndGrades(true); // Force reload after new upload
         loadAllEvents(); // Refresh calendar events
         
         // Also refresh the grade calculator if we're on the grades page
@@ -346,7 +349,7 @@ function handleTextSubmit() {
           backendResultsContent.innerHTML = html;
           
           // Refresh the courses list in Performance Summary and calendar
-          loadCoursesAndGrades();
+          loadCoursesAndGrades(true); // Force reload after new upload
           loadAllEvents(); // Refresh calendar events
           
           // Also refresh the grade calculator if we're on the grades page
@@ -543,21 +546,35 @@ async function updateAssessmentGrade(courseId, assessmentId) {
 }
 
 // Delete assessment
+// Global variables for delete confirmation
+let pendingDeleteCourseId = null;
+let pendingDeleteAssessmentId = null;
+
 async function deleteAssessmentGrade(courseId, assessmentId) {
-  if (!confirm('Are you sure you want to delete this assessment? This action cannot be undone.')) {
+  // Store the IDs for the confirmation
+  pendingDeleteCourseId = courseId;
+  pendingDeleteAssessmentId = assessmentId;
+  
+  // Show confirmation modal
+  document.getElementById('deleteAssessmentModal').style.display = 'flex';
+}
+
+async function confirmDeleteAssessment() {
+  if (!pendingDeleteCourseId || !pendingDeleteAssessmentId) {
+    showMessage('Error', 'Invalid assessment to delete');
     return;
   }
 
   try {
-    const response = await fetch(`/api/courses/${courseId}/assessments/${assessmentId}`, {
+    const response = await fetch(`/api/courses/${pendingDeleteCourseId}/assessments/${pendingDeleteAssessmentId}`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' }
     });
 
     if (response.ok) {
       // Update local data
-      const course = currentCourses.find(c => c.id === courseId);
-      const assessmentIndex = course.assessments.findIndex(a => a.id === assessmentId);
+      const course = currentCourses.find(c => c.id === pendingDeleteCourseId);
+      const assessmentIndex = course.assessments.findIndex(a => a.id === pendingDeleteAssessmentId);
       
       if (assessmentIndex !== -1) {
         course.assessments.splice(assessmentIndex, 1);
@@ -576,14 +593,28 @@ async function deleteAssessmentGrade(courseId, assessmentId) {
         if (typeof loadAllEvents === 'function') {
           loadAllEvents();
         }
+        
+        showMessage('Success', 'Assessment deleted successfully!');
       }
     } else {
-      alert('Error deleting assessment');
+      showMessage('Error', 'Error deleting assessment');
     }
   } catch (error) {
     console.error('Error deleting assessment:', error);
-    alert('Error deleting assessment');
+    showMessage('Error', 'Error deleting assessment: Network error');
   }
+  
+  // Close modal and reset pending delete
+  closeModal('deleteAssessmentModal');
+  pendingDeleteCourseId = null;
+  pendingDeleteAssessmentId = null;
+}
+
+// Show custom message modal
+function showMessage(title, message) {
+  document.getElementById('messageModalTitle').textContent = title;
+  document.getElementById('messageModalText').textContent = message;
+  document.getElementById('messageModal').style.display = 'flex';
 }
 
 // Update goal grade
@@ -592,7 +623,7 @@ async function updateGoalGrade() {
   const goalGrade = parseFloat(goalGradeInput.value);
   
   if (isNaN(goalGrade) || goalGrade < 0 || goalGrade > 100) {
-    alert('Please enter a valid goal grade between 0 and 100');
+    showMessage('Invalid Input', 'Please enter a valid goal grade between 0 and 100');
     return;
   }
   
@@ -622,11 +653,11 @@ async function updateGoalGrade() {
         goalGradeInput.style.borderColor = '#ddd';
       }, 2000);
     } else {
-      alert('Error updating goal grade');
+      showMessage('Error', 'Error updating goal grade');
     }
   } catch (error) {
     console.error('Error updating goal grade:', error);
-    alert('Error updating goal grade');
+    showMessage('Error', 'Error updating goal grade');
   }
 }
 
@@ -724,11 +755,11 @@ document.getElementById("fileUpload").addEventListener("change", function () {
 
 // Fetch and display courses and grades in Performance Summary (Dashboard)
 async function loadCoursesAndGrades() {
-  const gradesBox = document.querySelector('.grades-box');
-  if (!gradesBox) return;
-  
   const performanceSummary = document.getElementById('performance-summary');
   if (!performanceSummary) return;
+  
+  // Only load once unless explicitly forced to reload
+  if (performanceSummaryLoaded && !arguments[0]) return;
   
   try {
     const res = await fetch('/api/courses');
@@ -738,23 +769,99 @@ async function loadCoursesAndGrades() {
     performanceSummary.innerHTML = '';
     
     if (Array.isArray(courses) && courses.length > 0) {
+      // Create header
+      const headerDiv = document.createElement('div');
+      headerDiv.className = 'performance-header';
+      headerDiv.innerHTML = `
+        <div class="performance-header-item">
+          <span class="header-label">Course</span>
+        </div>
+        <div class="performance-header-item">
+          <span class="header-label">Current Grade</span>
+        </div>
+      `;
+      performanceSummary.appendChild(headerDiv);
+      
+      // Create course list
       courses.forEach(course => {
         const currentGrade = calculateCurrentGrade(course);
-        const gradeDiv = document.createElement('div');
-        gradeDiv.className = 'grade';
-        gradeDiv.innerHTML = `
-          <span>${course.name}</span>
-          <span>${currentGrade ? currentGrade.toFixed(1) + '%' : '--'}</span>
+        const courseDiv = document.createElement('div');
+        courseDiv.className = 'performance-course-item';
+        
+        // Determine grade display and styling
+        let gradeDisplay = '--';
+        let gradeClass = 'grade-unknown';
+        
+        if (currentGrade !== null && currentGrade !== undefined) {
+          gradeDisplay = currentGrade.toFixed(1) + '%';
+          if (currentGrade >= 80) {
+            gradeClass = 'grade-excellent';
+          } else if (currentGrade >= 70) {
+            gradeClass = 'grade-good';
+          } else if (currentGrade >= 60) {
+            gradeClass = 'grade-average';
+          } else {
+            gradeClass = 'grade-poor';
+          }
+        }
+        
+        courseDiv.innerHTML = `
+          <div class="course-info">
+            <div class="course-name">${course.name}</div>
+            <div class="course-instructor">${course.instructor || 'Instructor not specified'}</div>
+          </div>
+          <div class="grade-display ${gradeClass}">
+            ${gradeDisplay}
+          </div>
         `;
-        performanceSummary.appendChild(gradeDiv);
+        performanceSummary.appendChild(courseDiv);
       });
+      
+      // Add summary stats
+      const gradedCourses = courses.filter(course => calculateCurrentGrade(course) !== null);
+      if (gradedCourses.length > 0) {
+        const averageGrade = gradedCourses.reduce((sum, course) => sum + calculateCurrentGrade(course), 0) / gradedCourses.length;
+        
+        const summaryDiv = document.createElement('div');
+        summaryDiv.className = 'performance-summary-stats';
+        summaryDiv.innerHTML = `
+          <div class="summary-stat">
+            <span class="stat-label">Courses with Grades:</span>
+            <span class="stat-value">${gradedCourses.length}/${courses.length}</span>
+          </div>
+          <div class="summary-stat">
+            <span class="stat-label">Average Grade:</span>
+            <span class="stat-value grade-excellent">${averageGrade.toFixed(1)}%</span>
+          </div>
+        `;
+        performanceSummary.appendChild(summaryDiv);
+      }
     } else {
-      performanceSummary.innerHTML = '<div style="color:#888;">No courses found.</div>';
+      performanceSummary.innerHTML = `
+        <div class="no-courses-message">
+          <div class="no-courses-icon">📚</div>
+          <div class="no-courses-text">
+            <h3>No courses found</h3>
+            <p>Upload a syllabus to get started with grade tracking!</p>
+          </div>
+        </div>
+      `;
     }
-  } catch (e) {
-    console.error('Error loading courses for performance summary:', e);
-    performanceSummary.innerHTML = '<div style="color:#c00;">Error loading courses.</div>';
-  }
+      } catch (e) {
+      console.error('Error loading courses for performance summary:', e);
+      performanceSummary.innerHTML = `
+        <div class="error-message">
+          <div class="error-icon">⚠️</div>
+          <div class="error-text">
+            <h3>Error loading courses</h3>
+            <p>Please try refreshing the page.</p>
+          </div>
+        </div>
+      `;
+    }
+    
+    // Mark as loaded
+    performanceSummaryLoaded = true;
 }
 
 // Initialize on page load
@@ -770,14 +877,46 @@ document.addEventListener('DOMContentLoaded', function() {
   } else {
     // Default to dashboard (index.html)
     document.querySelector(".dashboard-btn").classList.add("active");
-    // Load dashboard data
-    loadCoursesAndGrades();
+    // Load dashboard data only if not already loaded
+    if (!performanceSummaryLoaded) {
+      loadCoursesAndGrades();
+    }
   }
   
-  // Refresh performance summary when returning to dashboard
+  // Load performance summary once and keep it persistent
   if (path === '/' || path === '/index.html') {
-    // Refresh performance summary every 5 seconds to keep it updated
-    setInterval(loadCoursesAndGrades, 5000);
+    // Load performance summary once, no automatic refresh
+    // Data will persist until server restart
+  }
+});
+
+// Listen for page visibility changes (when user returns to tab)
+document.addEventListener('visibilitychange', function() {
+  if (!document.hidden) {
+    // Page became visible again
+    const path = window.location.pathname;
+    if (path === '/' || path === '/index.html') {
+      // Only refresh events, keep performance summary data persistent
+      loadAllEvents();
+    }
+  }
+});
+
+// Listen for focus events (when user returns to window)
+window.addEventListener('focus', function() {
+  const path = window.location.pathname;
+  if (path === '/' || path === '/index.html') {
+    // Only refresh events, keep performance summary data persistent
+    loadAllEvents();
+  }
+});
+
+// Listen for browser navigation (back/forward buttons)
+window.addEventListener('popstate', function() {
+  const path = window.location.pathname;
+  if (path === '/' || path === '/index.html') {
+    // Only refresh events, keep performance summary data persistent
+    loadAllEvents();
   }
 });
 
@@ -846,13 +985,13 @@ async function confirmRemoveCourse() {
   const courseId = courseSelect.value;
   
   if (!courseId) {
-    alert('Please select a course to remove');
+    showMessage('Error', 'Please select a course to remove');
     return;
   }
   
   const course = currentCourses.find(c => c.id === parseInt(courseId));
   if (!course) {
-    alert('Course not found');
+    showMessage('Error', 'Course not found');
     return;
   }
   
@@ -881,21 +1020,21 @@ async function confirmRemoveCourse() {
       
       // Refresh performance summary and calendar if on dashboard
       if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
-        loadCoursesAndGrades();
+        loadCoursesAndGrades(true); // Force reload after course removal
         loadAllEvents(); // Refresh calendar events
       }
       
       // Close modal
       closeModal('removeCourseModal');
       
-      alert(`Course "${course.name}" and all its ${assessmentCount} assessments have been removed successfully!`);
+      showMessage('Success', `Course "${course.name}" and all its ${assessmentCount} assessments have been removed successfully!`);
     } else {
       const errorData = await response.json();
-      alert(`Error removing course: ${errorData.error || 'Unknown error'}`);
+      showMessage('Error', `Error removing course: ${errorData.error || 'Unknown error'}`);
     }
   } catch (error) {
     console.error('Error removing course:', error);
-    alert('Error removing course: Network error');
+    showMessage('Error', 'Error removing course: Network error');
   }
 }
 
@@ -924,21 +1063,21 @@ async function confirmClearAll() {
       
       // Refresh performance summary and calendar if on dashboard
       if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
-        loadCoursesAndGrades();
+        loadCoursesAndGrades(true); // Force reload after clearing all courses
         loadAllEvents(); // Refresh calendar events
       }
       
       // Close modal
       closeModal('clearAllModal');
       
-      alert('All courses have been cleared successfully!');
+      showMessage('Success', 'All courses have been cleared successfully!');
     } else {
       const errorData = await response.json();
-      alert(`Error clearing all courses: ${errorData.error || 'Unknown error'}`);
+      showMessage('Error', `Error clearing all courses: ${errorData.error || 'Unknown error'}`);
     }
   } catch (error) {
     console.error('Error clearing all courses:', error);
-    alert('Error clearing courses: Network error');
+    showMessage('Error', 'Error clearing courses: Network error');
   }
 }
 
@@ -954,7 +1093,7 @@ document.getElementById('addAssessmentForm').addEventListener('submit', async fu
   const assessmentDueDate = document.getElementById('assessmentDueDate').value;
   
   if (!selectedCourseId) {
-    alert('Please select a course first');
+    showMessage('Error', 'Please select a course first');
     return;
   }
   
@@ -986,20 +1125,20 @@ document.getElementById('addAssessmentForm').addEventListener('submit', async fu
       
       // Refresh performance summary if on dashboard
       if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
-        loadCoursesAndGrades();
+        loadCoursesAndGrades(true); // Force reload after adding assessment
       }
       
       // Close modal and reset form
       closeModal('addAssessmentModal');
       document.getElementById('addAssessmentForm').reset();
       
-      alert('Assessment added successfully!');
+      showMessage('Success', 'Assessment added successfully!');
     } else {
-      alert('Error adding assessment');
+      showMessage('Error', 'Error adding assessment');
     }
   } catch (error) {
     console.error('Error adding assessment:', error);
-    alert('Error adding assessment');
+    showMessage('Error', 'Error adding assessment');
   }
 });
   

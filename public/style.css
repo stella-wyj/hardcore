@@ -101,6 +101,8 @@ body {
 .main-content {
   /* padding: 30px; */
   display: flex;
+  width: 100%;
+  max-width: none;
 }
 
 .hi {
@@ -185,12 +187,189 @@ body {
 }
 
 .upload-box, .grades-box {
-  margin: 30px;
+  margin: 0 30px 30px 30px;
   background: #ffffff;
   padding: 20px;
   border-radius: 20px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); 
   
+}
+
+/* Align the first grades-box with the calendar */
+.right-column .grades-box:first-child {
+  margin-top: 0;
+}
+
+/* Performance Summary Styles */
+.performance-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 2px solid #f0f4ff;
+  margin-bottom: 15px;
+}
+
+.performance-header-item {
+  flex: 1;
+}
+
+.header-label {
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.performance-course-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid #f3f4f6;
+  transition: background-color 0.2s ease;
+}
+
+.performance-course-item:hover {
+  background-color: #f9fafb;
+  border-radius: 8px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-left: -10px;
+  margin-right: -10px;
+}
+
+.course-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.course-name {
+  font-weight: 600;
+  color: #1f2937;
+  font-size: 1rem;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.course-instructor {
+  font-size: 0.85rem;
+  color: #6b7280;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.grade-display {
+  font-weight: 700;
+  font-size: 1.1rem;
+  padding: 6px 12px;
+  border-radius: 6px;
+  min-width: 60px;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.grade-excellent {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.grade-good {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.grade-average {
+  background-color: #fef3c7;
+  color: #d97706;
+}
+
+.grade-poor {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+.grade-unknown {
+  background-color: #f3f4f6;
+  color: #6b7280;
+}
+
+.performance-summary-stats {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #f8fafc;
+  border-radius: 8px;
+  border-top: 2px solid #e5e7eb;
+}
+
+.summary-stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.summary-stat:last-child {
+  margin-bottom: 0;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: #374151;
+  font-weight: 500;
+}
+
+.stat-value {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.no-courses-message {
+  text-align: center;
+  padding: 40px 20px;
+  color: #6b7280;
+}
+
+.no-courses-icon {
+  font-size: 3rem;
+  margin-bottom: 15px;
+}
+
+.no-courses-text h3 {
+  margin: 0 0 8px 0;
+  color: #374151;
+  font-size: 1.2rem;
+}
+
+.no-courses-text p {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.error-message {
+  text-align: center;
+  padding: 40px 20px;
+  color: #dc2626;
+}
+
+.error-icon {
+  font-size: 3rem;
+  margin-bottom: 15px;
+}
+
+.error-text h3 {
+  margin: 0 0 8px 0;
+  color: #dc2626;
+  font-size: 1.2rem;
+}
+
+.error-text p {
+  margin: 0;
+  font-size: 0.95rem;
 }
 
 .upload-box h2,
@@ -317,10 +496,17 @@ body {
 }
 
 /* Grade Calculator Styles */
+.grade-calculator {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0 20px;
+}
+
 .gradecalc-container {
   width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
+  max-width: none;
+  margin: 0;
 }
 
 .gradecalc-header {
@@ -493,6 +679,10 @@ body {
 }
 
 /* Assessments Section */
+.assessments-section {
+  margin-top: 30px;
+}
+
 .assessments-section h4 {
   font-size: 1.25rem;
   color: #333;
@@ -700,28 +890,47 @@ body {
 }
 
 .add-assessment-btn {
-  background: #10b981;
+  background: #3b82f6;
   color: white;
   border: none;
-  border-radius: 6px;
-  padding: 8px 12px;
-  font-size: 0.85rem;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 4px;
-  transition: all 0.2s;
+  gap: 6px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
 }
 
 .add-assessment-btn:hover {
-  background: #059669;
-  transform: translateY(-1px);
+  background: #2563eb;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
 }
 
 .add-assessment-btn span {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: bold;
+  line-height: 1;
+}
+
+/* Assessments Header */
+.assessments-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 0;
+}
+
+.assessments-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #333;
+  font-weight: 600;
 }
 
 /* Modal Styles */
@@ -997,11 +1206,15 @@ body {
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: none;
+  margin: 0;
 }
 
 .assessments-table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: auto;
 }
 
 .assessments-table th {
@@ -1012,6 +1225,30 @@ body {
   color: #374151;
   border-bottom: 1px solid #e5e7eb;
   font-size: 0.9rem;
+}
+
+.assessments-table th:nth-child(1) { /* Assessment */
+  width: 30%;
+}
+
+.assessments-table th:nth-child(2) { /* Type */
+  width: 12%;
+}
+
+.assessments-table th:nth-child(3) { /* Weight */
+  width: 10%;
+}
+
+.assessments-table th:nth-child(4) { /* Due Date */
+  width: 15%;
+}
+
+.assessments-table th:nth-child(5) { /* Grade */
+  width: 15%;
+}
+
+.assessments-table th:nth-child(6) { /* Actions */
+  width: 18%;
 }
 
 .assessments-table td {
