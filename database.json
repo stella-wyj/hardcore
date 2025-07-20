@@ -401,6 +401,115 @@
         "Accessibility resources: https://megill.ca/equity/resources/disability"
       ],
       "createdAt": "2025-07-20T00:33:55.674Z"
+    },
+    {
+      "id": 5,
+      "name": "PHYS 101 - “Introductory Physics - Mechanics”]**",
+      "instructor": "** Prof. Simon Caron-Huot",
+      "color": "#fbbc04",
+      "goalGrade": null,
+      "assessments": [
+        {
+          "id": 26,
+          "courseId": 5,
+          "title": "Not specified",
+          "type": "quiz",
+          "dueDate": null,
+          "weight": null,
+          "grade": null,
+          "description": "Not specified",
+          "createdAt": "2025-07-20T00:53:54.108Z"
+        },
+        {
+          "id": 27,
+          "courseId": 5,
+          "title": "September 12: Assignment 1",
+          "type": "assignment",
+          "dueDate": null,
+          "weight": 15,
+          "grade": null,
+          "description": "September 12: Assignment 1 - 15%",
+          "createdAt": "2025-07-20T00:53:54.108Z"
+        },
+        {
+          "id": 28,
+          "courseId": 5,
+          "title": "Weekly problem sets done online via the Ans system.  Allows multiple attempts; full marks if correct regardless of number of tries.",
+          "type": "assignment",
+          "dueDate": null,
+          "weight": null,
+          "grade": null,
+          "description": "Weekly problem sets done online via the Ans system.  Allows multiple attempts; full marks if correct regardless of number of tries.",
+          "createdAt": "2025-07-20T00:53:54.108Z"
+        },
+        {
+          "id": 29,
+          "courseId": 5,
+          "title": "Subsequent weekly assignments",
+          "type": "assignment",
+          "dueDate": null,
+          "weight": 15,
+          "grade": null,
+          "description": "Subsequent weekly assignments - 15% (lowest dropped)",
+          "createdAt": "2025-07-20T00:53:54.108Z"
+        },
+        {
+          "id": 30,
+          "courseId": 5,
+          "title": "Weekly problem sets done online via the Ans system. Allows multiple attempts; full marks if correct regardless of number of tries.",
+          "type": "assignment",
+          "dueDate": null,
+          "weight": null,
+          "grade": null,
+          "description": "Weekly problem sets done online via the Ans system. Allows multiple attempts; full marks if correct regardless of number of tries.",
+          "createdAt": "2025-07-20T00:53:54.108Z"
+        },
+        {
+          "id": 31,
+          "courseId": 5,
+          "title": "[date]: Midterm Exam",
+          "type": "midterm",
+          "dueDate": null,
+          "weight": 18,
+          "grade": null,
+          "description": "[date]: Midterm Exam - 18% (Default), 20% (Option A), 23% (Option B), 25% (Option C)",
+          "createdAt": "2025-07-20T00:53:54.108Z"
+        },
+        {
+          "id": 32,
+          "courseId": 5,
+          "title": "[date]: Final Exam",
+          "type": "final",
+          "dueDate": null,
+          "weight": 30,
+          "grade": null,
+          "description": "[date]: Final Exam - 30% (Default), 35% (Option A), 35% (Option B), 40% (Option C)",
+          "createdAt": "2025-07-20T00:53:54.108Z"
+        }
+      ],
+      "officeHours": [
+        "Tuesdays, 1:00-2:00pm, Rutherford Physics Building room 312",
+        "Wednesdays, 9:30-10:55am, Rutherford 326"
+      ],
+      "textbooks": [
+        "*College Physics, 2e*  http://openstax.org/details/books/college-physics-2e - Free to download.",
+        "Donation link provided for support: https://riceconnect.rice.edu/donation/support-openstax-pdf",
+        "*Physics, Principles with Applications* by Douglas Giancoli, 7th edition, from Prentice Hall (Used copies available at McGill bookstore)."
+      ],
+      "otherInfo": [
+        "Course uses a flipped classroom approach.  Pre-lecture readings are mandatory.",
+        "Four grading schemes are available; students must choose by September 15th.",
+        "Labs are required (minimum 55% to pass the course).",
+        "Tutorials are strongly encouraged; participation counts toward grade (lowest two dropped).",
+        "Perusall platform used for pre-lecture readings; lowest two scores dropped.",
+        "Weekly schedule includes Perusall readings, lectures, Peer Collab sessions, tutorials, and assignments.",
+        "Estimated weekly workload: 10 hours.",
+        "Late or missed assessments receive a 0 unless prior arrangement is made with instructor for extenuating circumstances.",
+        "Regrade requests must be submitted within 10 days of grade release.",
+        "Students have the right to submit work in English or French.",
+        "Use of generative AI is permitted for understanding course material but not for assignment completion.  Students are accountable for submitted work."
+      ],
+      "createdAt": "2025-07-20T00:53:54.107Z"
     }
   ],
   "assessments": [
@@ -678,8 +787,85 @@
       "grade": null,
       "description": "December, [date]: Final exam - 30% (Default), 35% (Option A), 35% (Option B), 40% (Option C)",
       "createdAt": "2025-07-20T00:33:55.674Z"
+    },
+    {
+      "id": 26,
+      "courseId": 5,
+      "title": "Not specified",
+      "type": "quiz",
+      "dueDate": null,
+      "weight": null,
+      "grade": null,
+      "description": "Not specified",
+      "createdAt": "2025-07-20T00:53:54.108Z"
+    },
+    {
+      "id": 27,
+      "courseId": 5,
+      "title": "September 12: Assignment 1",
+      "type": "assignment",
+      "dueDate": null,
+      "weight": 15,
+      "grade": null,
+      "description": "September 12: Assignment 1 - 15%",
+      "createdAt": "2025-07-20T00:53:54.108Z"
+    },
+    {
+      "id": 28,
+      "courseId": 5,
+      "title": "Weekly problem sets done online via the Ans system.  Allows multiple attempts; full marks if correct regardless of number of tries.",
+      "type": "assignment",
+      "dueDate": null,
+      "weight": null,
+      "grade": null,
+      "description": "Weekly problem sets done online via the Ans system.  Allows multiple attempts; full marks if correct regardless of number of tries.",
+      "createdAt": "2025-07-20T00:53:54.108Z"
+    },
+    {
+      "id": 29,
+      "courseId": 5,
+      "title": "Subsequent weekly assignments",
+      "type": "assignment",
+      "dueDate": null,
+      "weight": 15,
+      "grade": null,
+      "description": "Subsequent weekly assignments - 15% (lowest dropped)",
+      "createdAt": "2025-07-20T00:53:54.108Z"
+    },
+    {
+      "id": 30,
+      "courseId": 5,
+      "title": "Weekly problem sets done online via the Ans system. Allows multiple attempts; full marks if correct regardless of number of tries.",
+      "type": "assignment",
+      "dueDate": null,
+      "weight": null,
+      "grade": null,
+      "description": "Weekly problem sets done online via the Ans system. Allows multiple attempts; full marks if correct regardless of number of tries.",
+      "createdAt": "2025-07-20T00:53:54.108Z"
+    },
+    {
+      "id": 31,
+      "courseId": 5,
+      "title": "[date]: Midterm Exam",
+      "type": "midterm",
+      "dueDate": null,
+      "weight": 18,
+      "grade": null,
+      "description": "[date]: Midterm Exam - 18% (Default), 20% (Option A), 23% (Option B), 25% (Option C)",
+      "createdAt": "2025-07-20T00:53:54.108Z"
+    },
+    {
+      "id": 32,
+      "courseId": 5,
+      "title": "[date]: Final Exam",
+      "type": "final",
+      "dueDate": null,
+      "weight": 30,
+      "grade": null,
+      "description": "[date]: Final Exam - 30% (Default), 35% (Option A), 35% (Option B), 40% (Option C)",
+      "createdAt": "2025-07-20T00:53:54.108Z"
     }
   ],
-  "nextCourseId": 5,
-  "nextAssessmentId": 26
+  "nextCourseId": 6,
+  "nextAssessmentId": 33
 }

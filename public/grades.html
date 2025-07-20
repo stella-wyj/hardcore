@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CourseFlow</title>
+  <title>CourseFlow - Grade Calculator</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="icon" type="image/svg+xml" href="images/logo_full.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -39,18 +39,74 @@
           <img src="images/Frame 15.png" alt="Notifications" />
         </div>
       </header>
+      
       <div class="hi">
-        <p><b>Hi, Jennifer!</b><br><span>Welcome to CourseFlow</span></p>
+        <p><b>Hi, Jennifer!</b><br><span>Grade Calculator</span></p>
       </div>
 
-      <main class="main-content"></main>
-        
+      <main class="main-content">
+        <div class="gradecalc-container">
+          <div class="gradecalc-header">
+            <h2>Grade Calculator</h2>
+            <p>Track your grades and see what you need to achieve your goals</p>
+          </div>
 
-        
-      
+          <!-- Course Tabs -->
+          <div class="course-tabs" id="courseTabs">
+            <!-- Course tabs will be dynamically generated here -->
+          </div>
+
+          <!-- Grade Calculator Content -->
+          <div class="gradecalc-content">
+            <div id="noCoursesMessage" class="no-courses-message">
+              <h3>No Courses Found</h3>
+              <p>Upload syllabus files to see your courses here</p>
+              <a href="index.html" class="upload-btn">Go to Dashboard</a>
+            </div>
+
+            <div id="courseContent" class="course-content" style="display: none;">
+              <!-- Course Info -->
+              <div class="course-info">
+                <h3 id="currentCourseName">Course Name</h3>
+                <div class="course-stats">
+                  <div class="stat">
+                    <span class="stat-label">Current Grade:</span>
+                    <span class="stat-value" id="currentGrade">--</span>
+                  </div>
+                  <div class="stat">
+                    <span class="stat-label">Goal Grade:</span>
+                    <div class="goal-input">
+                      <input type="number" id="goalGradeInput" placeholder="Set goal" min="0" max="100" />
+                      <button onclick="updateGoalGrade()">Update</button>
+                    </div>
+                  </div>
+                  <div class="stat" id="requiredGradeStat" style="display: none;">
+                    <span class="stat-label">Required Average:</span>
+                    <span class="stat-value" id="requiredGrade">--</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Assessments List -->
+              <div class="assessments-section">
+                <h4>Assessments</h4>
+                <div id="assessmentsList" class="assessments-list">
+                  <!-- Assessments will be dynamically generated here -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
     </div>
   </div>
 
   <script src="script.js"></script>
+  <script>
+    // Initialize grade calculator when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      loadGradeCalculatorData();
+    });
+  </script>
 </body>
 </html>
