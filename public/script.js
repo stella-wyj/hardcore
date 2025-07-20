@@ -143,7 +143,7 @@ function handleFile(file) {
         // Show raw Gemini response (collapsible)
         html += '<details style="margin-top:1em;">';
         html += '<summary style="cursor:pointer;font-weight:bold;">📄 View Raw Gemini Response</summary>';
-        html += '<div style="background:#f8f8f8;padding:1em;border-radius:8px;margin-top:0.5em;white-space:pre-line;font-family:monospace;font-size:0.9em;">';
+        html += '<div style="background:#f8f8f8;padding:1em;border-radius:8px;margin-top:0.5em;white-space:pre-wrap;font-family:monospace;font-size:0.9em;max-height:400px;overflow:auto;border:1px solid #e0e0e0;word-wrap:break-word;max-width:100%;">';
         html += data.extractedInfo ? data.extractedInfo.replace(/\n/g, '<br>') : 'No response';
         html += '</div>';
         html += '</details>';
@@ -151,7 +151,7 @@ function handleFile(file) {
         // Show structured data (collapsible)
         html += '<details style="margin-top:1em;">';
         html += '<summary style="cursor:pointer;font-weight:bold;">🔍 View Structured Data</summary>';
-        html += '<pre style="background:#f8f8f8;padding:1em;border-radius:8px;margin-top:0.5em;overflow:auto;font-size:0.9em;">' + JSON.stringify(data.parsedData, null, 2) + '</pre>';
+        html += '<pre style="background:#f8f8f8;padding:1em;border-radius:8px;margin-top:0.5em;overflow:auto;font-size:0.9em;max-height:400px;border:1px solid #e0e0e0;white-space:pre-wrap;word-wrap:break-word;max-width:100%;">' + JSON.stringify(data.parsedData, null, 2) + '</pre>';
         html += '</details>';
         
         backendResultsContent.innerHTML = html;
@@ -261,7 +261,7 @@ function handleTextSubmit() {
           html += '<h4>Words Found</h4>';
           html += '<ul style="max-height:150px;overflow:auto;">' + (data.words && data.words.length ? data.words.map(w => `<li>${w}</li>`).join('') : '<li>None</li>') + '</ul>';
           html += '<h3>Raw Backend Response</h3>';
-          html += '<pre style="background:#f8f8f8;padding:10px;border-radius:8px;overflow:auto;">' + JSON.stringify(data, null, 2) + '</pre>';
+          html += '<pre style="background:#f8f8f8;padding:10px;border-radius:8px;overflow:auto;max-height:400px;border:1px solid #e0e0e0;white-space:pre-wrap;word-wrap:break-word;max-width:100%;">' + JSON.stringify(data, null, 2) + '</pre>';
           backendResultsContent.innerHTML = html;
         }, 1000);
               } else {

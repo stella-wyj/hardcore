@@ -33,6 +33,7 @@ coverage/
 # nyc test coverage
 .nyc_output
 
+
 # Grunt intermediate storage
 .grunt
 
@@ -43,7 +44,7 @@ bower_components
 .lock-wscript
 
 # Compiled binary addons
-build/Release
+build/Releas
 
 # Dependency directories
 jspm_packages/
