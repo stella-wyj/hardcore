@@ -2,137 +2,422 @@
   "courses": [
     {
       "id": 1,
-      "name": "Linear Algebra and Geometry",
-      "instructor": "Jeremy Macdonald, Romain Branchereau, Miguel Ayala, Antoine Giard",
-      "color": "#34a853",
+      "name": "Computer Science and Information Systems",
+      "instructor": "Not specified",
+      "color": "#ea4335",
       "goalGrade": null,
       "assessments": [
         {
           "id": 1,
           "courseId": 1,
-          "title": "Unnamed Assessment",
+          "title": "Syllabus Quiz",
           "type": "quiz",
-          "dueDate": null,
-          "weight": null,
+          "dueDate": "2025-09-10",
+          "weight": 2,
           "grade": null,
-          "description": "Not specified",
-          "createdAt": "2025-07-20T03:44:37.308Z"
+          "description": "2025-09-10: Syllabus Quiz - 2%",
+          "createdAt": "2025-07-20T04:21:05.397Z"
         },
         {
           "id": 2,
           "courseId": 1,
-          "title": "Webwork assignments",
-          "type": "assignment",
+          "title": "A brief online quiz course expectations, policies, and grading, meant to ensure all students understand how the course will run",
+          "type": "quiz",
           "dueDate": null,
-          "weight": 15,
+          "weight": null,
           "grade": null,
-          "description": "Not specified: Webwork assignments - 15%",
-          "createdAt": "2025-07-20T03:44:37.308Z"
+          "description": "A brief online quiz covering course expectations, policies, and grading, meant to ensure all students understand how the course will run.",
+          "createdAt": "2025-07-20T04:21:05.397Z"
         },
         {
           "id": 3,
           "courseId": 1,
-          "title": "Assignments released every Friday, Sunday. Multiple attempts allowed",
-          "type": "assignment",
-          "dueDate": null,
-          "weight": null,
+          "title": "Quiz 1",
+          "type": "quiz",
+          "dueDate": "2025-09-24",
+          "weight": 3,
           "grade": null,
-          "description": "Assignments released every Friday, due Sunday.  Multiple attempts allowed.",
-          "createdAt": "2025-07-20T03:44:37.308Z"
+          "description": "2025-09-24: Quiz 1 - 3%",
+          "createdAt": "2025-07-20T04:21:05.397Z"
         },
         {
           "id": 4,
           "courseId": 1,
-          "title": "Midterm Exam",
-          "type": "midterm",
-          "dueDate": "2024-10-09",
-          "weight": 20,
+          "title": "This in-class quiz will cover programming fundamentals, with a focus on variables, data types, and basic operations",
+          "type": "quiz",
+          "dueDate": null,
+          "weight": null,
           "grade": null,
-          "description": "2024-10-09: Midterm Exam - 20%",
-          "createdAt": "2025-07-20T03:44:37.308Z"
+          "description": "This in-class quiz will cover programming fundamentals, with a focus on variables, data types, and basic operations.",
+          "createdAt": "2025-07-20T04:21:05.397Z"
         },
         {
           "id": 5,
           "courseId": 1,
+          "title": "Quiz 2",
+          "type": "quiz",
+          "dueDate": "2025-10-29",
+          "weight": 4,
+          "grade": null,
+          "description": "2025-10-29: Quiz 2 - 4%",
+          "createdAt": "2025-07-20T04:21:05.397Z"
+        },
+        {
+          "id": 6,
+          "courseId": 1,
+          "title": "An in-class quiz testing your understanding of if-statements, loops, and how to control program flow",
+          "type": "quiz",
+          "dueDate": null,
+          "weight": null,
+          "grade": null,
+          "description": "An in-class quiz testing your understanding of if-statements, loops, and how to control program flow.",
+          "createdAt": "2025-07-20T04:21:05.397Z"
+        },
+        {
+          "id": 7,
+          "courseId": 1,
+          "title": "Assignment 1",
+          "type": "assignment",
+          "dueDate": "2025-09-18",
+          "weight": 5,
+          "grade": null,
+          "description": "2025-09-18: Assignment 1 - 5%",
+          "createdAt": "2025-07-20T04:21:05.397Z"
+        },
+        {
+          "id": 8,
+          "courseId": 1,
+          "title": "Your first assignment involves writing a Python script to solve a set of simple math problems. Submit your code through the course portal",
+          "type": "assignment",
+          "dueDate": null,
+          "weight": null,
+          "grade": null,
+          "description": "Your first assignment involves writing a Python script to solve a set of simple math problems. Submit your code through the course portal.",
+          "createdAt": "2025-07-20T04:21:05.397Z"
+        },
+        {
+          "id": 9,
+          "courseId": 1,
+          "title": "Assignment 2",
+          "type": "assignment",
+          "dueDate": "2025-10-02",
+          "weight": 6,
+          "grade": null,
+          "description": "2025-10-02: Assignment 2 - 6%",
+          "createdAt": "2025-07-20T04:21:05.397Z"
+        },
+        {
+          "id": 10,
+          "courseId": 1,
+          "title": "You'll develop a simple calculator app using Python functions and user input. The assignment emphasizes code structure and user experience",
+          "type": "assignment",
+          "dueDate": null,
+          "weight": null,
+          "grade": null,
+          "description": "You'll develop a simple calculator app using Python functions and user input. The assignment emphasizes code structure and user experience.",
+          "createdAt": "2025-07-20T04:21:05.397Z"
+        },
+        {
+          "id": 11,
+          "courseId": 1,
+          "title": "Assignment 3",
+          "type": "assignment",
+          "dueDate": "2025-10-23",
+          "weight": 6,
+          "grade": null,
+          "description": "2025-10-23: Assignment 3 - 6%",
+          "createdAt": "2025-07-20T04:21:05.397Z"
+        },
+        {
+          "id": 12,
+          "courseId": 1,
+          "title": "This assignment asks you to read and write data from files using Python, practicing essential skills for handling input and output",
+          "type": "assignment",
+          "dueDate": null,
+          "weight": null,
+          "grade": null,
+          "description": "This assignment asks you to read and write data from files using Python, practicing essential skills for handling input and output.",
+          "createdAt": "2025-07-20T04:21:05.397Z"
+        },
+        {
+          "id": 13,
+          "courseId": 1,
+          "title": "Assignment 4",
+          "type": "assignment",
+          "dueDate": "2025-11-13",
+          "weight": 6,
+          "grade": null,
+          "description": "2025-11-13: Assignment 4 - 6%",
+          "createdAt": "2025-07-20T04:21:05.397Z"
+        },
+        {
+          "id": 14,
+          "courseId": 1,
+          "title": "Build a simple game in Python using functions, logic, and user input. This assignment focuses on creativity and code organization",
+          "type": "assignment",
+          "dueDate": null,
+          "weight": null,
+          "grade": null,
+          "description": "Build a simple game in Python using functions, logic, and user input. This assignment focuses on creativity and code organization.",
+          "createdAt": "2025-07-20T04:21:05.397Z"
+        },
+        {
+          "id": 15,
+          "courseId": 1,
+          "title": "Project Proposal",
+          "type": "assignment",
+          "dueDate": "2025-11-05",
+          "weight": 5,
+          "grade": null,
+          "description": "2025-11-05: Project Proposal - 5%",
+          "createdAt": "2025-07-20T04:21:05.397Z"
+        },
+        {
+          "id": 16,
+          "courseId": 1,
+          "title": "Submit a short write-up (1-2 pages) proposing your idea for the final group project, your team members and project goals",
+          "type": "assignment",
+          "dueDate": null,
+          "weight": null,
+          "grade": null,
+          "description": "Submit a short write-up (1-2 pages) proposing your idea for the final group project, including your team members and project goals.",
+          "createdAt": "2025-07-20T04:21:05.397Z"
+        },
+        {
+          "id": 17,
+          "courseId": 1,
+          "title": "Midterm 1",
+          "type": "midterm",
+          "dueDate": "2025-10-14",
+          "weight": 18,
+          "grade": null,
+          "description": "2025-10-14: Midterm 1 - 18%",
+          "createdAt": "2025-07-20T04:21:05.397Z"
+        },
+        {
+          "id": 18,
+          "courseId": 1,
           "title": "Final Exam",
           "type": "final",
-          "dueDate": null,
-          "weight": 65,
+          "dueDate": "2025-12-16",
+          "weight": 15,
           "grade": null,
-          "description": "Not specified: Final Exam - 65% or 85%",
-          "createdAt": "2025-07-20T03:44:37.308Z"
+          "description": "2025-12-16: Final Exam - 15%",
+          "createdAt": "2025-07-20T04:21:05.397Z"
         }
       ],
       "officeHours": [
         "Not specified"
       ],
       "textbooks": [
-        "Linear Algebra with Applications by W. K. Nicholson - Not specified",
-        "cost: Free"
+        "Not specified"
       ],
       "otherInfo": [
-        "Two grading schemes are available; the higher grade will be used.  Scheme 1 includes a midterm (20%), Webwork assignments (15%), and a final exam (65%). Scheme 2 includes Webwork assignments (15%) and a final exam (85%). Letter grades are assigned based on a provided interval table; boundaries may be lowered at instructors’ discretion. Students are responsible for being aware of all assignment due dates. Requests for brief extensions will be considered. Collaboration on assignments is allowed, but outside help in solving problems is prohibited.  Course information and announcements will be posted on myCourses.  Use the Ed discussion forum for questions, not email.  Several resources for help are available including office hours, tutorials, a discussion forum, the Burnside Math Helpdesk, and SciLearn Peer Collaboration.  Students may submit written work in English or French. Legally mandated accommodations are handled by Student Accessibility and Achievement. The course content and/or evaluation scheme may change due to extraordinary circumstances."
+        "Participation is worth 10% and is based on regular attendance, in-class engagement, and contributions to group activities.  The Group Project (12%) is a group assignment due December 3, 2025.  Students should bring a non-programmable calculator and their cheat sheet to Midterm 1."
       ],
-      "createdAt": "2025-07-20T03:44:37.308Z"
+      "createdAt": "2025-07-20T04:21:05.397Z"
     }
   ],
   "assessments": [
     {
       "id": 1,
       "courseId": 1,
-      "title": "Unnamed Assessment",
+      "title": "Syllabus Quiz",
       "type": "quiz",
-      "dueDate": null,
-      "weight": null,
+      "dueDate": "2025-09-10",
+      "weight": 2,
       "grade": null,
-      "description": "Not specified",
-      "createdAt": "2025-07-20T03:44:37.308Z"
+      "description": "2025-09-10: Syllabus Quiz - 2%",
+      "createdAt": "2025-07-20T04:21:05.397Z"
     },
     {
       "id": 2,
       "courseId": 1,
-      "title": "Webwork assignments",
-      "type": "assignment",
+      "title": "A brief online quiz course expectations, policies, and grading, meant to ensure all students understand how the course will run",
+      "type": "quiz",
       "dueDate": null,
-      "weight": 15,
+      "weight": null,
       "grade": null,
-      "description": "Not specified: Webwork assignments - 15%",
-      "createdAt": "2025-07-20T03:44:37.308Z"
+      "description": "A brief online quiz covering course expectations, policies, and grading, meant to ensure all students understand how the course will run.",
+      "createdAt": "2025-07-20T04:21:05.397Z"
     },
     {
       "id": 3,
       "courseId": 1,
-      "title": "Assignments released every Friday, Sunday. Multiple attempts allowed",
-      "type": "assignment",
-      "dueDate": null,
-      "weight": null,
+      "title": "Quiz 1",
+      "type": "quiz",
+      "dueDate": "2025-09-24",
+      "weight": 3,
       "grade": null,
-      "description": "Assignments released every Friday, due Sunday.  Multiple attempts allowed.",
-      "createdAt": "2025-07-20T03:44:37.308Z"
+      "description": "2025-09-24: Quiz 1 - 3%",
+      "createdAt": "2025-07-20T04:21:05.397Z"
     },
     {
       "id": 4,
       "courseId": 1,
-      "title": "Midterm Exam",
-      "type": "midterm",
-      "dueDate": "2024-10-09",
-      "weight": 20,
+      "title": "This in-class quiz will cover programming fundamentals, with a focus on variables, data types, and basic operations",
+      "type": "quiz",
+      "dueDate": null,
+      "weight": null,
       "grade": null,
-      "description": "2024-10-09: Midterm Exam - 20%",
-      "createdAt": "2025-07-20T03:44:37.308Z"
+      "description": "This in-class quiz will cover programming fundamentals, with a focus on variables, data types, and basic operations.",
+      "createdAt": "2025-07-20T04:21:05.397Z"
     },
     {
       "id": 5,
       "courseId": 1,
+      "title": "Quiz 2",
+      "type": "quiz",
+      "dueDate": "2025-10-29",
+      "weight": 4,
+      "grade": null,
+      "description": "2025-10-29: Quiz 2 - 4%",
+      "createdAt": "2025-07-20T04:21:05.397Z"
+    },
+    {
+      "id": 6,
+      "courseId": 1,
+      "title": "An in-class quiz testing your understanding of if-statements, loops, and how to control program flow",
+      "type": "quiz",
+      "dueDate": null,
+      "weight": null,
+      "grade": null,
+      "description": "An in-class quiz testing your understanding of if-statements, loops, and how to control program flow.",
+      "createdAt": "2025-07-20T04:21:05.397Z"
+    },
+    {
+      "id": 7,
+      "courseId": 1,
+      "title": "Assignment 1",
+      "type": "assignment",
+      "dueDate": "2025-09-18",
+      "weight": 5,
+      "grade": null,
+      "description": "2025-09-18: Assignment 1 - 5%",
+      "createdAt": "2025-07-20T04:21:05.397Z"
+    },
+    {
+      "id": 8,
+      "courseId": 1,
+      "title": "Your first assignment involves writing a Python script to solve a set of simple math problems. Submit your code through the course portal",
+      "type": "assignment",
+      "dueDate": null,
+      "weight": null,
+      "grade": null,
+      "description": "Your first assignment involves writing a Python script to solve a set of simple math problems. Submit your code through the course portal.",
+      "createdAt": "2025-07-20T04:21:05.397Z"
+    },
+    {
+      "id": 9,
+      "courseId": 1,
+      "title": "Assignment 2",
+      "type": "assignment",
+      "dueDate": "2025-10-02",
+      "weight": 6,
+      "grade": null,
+      "description": "2025-10-02: Assignment 2 - 6%",
+      "createdAt": "2025-07-20T04:21:05.397Z"
+    },
+    {
+      "id": 10,
+      "courseId": 1,
+      "title": "You'll develop a simple calculator app using Python functions and user input. The assignment emphasizes code structure and user experience",
+      "type": "assignment",
+      "dueDate": null,
+      "weight": null,
+      "grade": null,
+      "description": "You'll develop a simple calculator app using Python functions and user input. The assignment emphasizes code structure and user experience.",
+      "createdAt": "2025-07-20T04:21:05.397Z"
+    },
+    {
+      "id": 11,
+      "courseId": 1,
+      "title": "Assignment 3",
+      "type": "assignment",
+      "dueDate": "2025-10-23",
+      "weight": 6,
+      "grade": null,
+      "description": "2025-10-23: Assignment 3 - 6%",
+      "createdAt": "2025-07-20T04:21:05.397Z"
+    },
+    {
+      "id": 12,
+      "courseId": 1,
+      "title": "This assignment asks you to read and write data from files using Python, practicing essential skills for handling input and output",
+      "type": "assignment",
+      "dueDate": null,
+      "weight": null,
+      "grade": null,
+      "description": "This assignment asks you to read and write data from files using Python, practicing essential skills for handling input and output.",
+      "createdAt": "2025-07-20T04:21:05.397Z"
+    },
+    {
+      "id": 13,
+      "courseId": 1,
+      "title": "Assignment 4",
+      "type": "assignment",
+      "dueDate": "2025-11-13",
+      "weight": 6,
+      "grade": null,
+      "description": "2025-11-13: Assignment 4 - 6%",
+      "createdAt": "2025-07-20T04:21:05.397Z"
+    },
+    {
+      "id": 14,
+      "courseId": 1,
+      "title": "Build a simple game in Python using functions, logic, and user input. This assignment focuses on creativity and code organization",
+      "type": "assignment",
+      "dueDate": null,
+      "weight": null,
+      "grade": null,
+      "description": "Build a simple game in Python using functions, logic, and user input. This assignment focuses on creativity and code organization.",
+      "createdAt": "2025-07-20T04:21:05.397Z"
+    },
+    {
+      "id": 15,
+      "courseId": 1,
+      "title": "Project Proposal",
+      "type": "assignment",
+      "dueDate": "2025-11-05",
+      "weight": 5,
+      "grade": null,
+      "description": "2025-11-05: Project Proposal - 5%",
+      "createdAt": "2025-07-20T04:21:05.397Z"
+    },
+    {
+      "id": 16,
+      "courseId": 1,
+      "title": "Submit a short write-up (1-2 pages) proposing your idea for the final group project, your team members and project goals",
+      "type": "assignment",
+      "dueDate": null,
+      "weight": null,
+      "grade": null,
+      "description": "Submit a short write-up (1-2 pages) proposing your idea for the final group project, including your team members and project goals.",
+      "createdAt": "2025-07-20T04:21:05.397Z"
+    },
+    {
+      "id": 17,
+      "courseId": 1,
+      "title": "Midterm 1",
+      "type": "midterm",
+      "dueDate": "2025-10-14",
+      "weight": 18,
+      "grade": null,
+      "description": "2025-10-14: Midterm 1 - 18%",
+      "createdAt": "2025-07-20T04:21:05.397Z"
+    },
+    {
+      "id": 18,
+      "courseId": 1,
       "title": "Final Exam",
       "type": "final",
-      "dueDate": null,
-      "weight": 65,
+      "dueDate": "2025-12-16",
+      "weight": 15,
       "grade": null,
-      "description": "Not specified: Final Exam - 65% or 85%",
-      "createdAt": "2025-07-20T03:44:37.308Z"
+      "description": "2025-12-16: Final Exam - 15%",
+      "createdAt": "2025-07-20T04:21:05.397Z"
     }
   ],
   "nextCourseId": 2,
-  "nextAssessmentId": 6
+  "nextAssessmentId": 19
 }

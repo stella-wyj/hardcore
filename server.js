@@ -185,6 +185,54 @@ app.delete('/api/courses/:id/assessments/:aid/grade', async (req, res) => {
   }
 });
 
+// Delete individual course
+app.delete('/api/courses/:id', async (req, res) => {
+  if (isVercel) {
+    res.status(404).json({ error: 'Not available on Vercel' });
+    return;
+  }
+  try {
+    const { deleteCourse } = await import('./api/syllabusParser.js');
+    const courseId = parseInt(req.params.id);
+    
+    const success = deleteCourse(courseId);
+    if (!success) {
+      return res.status(404).json({ error: 'Course not found' });
+    }
+
+    res.json({
+      message: 'Course deleted successfully',
+      courseId: courseId
+    });
+  } catch (error) {
+    console.error('Error deleting course:', error);
+    res.status(500).json({ error: 'Failed to delete course' });
+  }
+});
+
+// Clear all courses
+app.delete('/api/clear-all', async (req, res) => {
+  if (isVercel) {
+    res.status(404).json({ error: 'Not available on Vercel' });
+    return;
+  }
+  try {
+    const { clearAllCourses } = await import('./api/syllabusParser.js');
+    
+    const success = clearAllCourses();
+    if (!success) {
+      return res.status(500).json({ error: 'Failed to clear courses' });
+    }
+
+    res.json({
+      message: 'All courses cleared successfully'
+    });
+  } catch (error) {
+    console.error('Error clearing all courses:', error);
+    res.status(500).json({ error: 'Failed to clear all courses' });
+  }
+});
+
 // Calendar API endpoints
 app.get('/api/calendar/events', async (req, res) => {
   if (isVercel) {

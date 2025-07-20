@@ -214,8 +214,9 @@ function handleFile(file) {
         
         backendResultsContent.innerHTML = html;
         
-        // Refresh the courses list in Performance Summary
+        // Refresh the courses list in Performance Summary and calendar
         loadCoursesAndGrades();
+        loadAllEvents(); // Refresh calendar events
         
         // Also refresh the grade calculator if we're on the grades page
         if (window.location.pathname.includes('grades')) {
@@ -343,6 +344,15 @@ function handleTextSubmit() {
           html += '<h3>Raw Backend Response</h3>';
           html += '<pre style="background:#f8f8f8;padding:10px;border-radius:8px;overflow:auto;max-height:400px;border:1px solid #e0e0e0;white-space:pre-wrap;word-wrap:break-word;max-width:100%;">' + JSON.stringify(data, null, 2) + '</pre>';
           backendResultsContent.innerHTML = html;
+          
+          // Refresh the courses list in Performance Summary and calendar
+          loadCoursesAndGrades();
+          loadAllEvents(); // Refresh calendar events
+          
+          // Also refresh the grade calculator if we're on the grades page
+          if (window.location.pathname.includes('grades')) {
+            loadGradeCalculatorData();
+          }
         }, 1000);
               } else {
           updateProgress(100, 'Error!', '❌ ' + (data.error || 'Failed to analyze syllabus'));
@@ -783,10 +793,6 @@ function clearGradeCalculator() {
 }
 
 // --- Modal Functions ---
-function showAddCourseModal() {
-  document.getElementById('addCourseModal').style.display = 'flex';
-}
-
 function showAddAssessmentModal() {
   document.getElementById('addAssessmentModal').style.display = 'flex';
 }
@@ -841,7 +847,8 @@ async function confirmRemoveCourse() {
     return;
   }
   
-
+  // Get assessment count for the course
+  const assessmentCount = course.assessments ? course.assessments.length : 0;
   
   try {
     const response = await fetch(`/api/courses/${courseId}`, {
@@ -863,21 +870,23 @@ async function confirmRemoveCourse() {
         selectCourse(currentCourses[0].id);
       }
       
-      // Refresh performance summary if on dashboard
+      // Refresh performance summary and calendar if on dashboard
       if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
         loadCoursesAndGrades();
+        loadAllEvents(); // Refresh calendar events
       }
       
       // Close modal
       closeModal('removeCourseModal');
       
-      alert(`Course "${course.name}" and all its ${assessmentsToRemove.length} assessments have been removed successfully!`);
+      alert(`Course "${course.name}" and all its ${assessmentCount} assessments have been removed successfully!`);
     } else {
-      alert('Error removing course');
+      const errorData = await response.json();
+      alert(`Error removing course: ${errorData.error || 'Unknown error'}`);
     }
   } catch (error) {
     console.error('Error removing course:', error);
-    alert('Error removing course');
+    alert('Error removing course: Network error');
   }
 }
 
@@ -885,7 +894,6 @@ async function confirmRemoveCourse() {
 
 // Confirm and clear all courses
 async function confirmClearAll() {
-  
   try {
     const response = await fetch('/api/clear-all', {
       method: 'DELETE'
@@ -905,9 +913,10 @@ async function confirmClearAll() {
       if (courseContent) courseContent.style.display = 'none';
       if (noCoursesMessage) noCoursesMessage.style.display = 'block';
       
-      // Refresh performance summary if on dashboard
+      // Refresh performance summary and calendar if on dashboard
       if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
         loadCoursesAndGrades();
+        loadAllEvents(); // Refresh calendar events
       }
       
       // Close modal
@@ -915,64 +924,16 @@ async function confirmClearAll() {
       
       alert('All courses have been cleared successfully!');
     } else {
-      alert('Error clearing all courses');
+      const errorData = await response.json();
+      alert(`Error clearing all courses: ${errorData.error || 'Unknown error'}`);
     }
   } catch (error) {
     console.error('Error clearing all courses:', error);
-    alert('Error clearing courses');
+    alert('Error clearing courses: Network error');
   }
 }
 
-// --- Add Course Functionality ---
-document.getElementById('addCourseForm').addEventListener('submit', async function(e) {
-  e.preventDefault();
-  
-  const courseName = document.getElementById('courseName').value;
-  const courseInstructor = document.getElementById('courseInstructor').value;
-  const courseColor = document.getElementById('courseColor').value;
-  
-  try {
-    const response = await fetch('/api/courses', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name: courseName,
-        instructor: courseInstructor,
-        color: courseColor,
-        assessments: []
-      })
-    });
-    
-    if (response.ok) {
-      const newCourse = await response.json();
-      
-      // Add to local data
-      currentCourses.push(newCourse);
-      
-      // Re-render course tabs
-      renderCourseTabs(currentCourses);
-      
-      // Select the new course
-      selectCourse(newCourse.id);
-      
-      // Refresh performance summary if on dashboard
-      if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
-        loadCoursesAndGrades();
-      }
-      
-      // Close modal and reset form
-      closeModal('addCourseModal');
-      document.getElementById('addCourseForm').reset();
-      
-      alert('Course added successfully!');
-    } else {
-      alert('Error adding course');
-    }
-  } catch (error) {
-    console.error('Error adding course:', error);
-    alert('Error adding course');
-  }
-});
+
 
 // --- Add Assessment Functionality ---
 document.getElementById('addAssessmentForm').addEventListener('submit', async function(e) {

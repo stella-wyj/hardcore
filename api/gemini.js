@@ -249,16 +249,17 @@ const extractSyllabusInfo = async (pdfText, fileName) => {
 
     IMPORTANT DATE AND ASSIGNMENT PARSING RULES:
     1. ANY date that mentions a month (January, Feb, March, etc.) or weekday (Monday, Tuesday, etc.) followed by a day number is likely a DUE DATE for an assignment, quiz, or exam.
-    2. Each assignment, quiz, midterm, and final should have a UNIQUE, SPECIFIC name that clearly differentiates it from others.
-    3. Convert all dates to YYYY-MM-DD format. If the year is not specified, assume the current academic year.
+    2. If the assingment "name" is greater than 3 words long, it is likely a DESCRIPTION, not an actual assignment
+    3. Convert all dates to YYYY-MM-DD format. If the year is not specified don't include it
     4. If multiple assignments are mentioned with the same date, list them as separate items with distinct names.
-    5. Pay special attention to phrases like "due on", "due by", "submission date", "exam date", "quiz date" - these indicate due dates.
-    6. For assignments without specific names, create descriptive names based on content or week number.
+    5. If an assessment has null% weight, DO NOT INCLUDE IT in the grade calculator page at all
+    6. Just because a sentence includes the word "quiz" or "assigment" or "test" does NOT mean it is an actual assignment
     7. Ensure each assessment has a clear weight percentage. If not specified, use "Not specified" for the weight.
     8. do NOT include the course description in the course name, the assignment names should be at most 2 words (ie. Assignment 1, or Final Exam, or Quiz 1 etc)
     9. do NOT include the assignment date in the assignment name 
-    10. assignment dates are DUE DATES, if it does have a year leave it as is a just put the month and day
-
+    10. Actual assessments should begin with capital letters, look for: "Assignment", "Test", "Quiz", "Midterm", "Final"
+    
+  
     IMPORTANT: This syllabus document is for ONE COURSE ONLY. Extract information for a single course, even if the document mentions multiple topics or sections. If the document contains information for multiple separate courses, only extract the information for the main/primary course that this syllabus represents.
 
     If any information is not available, indicate with "Not specified" or skip that line.
@@ -345,13 +346,11 @@ const processAndStoreSyllabus = async (filePath) => {
       };
     }
     
-    // Send data to gradeCalc backend
-    console.log('Syncing with gradeCalc backend...');
+    // Send data to gradeCalc backend (silently)
     await syncToGradeCalc(result.course, parsedData);
     
     console.log(`✅ Course created with ID: ${result.courseId}`);
     console.log(`📊 ${result.assessmentCount} assessments added`);
-    console.log(`🔄 Synced with gradeCalc backend`);
     
     return {
       success: true,
@@ -387,9 +386,7 @@ const syncToGradeCalc = async (course, parsedData) => {
       }))
     };
     
-    console.log('📤 Sending course data to gradeCalc backend...');
-    
-    // Send course data to gradeCalc
+    // Send course data to gradeCalc (silently)
     const response = await fetch(`${gradeCalcUrl}/courses`, {
       method: 'POST',
       headers: {
@@ -403,15 +400,11 @@ const syncToGradeCalc = async (course, parsedData) => {
     }
     
     const result = await response.json();
-    console.log(`✅ Successfully synced course "${course.name}" to gradeCalc backend`);
-    console.log(`🆔 gradeCalc course ID: ${result.id}`);
     
     return result;
     
   } catch (error) {
-    console.warn('⚠️ Failed to sync with gradeCalc backend:', error.message);
-    console.log('💡 gradeCalc backend is not required for main functionality');
-    // Don't throw error - this shouldn't break the main flow
+    // Silently ignore gradeCalc sync failures - not required for main functionality
     return null;
   }
 };
