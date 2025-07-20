@@ -6,9 +6,17 @@ dotenv.config();
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import fs from 'fs';
 import path from 'path';
+import os from 'os';
 import 'dotenv/config';
 
+// Check if API key is available
+if (!process.env.GEMINI_API_KEY) {
+  console.error('❌ GEMINI_API_KEY environment variable is not set!');
+  throw new Error('GEMINI_API_KEY environment variable is required');
+}
+
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+console.log('✅ Gemini API key loaded successfully');
 
 // Function to read PDF and extract text
 const readPDF = async (filePath) => {
@@ -19,33 +27,77 @@ const readPDF = async (filePath) => {
       // Read text file directly
       return fs.readFileSync(filePath, 'utf8');
     } else if (fileExtension === '.pdf') {
-      // Use pdfjs-dist legacy build for Node.js
+      // Use pdfjs-dist with proper Node.js setup
       const dataBuffer = fs.readFileSync(filePath);
       
-      // Import the legacy build
-      const pdfjsLib = await import('pdfjs-dist/legacy/build/pdf.mjs');
-      
-      // Set up the worker for Node.js environment
-      pdfjsLib.GlobalWorkerOptions.workerSrc = 'pdfjs-dist/legacy/build/pdf.worker.mjs';
-      
-      // Convert Buffer to Uint8Array for pdfjs-dist
-      const uint8Array = new Uint8Array(dataBuffer);
-      
-      // Load the PDF document
-      const loadingTask = pdfjsLib.getDocument({ data: uint8Array });
-      const pdf = await loadingTask.promise;
-      
-      let fullText = '';
-      
-      // Extract text from each page
-      for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
-        const page = await pdf.getPage(pageNum);
-        const textContent = await page.getTextContent();
-        const pageText = textContent.items.map(item => item.str).join(' ');
-        fullText += pageText + '\n';
-      }
-      
-      return fullText;
+      try {
+        // Use OCR approach: Convert PDF to images, then extract text with Tesseract
+        console.log('📄 Using OCR for PDF extraction...');
+        
+        const { exec } = await import('child_process');
+        const { promisify } = await import('util');
+        const execAsync = promisify(exec);
+        
+        // Create temporary directory for images
+        const tempDir = path.join(os.tmpdir(), `pdf-ocr-${Date.now()}`);
+        fs.mkdirSync(tempDir, { recursive: true });
+        
+        try {
+          // Convert PDF pages to images using pdftoppm
+          console.log('🔄 Converting PDF pages to images...');
+          await execAsync(`pdftoppm -png "${filePath}" "${tempDir}/page"`);
+          
+          // Get list of generated image files
+          const imageFiles = fs.readdirSync(tempDir)
+            .filter(file => file.endsWith('.png'))
+            .sort((a, b) => {
+              const numA = parseInt(a.match(/page-(\d+)\.png/)?.[1] || '0');
+              const numB = parseInt(b.match(/page-(\d+)\.png/)?.[1] || '0');
+              return numA - numB;
+            });
+          
+          console.log(`📄 Found ${imageFiles.length} pages to process`);
+          
+          let fullText = '';
+          
+          // Process each page with Tesseract OCR
+          for (const imageFile of imageFiles) {
+            const imagePath = path.join(tempDir, imageFile);
+            console.log(`🔍 Processing ${imageFile} with OCR...`);
+            
+            try {
+              const { stdout } = await execAsync(`tesseract "${imagePath}" stdout -l eng`);
+              fullText += stdout.trim() + '\n\n';
+            } catch (ocrError) {
+              console.warn(`⚠️ OCR failed for ${imageFile}:`, ocrError.message);
+            }
+          }
+          
+          // Clean up temporary files
+          fs.rmSync(tempDir, { recursive: true, force: true });
+          
+          if (fullText.trim().length > 50) {
+            console.log('✅ OCR extraction successful');
+            console.log(`📝 Extracted ${fullText.length} characters`);
+            console.log(`📋 Sample text: ${fullText.substring(0, 200)}...`);
+            return fullText;
+          } else {
+            throw new Error('OCR extracted very little text');
+          }
+          
+        } catch (conversionError) {
+          // Clean up on error
+          if (fs.existsSync(tempDir)) {
+            fs.rmSync(tempDir, { recursive: true, force: true });
+          }
+          throw conversionError;
+        }
+        
+              } catch (pdfError) {
+          console.error('❌ PDF parsing failed:', pdfError.message);
+          console.log('⚠️ PDF parsing failed, throwing error to indicate manual input needed');
+          throw new Error('PDF could not be parsed automatically. Please use the text input option to manually enter the syllabus information.');
+        }
     } else {
       // Try to read as text
       return fs.readFileSync(filePath, 'utf8');
@@ -59,6 +111,15 @@ const readPDF = async (filePath) => {
 // Function to extract syllabus information using Gemini API
 const extractSyllabusInfo = async (pdfText, fileName) => {
   try {
+    console.log(`🤖 Sending ${pdfText.length} characters to Gemini AI...`);
+    console.log(`📋 Text preview: ${pdfText.substring(0, 500)}...`);
+    
+    // Check if text is empty or too short
+    if (!pdfText || pdfText.trim().length < 10) {
+      console.error('❌ PDF text is empty or too short:', pdfText);
+      throw new Error('PDF text is empty or too short. PDF may not be readable.');
+    }
+    
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     const prompt = `
@@ -110,11 +171,18 @@ const extractSyllabusInfo = async (pdfText, fileName) => {
     Make sure to format the output clearly and concisely.  Ensure that the other key information does not contain information about things that are already under a section. 
     `;
 
+    console.log('📤 Sending request to Gemini...');
     const result = await model.generateContent(prompt);
     const response = await result.response;
-    return response.text();
+    const responseText = response.text();
+    
+    console.log(`📥 Received ${responseText.length} characters from Gemini`);
+    console.log(`📋 Gemini response preview: ${responseText.substring(0, 200)}...`);
+    
+    return responseText;
   } catch (error) {
     console.error('Error extracting syllabus info:', error);
+    console.error('Error details:', error.message);
     throw error;
   }
 };
