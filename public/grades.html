@@ -45,17 +45,18 @@
       </div>
 
       <main class="main-content">
+        
         <!-- Grade Calculator Section -->
         <section class="grade-calculator">
           <div class="grade-calculator-header">
-            <h2>📊 Grade Calculator</h2>
+            <h2> Grade Calculator</h2>
             <p>Track your grades and set goals for each course</p>
             <div class="header-actions">
               <button class="remove-course-btn" onclick="showRemoveCourseModal()">
-                <span>🗑️</span> Remove Course
+                <span></span> Remove Course
               </button>
               <button class="clear-all-btn" onclick="showClearAllModal()">
-                <span>🗑️</span> Clear All
+                <span></span> Clear All
               </button>
             </div>
           </div>
@@ -131,15 +132,37 @@
                 <div class="grade-summary" id="gradeSummary">
                   <!-- Grade summary will be dynamically generated here -->
                 </div>
+                
+                <!-- Weight Warning -->
+                <div id="weightWarning" class="weight-warning" style="display: none;">
+                  <div class="warning-icon">⚠️</div>
+                  <div class="warning-content">
+                    <h4>Weight Distribution Warning</h4>
+                    <p>The total weight of assessments does not equal 100%. This may affect grade calculations.</p>
+                    <div class="weight-details">
+                      <span>Total Weight: <strong id="totalWeight">0%</strong></span>
+                      <span>Missing: <strong id="missingWeight">0%</strong></span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </section>
       </main>
-        
-
-        
       
+      <!-- Footer for additional scroll space -->
+      <footer class="grade-calculator-footer">
+        <div class="footer-content">
+          <p>&copy; 2024 CourseFlow. Made with ❤️ for students.</p>
+          <div class="footer-links">
+            <span>📚 Academic Success</span>
+            <span>📊 Grade Tracking</span>
+            <span>📅 Smart Planning</span>
+          </div>
+        </div>
+      </footer>
+        
     </div>
   </div>
 

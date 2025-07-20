@@ -206,9 +206,22 @@ const extractSyllabusInfo = async (pdfText, fileName) => {
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     const prompt = `
-    You are an expert at analyzing academic syllabi. Extract and organize the following information from this syllabus text:
-      
+    You are an expert at analyzing academic syllabi. Your task is to THOROUGHLY examine every single line of this syllabus and extract ALL assessments, assignments, quizzes, tests, and exams. DO NOT SKIP ANYTHING.
+
+    Syllabus text to analyze:
     ${pdfText}
+
+    CRITICAL INSTRUCTIONS - READ EVERYTHING CAREFULLY:
+    1. SCAN EVERY LINE of the syllabus text for ANY mention of assessments
+    2. Look for ANY of these terms: assignment, quiz, test, exam, midterm, final, project, lab, homework, report, presentation, participation, discussion, reflection, essay, paper, case study, portfolio, demonstration, workshop, tutorial, practical, exercise, problem set, worksheet, activity, task, deliverable, submission, assessment, evaluation, grade component
+    3. If you see ANY date mentioned near ANY of these terms, it's likely an assessment
+    4. If you see ANY percentage mentioned near ANY of these terms, it's likely an assessment
+    5. If you see ANY weight mentioned near ANY of these terms, it's likely an assessment
+    6. Look for numbered items (Assignment 1, Quiz 2, etc.)
+    7. Look for week-based items (Week 1 Assignment, Week 3 Quiz, etc.)
+    8. Look for topic-based items (Introduction Assignment, Data Analysis Project, etc.)
+    9. Look for participation, attendance, or engagement components
+    10. Look for any graded activities, even if they seem minor
 
     Please organize the information in this exact format:
 
@@ -247,27 +260,36 @@ const extractSyllabusInfo = async (pdfText, fileName) => {
     Other Key Information: 
     - [Any other important details or notes]
 
-    IMPORTANT DATE AND ASSIGNMENT PARSING RULES:
+    ENHANCED PARSING RULES:
     1. ANY date that mentions a month (January, Feb, March, etc.) or weekday (Monday, Tuesday, etc.) followed by a day number is likely a DUE DATE for an assignment, quiz, or exam.
-    2. Assessment names should be SHORT and SPECIFIC (1-3 words max, or up to 6 words for project-related items). Include all but not limited to: "Assignment 1", "Quiz 2", "Midterm", "Final", "Project", "Project Proposal", "Group Project"
-    3. If an item is longer than 3 words, it's likely a DESCRIPTION and should NOT be included as an assessment
+    2. Assessment names should be SHORT and SPECIFIC (1-3 words max, or up to 6 words for project-related items). Include all but not limited to: "Assignment", "Quiz", "Midterm", "Final", "Project", "Project Proposal", "Group Project", "Participation", "Attendance", "Discussion", "Lab Report", "Case Study", "Presentation", "Reflection", "Portfolio", "Workshop", "Tutorial" "Practical"
+    3. If an item is longer than 6 words, it's likely a DESCRIPTION and should NOT be included as an assessment name
     4. Convert all dates to YYYY-MM-DD format. If the year is not specified don't include it
     5. If multiple assignments are mentioned with the same date, list them as separate items with distinct names.
     6. If an assessment has null% weight, DO NOT INCLUDE IT in the grade calculator page at all
-    7. Just because a sentence includes the word "quiz" or "assignment" or "test" does NOT mean it is an actual assignment
+    7. Look for ANY mention of percentages, weights, or grade distributions
     8. Ensure each assessment has a clear weight percentage. If not specified, use "Not specified" for the weight.
     9. DO NOT include the course description in the course name
     10. DO NOT include the assignment date in the assignment name 
-    11. Actual assessments should begin with capital letters, look for: "Assignment", "Test", "Quiz", "Midterm", "Final", "Project", "Lab", "Participation"
+    11. Actual assessments should begin with capital letters, look for: "Assignment", "Test", "Quiz", "Midterm", "Final", "Project", "Lab", "Participation", "Attendance", "Discussion", "Reflection", "Portfolio", "Workshop", "Tutorial", "Practical", "Exercise", "Problem Set", "Worksheet", "Activity", "Task", "Deliverable", "Submission", "Case Study", "Presentation", "Report", "Essay", "Paper", "Homework"
     12. Descriptions should be on separate lines with dashes, NOT as part of the assessment name
+    13. Look for participation/attendance components that might be worth a percentage
+    14. Look for discussion boards, forums, or online activities
+    15. Look for any graded components mentioned in the grading policy section
+    16. Look for any activities that are "worth X%" or "count for X%"
+    17. Look for any items that are "graded" or "evaluated"
+    18. Look for any items that have "due dates" or "deadlines"
+    19. Look for any items that are "required" or "mandatory"
+    20. Look for any items that are part of the "course requirements"
     
-  
     IMPORTANT: This syllabus document is for ONE COURSE ONLY. Extract information for a single course, even if the document mentions multiple topics or sections. If the document contains information for multiple separate courses, only extract the information for the main/primary course that this syllabus represents.
 
     If any information is not available, indicate with "Not specified" or skip that line.
     Be precise with dates, times, and percentages. Extract actual course names, not generic "Course #1". If there is no location or description or other information is missing, put down [location] or [description], or [time] as an user prompt placeholder.
     If there are any special instructions or notes, include them under "Other Key Information".
     Make sure to format the output clearly and concisely. Ensure that the other key information does not contain information about things that are already under a section.
+
+    REMEMBER: BE THOROUGH. DO NOT MISS ANY ASSESSMENTS. IF IN DOUBT, INCLUDE IT.
     `;
 
     console.log('📤 Sending request to Gemini...');

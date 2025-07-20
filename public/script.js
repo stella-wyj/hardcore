@@ -731,7 +731,38 @@ function updateGradeCalculations(course) {
     }
   }
   
+  // Check and display weight warning
+  checkWeightDistribution(course);
+}
 
+// Check weight distribution and show warning if needed
+function checkWeightDistribution(course) {
+  const weightWarning = document.getElementById('weightWarning');
+  const totalWeightElement = document.getElementById('totalWeight');
+  const missingWeightElement = document.getElementById('missingWeight');
+  
+  if (!weightWarning || !course || !course.assessments) {
+    if (weightWarning) weightWarning.style.display = 'none';
+    return;
+  }
+  
+  // Calculate total weight
+  const totalWeight = course.assessments.reduce((sum, assessment) => {
+    return sum + (assessment.weight || 0);
+  }, 0);
+  
+  const missingWeight = Math.abs(100 - totalWeight);
+  
+  // Update the display
+  if (totalWeightElement) totalWeightElement.textContent = totalWeight.toFixed(1) + '%';
+  if (missingWeightElement) missingWeightElement.textContent = missingWeight.toFixed(1) + '%';
+  
+  // Show warning if weights don't add up to 100%
+  if (Math.abs(totalWeight - 100) > 0.1) { // Allow for small rounding errors
+    weightWarning.style.display = 'flex';
+  } else {
+    weightWarning.style.display = 'none';
+  }
 }
 
 // Get CSS class for grade color
