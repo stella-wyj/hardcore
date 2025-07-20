@@ -3,4 +3,4 @@
 export const CLEAR_DATA_ON_START = true;
 
 // Set this to true to enable debug logging
-export const DEBUG_MODE = true; 
+export const DEBUG_MODE = false; 

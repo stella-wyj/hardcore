@@ -51,9 +51,6 @@
             <h2>📊 Grade Calculator</h2>
             <p>Track your grades and set goals for each course</p>
             <div class="header-actions">
-              <button class="add-course-btn" onclick="showAddCourseModal()">
-                <span>+</span> Add Course
-              </button>
               <button class="remove-course-btn" onclick="showRemoveCourseModal()">
                 <span>🗑️</span> Remove Course
               </button>
@@ -146,35 +143,7 @@
     </div>
   </div>
 
-  <!-- Add Course Modal -->
-  <div id="addCourseModal" class="modal" style="display: none;">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>Add New Course</h3>
-        <span class="close" onclick="closeModal('addCourseModal')">&times;</span>
-      </div>
-      <div class="modal-body">
-        <form id="addCourseForm">
-          <div class="form-group">
-            <label for="courseName">Course Name:</label>
-            <input type="text" id="courseName" required placeholder="e.g., Linear Algebra">
-          </div>
-          <div class="form-group">
-            <label for="courseInstructor">Instructor:</label>
-            <input type="text" id="courseInstructor" placeholder="e.g., Dr. Smith">
-          </div>
-          <div class="form-group">
-            <label for="courseColor">Color:</label>
-            <input type="color" id="courseColor" value="#4285f4">
-          </div>
-          <div class="form-actions">
-            <button type="button" onclick="closeModal('addCourseModal')">Cancel</button>
-            <button type="submit">Add Course</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
+
 
   <!-- Add Assessment Modal -->
   <div id="addAssessmentModal" class="modal" style="display: none;">

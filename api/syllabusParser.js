@@ -146,8 +146,8 @@ function cleanAssessmentName(assessmentName) {
   // Remove quotes
   cleaned = cleaned.replace(/^["'""]|["'""]$/g, '');
   
-  // If we ended up with nothing, return a generic name
-  if (!cleaned) return 'Unnamed Assessment';
+  // If we ended up with nothing, return empty string
+  if (!cleaned) return '';
   
   return cleaned;
 }
@@ -216,10 +216,16 @@ function parseGeminiResponse(response) {
         }
       }
       else if (currentSection === 'midterm' && !parsed.midterm) {
-        parsed.midterm = parseAssessmentItem(item, 'midterm');
+        const assessment = parseAssessmentItem(item, 'midterm');
+        if (assessment) {
+          parsed.midterm = assessment;
+        }
       }
       else if (currentSection === 'final' && !parsed.final) {
-        parsed.final = parseAssessmentItem(item, 'final');
+        const assessment = parseAssessmentItem(item, 'final');
+        if (assessment) {
+          parsed.final = assessment;
+        }
       }
       else if (currentSection === 'officeHours' || currentSection === 'textbooks' || currentSection === 'otherInfo') {
         parsed[currentSection].push(item);
@@ -232,12 +238,37 @@ function parseGeminiResponse(response) {
 
 // Parse individual assessment items
 function parseAssessmentItem(item, type) {
+  // Skip items with null% weight or programming topics
+  const lowerItem = item.toLowerCase();
+  if (lowerItem.includes('null%') || 
+      lowerItem.includes('if-statements') || 
+      lowerItem.includes('loops') || 
+      lowerItem.includes('program flow') ||
+      lowerItem.includes('variables') ||
+      lowerItem.includes('functions') ||
+      lowerItem.includes('arrays') ||
+      lowerItem.includes('objects') ||
+      lowerItem.includes('classes') ||
+      lowerItem.includes('inheritance') ||
+      lowerItem.includes('polymorphism') ||
+      lowerItem.includes('encapsulation') ||
+      lowerItem.includes('abstraction')) {
+    return null; // Skip programming topic descriptions
+  }
+  
   // Extract date, name, and weight from format like: "2024-03-15: Assignment 1 - 15%"
   const dateMatch = item.match(/(\d{4}-\d{2}-\d{2}):\s*(.+?)\s*-\s*(\d+)%/);
   if (dateMatch) {
+    const name = cleanAssessmentName(dateMatch[2].trim());
+    // Check if the name is empty or too long (but allow project-related assessments to be longer)
+    const isProjectRelated = name.toLowerCase().includes('project');
+    const maxWords = isProjectRelated ? 6 : 4;
+    if (!name || name.split(' ').length > maxWords) {
+      return null; // Skip this item as it's likely a description or has no valid name
+    }
     return {
       date: dateMatch[1],
-      name: cleanAssessmentName(dateMatch[2].trim()),
+      name: name,
       weight: parseInt(dateMatch[3]),
       type: type,
       description: item
@@ -247,23 +278,102 @@ function parseAssessmentItem(item, type) {
   // Try alternative format without date
   const weightMatch = item.match(/(.+?)\s*-\s*(\d+)%/);
   if (weightMatch) {
+    const name = cleanAssessmentName(weightMatch[1].trim());
+    const weight = parseInt(weightMatch[2]);
+    
+    // Skip items with null or invalid weight
+    if (isNaN(weight) || weight <= 0) {
+      return null;
+    }
+    
+    // Check if the name is empty or too long (but allow project-related assessments to be longer)
+    const isProjectRelated = name.toLowerCase().includes('project');
+    const maxWords = isProjectRelated ? 6 : 4;
+    if (!name || name.split(' ').length > maxWords) {
+      return null; // Skip this item as it's likely a description or has no valid name
+    }
+    
+    // Skip topic descriptions that don't look like assessments
+    const lowerName = name.toLowerCase();
+    if (lowerName.includes('if-statements') || 
+        lowerName.includes('loops') || 
+        lowerName.includes('program flow') ||
+        lowerName.includes('variables') ||
+        lowerName.includes('functions') ||
+        lowerName.includes('arrays') ||
+        lowerName.includes('objects') ||
+        lowerName.includes('classes') ||
+        lowerName.includes('inheritance') ||
+        lowerName.includes('polymorphism') ||
+        lowerName.includes('encapsulation') ||
+        lowerName.includes('abstraction')) {
+      return null; // Skip programming topic descriptions
+    }
+    
     return {
       date: null,
-      name: cleanAssessmentName(weightMatch[1].trim()),
-      weight: parseInt(weightMatch[2]),
+      name: name,
+      weight: weight,
       type: type,
       description: item
     };
   }
   
-  // Fallback - just store the raw item
-  return {
-    date: null,
-    name: cleanAssessmentName(item),
-    weight: null,
-    type: type,
-    description: item
-  };
+  // Try to extract just the assessment name from longer descriptions
+  // Look for patterns like "Assignment 1", "Quiz 1", "Midterm", "Final"
+  const assessmentPatterns = [
+    /(Assignment\s+\d+)/i,
+    /(Quiz\s+\d+)/i,
+    /(Test\s+\d+)/i,
+    /(Midterm)/i,
+    /(Final)/i,
+    /(Project\s+Proposal)/i,
+    /(Group\s+Project)/i,
+    /(Project)/i,
+    /(Lab\s+\d+)/i,
+    /(Homework\s+\d+)/i
+  ];
+  
+  for (const pattern of assessmentPatterns) {
+    const match = item.match(pattern);
+    if (match) {
+      const name = cleanAssessmentName(match[1]);
+      // Only proceed if we have a valid name
+      if (name) {
+        // Try to extract weight if present
+        const weightMatch = item.match(/(\d+)%/);
+        const weight = weightMatch ? parseInt(weightMatch[1]) : null;
+        
+        // Try to extract date if present
+        const dateMatch = item.match(/(\d{4}-\d{2}-\d{2})/);
+        const date = dateMatch ? dateMatch[1] : null;
+        
+        return {
+          date: date,
+          name: name,
+          weight: weight,
+          type: type,
+          description: item
+        };
+      }
+    }
+  }
+  
+  // Fallback - only include if it's a reasonable length and has a valid name
+  const cleanedName = cleanAssessmentName(item);
+  const isProjectRelated = cleanedName.toLowerCase().includes('project');
+  const maxWords = isProjectRelated ? 6 : 4;
+  if (cleanedName && cleanedName.split(' ').length <= maxWords) {
+    return {
+      date: null,
+      name: cleanedName,
+      weight: null,
+      type: type,
+      description: item
+    };
+  }
+  
+  return null; // Skip items that are too long (likely descriptions) or have no valid name
 }
 
 // Save parsed syllabus data to database
