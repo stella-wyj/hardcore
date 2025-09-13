@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calendar - CourseFlow</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/svg+xml" href="images/logo_full.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    .calendar-container {
+      padding: 20px;
+      width: 100%;
+      box-sizing: border-box;
+      overflow-x: hidden;
+      height: auto !important;
+      min-height: auto !important;
+      max-height: none !important;
+    }
+    
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+    
+    .calendar-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #333;
+    }
+    
+
+    
+    .calendar-grid {
+      display: grid !important;
+      grid-template-columns: 2fr 1fr !important;
+      gap: 20px;
+      width: 100%;
+      flex-direction: row !important;
+      box-sizing: border-box;
+      height: auto !important;
+      min-height: auto !important;
+      max-height: none !important;
+      flex: none !important;
+    }
+    
+    .upcoming-events {
+      background-color: rgb(255, 255, 255);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+    }
+    
+    .upcoming-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+      color: #333;
+    }
+    
+    .event-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .event-item {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      border-radius: 10px;
+      border-left: 4px solid;
+      background: white;
+      transition: transform 0.2s;
+    }
+    
+    .event-item:hover {
+      transform: translateX(5px);
+    }
+    
+    .event-date {
+      min-width: 80px;
+      text-align: center;
+      margin-right: 15px;
+    }
+    
+    .event-day {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #333;
+    }
+    
+    .event-month {
+      font-size: 0.8rem;
+      color: #666;
+      text-transform: uppercase;
+    }
+    
+    .event-details {
+      flex: 1;
+    }
+    
+    .event-title {
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 5px;
+    }
+    
+    .event-course {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 3px;
+    }
+    
+    .event-type {
+      font-size: 0.8rem;
+      color: #888;
+      text-transform: uppercase;
+    }
+    
+    .event-weight {
+      background: #e3f2fd;
+      color: #1976d2;
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    
+    .all-events {
+      background: white;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+    }
+    
+         .month-navigation {
+       display: flex;
+       align-items: center;
+       justify-content: space-between;
+       margin-bottom: 15px;
+     }
+     
+     .month-navigation .nav-btn {
+       background: #4285f4;
+       color: white;
+       border: none;
+       width: 45px;
+       height: 45px;
+       border-radius: 50%;
+       cursor: pointer;
+       font-size: 1.5rem;
+       font-weight: bold;
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       transition: all 0.2s;
+       box-shadow: 0 2px 8px rgba(66, 133, 244, 0.3);
+     }
+     
+     .month-navigation .nav-btn:hover {
+       background: #3367d6;
+       transform: scale(1.1);
+       box-shadow: 0 4px 12px rgba(66, 133, 244, 0.4);
+     }
+     
+     .month-navigation .nav-btn:disabled {
+       background: #ffffff;
+       cursor: not-allowed;
+     }
+     
+     .all-events-title {
+       font-size: 1.5rem;
+       font-weight: 700;
+       color: #333;
+       margin: 0;
+       flex: 1;
+       text-align: center;
+     }
+     
+     .clickable {
+       cursor: pointer;
+       transition: all 0.2s;
+       position: relative;
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       gap: 8px;
+       padding: 8px 16px;
+       border-radius: 8px;
+       border: 2px solid transparent;
+     }
+     
+     .clickable:hover {
+       color: #4285f4;
+       border-color: #4285f4;
+       transform: translateY(-1px);
+       box-shadow: 0 4px 12px rgba(66, 133, 244, 0.15);
+     }
+     
+     .dropdown-arrow {
+       font-size: 0.8rem;
+       transition: transform 0.2s;
+       color: #666;
+       position: relative;
+     }
+     
+     .dropdown-arrow::before {
+       content: '';
+       position: absolute;
+       top: -2px;
+       right: -8px;
+       width: 0;
+       height: 0;
+       border-left: 4px solid transparent;
+       border-right: 4px solid transparent;
+       border-top: 6px solid var(--arrow-color, #666);
+       transition: all 0.2s;
+     }
+     
+     .clickable:hover .dropdown-arrow {
+       color: #4285f4;
+       transform: translateY(1px);
+     }
+     
+     .clickable:hover .dropdown-arrow::before {
+       border-top-color: #4285f4;
+     }
+     
+     .dropdown-triangle {
+       width: 0;
+       height: 0;
+       border-left: 5px solid transparent;
+       border-right: 5px solid transparent;
+       border-top: 8px solid #666;
+       margin-left: 4px;
+       transition: all 0.2s;
+     }
+     
+     .clickable:hover .dropdown-triangle {
+       border-top-color: #4285f4;
+     }
+     
+     .month-selector-container {
+       position: relative;
+       flex: 1;
+       text-align: center;
+     }
+     
+     .month-dropdown {
+       position: absolute;
+       top: 100%;
+       left: 50%;
+       transform: translateX(-50%);
+       background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+       border: 2px solid #e0e0e0;
+       border-radius: 12px;
+       box-shadow: 0 8px 25px rgba(0,0,0,0.15), 0 4px 10px rgba(0,0,0,0.1);
+       z-index: 1000;
+       min-width: 180px;
+       display: none;
+       margin-top: 8px;
+       backdrop-filter: blur(10px);
+       animation: dropdownFadeIn 0.2s ease-out;
+     }
+     
+     @keyframes dropdownFadeIn {
+       from {
+         opacity: 0;
+         transform: translateX(-50%) translateY(-10px);
+       }
+       to {
+         opacity: 1;
+         transform: translateX(-50%) translateY(0);
+       }
+     }
+     
+     .month-dropdown.show {
+       display: block;
+     }
+     
+     .dropdown-item {
+       padding: 12px 20px;
+       cursor: pointer;
+       border-bottom: 1px solid #f0f0f0;
+       transition: all 0.2s;
+       font-weight: 500;
+       color: #333;
+       position: relative;
+     }
+     
+     .dropdown-item:first-child {
+       border-radius: 10px 10px 0 0;
+     }
+     
+     .dropdown-item:last-child {
+       border-bottom: none;
+       border-radius: 0 0 10px 10px;
+     }
+     
+     .dropdown-item:hover {
+       background: linear-gradient(135deg, #e3f2fd 0%, #f0f8ff 100%);
+       color: #4285f4;
+       transform: translateX(2px);
+       box-shadow: inset 2px 0 0 #4285f4;
+     }
+     
+     .dropdown-item:active {
+       transform: translateX(2px) scale(0.98);
+     }
+     
+
+    
+    .month-group {
+      margin-bottom: 25px;
+    }
+    
+    .month-header {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 15px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #e0e0e0;
+    }
+    
+    .month-events {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .month-event {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      border-radius: 8px;
+      background: white;
+      border-left: 3px solid;
+      transition: all 0.3s ease;
+    }
+    
+    .event-checkbox {
+      margin-left: 12px;
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    
+    .event-checkbox input[type="checkbox"] {
+      appearance: none;
+      width: 22px;
+      height: 22px;
+      border: 2px solid #4285f4;
+      border-radius: 6px;
+      background: white;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .event-checkbox input[type="checkbox"]:checked {
+      background: linear-gradient(135deg, #4285f4, #3367d6);
+      border-color: #4285f4;
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(66, 133, 244, 0.4);
+    }
+    
+    .event-checkbox input[type="checkbox"]:checked::after {
+      content: '✓';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+    
+    .event-checkbox input[type="checkbox"]:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3);
+      border-color: #3367d6;
+    }
+    
+    .event-checkbox input[type="checkbox"]:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.2);
+    }
+    
+    .month-event-details.completed {
+      opacity: 0.6;
+    }
+    
+    .month-event-details.completed .month-event-title {
+      text-decoration: line-through;
+      color: #666;
+    }
+    
+    .month-event-details.completed .month-event-course {
+      text-decoration: line-through;
+      color: #999;
+    }
+    
+    .month-event.completed {
+      background: #f0f8ff;
+      border-left-color: #90caf9 !important;
+    }
+    
+    .month-event-date {
+      min-width: 60px;
+      font-weight: 600;
+      color: #333;
+      margin-right: 12px;
+    }
+    
+    .month-event-details {
+      flex: 1;
+    }
+    
+    .month-event-title {
+      font-weight: 500;
+      color: #333;
+      margin-bottom: 3px;
+    }
+    
+    .month-event-course {
+      font-size: 0.85rem;
+      color: #666;
+    }
+    
+    .no-events {
+      text-align: center;
+      color: #666;
+      font-style: italic;
+      padding: 40px 20px;
+    }
+    
+    .loading {
+      text-align: center;
+      color: #666;
+      padding: 40px 20px;
+    }
+    
+    @media (max-width: 1024px) {
+      .calendar-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      
+      .download-buttons {
+        flex-direction: column;
+      }
+      
+      .calendar-header {
+        flex-direction: column;
+        gap: 15px;
+        align-items: stretch;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="navbar">
+      <a href="index.html" class="nav-btn dashboard-btn">
+        <img src="images/dashboard_icon.png" alt="Dashboard" />
+        <span>Dashboard</span>
+      </a>
+      <a href="calendar.html" class="nav-btn calendar-btn active">
+        <img src="images/mingcute_calendar-fill.png" alt="Calendar" />
+        <span>Calendar</span>
+      </a>
+      <a href="grades.html" class="nav-btn grades-btn">
+        <img src="images/mdi_pencil.png" alt="Grades" />
+        <span>Grades</span>
+      </a>
+      <img src="images/cat.png">
+    </div>
+
+    <div class="main-section">
+      <header class="header">
+        <div class="header-left">
+          <img src="images/logo_full.svg" alt="Logo" class="logo" />
+          <span class="logo-text">CourseFlow</span>
+        </div>
+        <div class="header-right">
+          <img src="images/Frame 15.png" alt="Notifications" />
+        </div>
+      </header>
+
+      <div class="calendar-container">
+        <div class="calendar-header">
+          <h1 class="calendar-title">Academic Calendar</h1>
+        </div>
+
+                 <div class="calendar-grid">
+           <div class="all-events">
+             <div class="month-navigation">
+               <button class="nav-btn" onclick="previousMonth()">‹</button>
+               <div class="month-selector-container">
+                 <h2 class="all-events-title clickable" id="currentMonthTitle" onclick="toggleMonthDropdown()">All Events
+                   <span class="dropdown-arrow">▼</span>
+                   <span class="dropdown-triangle"></span>
+                 </h2>
+                 <div class="month-dropdown" id="monthDropdown">
+                   <div class="dropdown-item" onclick="selectMonthFromDropdown(-1)">All Events</div>
+                 </div>
+               </div>
+               <button class="nav-btn" onclick="nextMonth()">›</button>
+             </div>
+             <div id="allEvents">
+               <div class="loading">Loading all events...</div>
+             </div>
+           </div>
+
+           <div class="upcoming-events">
+             <h2 class="upcoming-title"> Upcoming Events</h2>
+             <div id="upcomingEvents" class="event-list scrollable">
+               <div class="loading">Loading upcoming events...</div>
+             </div>
+           </div>
+         </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let allEvents = [];
+    let currentMonthIndex = -1; // -1 means "All Months"
+    let availableMonths = [];
+
+    // Load calendar events when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      loadCalendarEvents();
+      
+      // Close dropdown when clicking outside
+      document.addEventListener('click', function(event) {
+        const dropdown = document.getElementById('monthDropdown');
+        const monthTitle = document.getElementById('currentMonthTitle');
+        const arrow = document.querySelector('.dropdown-arrow');
+        
+        if (!monthTitle.contains(event.target) && !dropdown.contains(event.target)) {
+          dropdown.classList.remove('show');
+          arrow.style.transform = 'rotate(0deg)';
+          arrow.style.color = '#666';
+          arrow.style.setProperty('--arrow-color', '#666');
+          const triangle = document.querySelector('.dropdown-triangle');
+          triangle.style.borderTopColor = '#666';
+          triangle.style.transform = 'rotate(0deg)';
+        }
+      });
+    });
+
+    async function loadCalendarEvents() {
+      try {
+        const response = await fetch('/api/calendar/events');
+        const data = await response.json();
+        
+        allEvents = data.allEvents;
+        setupMonthNavigation();
+        displayUpcomingEvents(data.upcomingEvents);
+        displayAllEvents(allEvents);
+      } catch (error) {
+        console.error('Error loading calendar events:', error);
+        document.getElementById('upcomingEvents').innerHTML = 
+          '<div class="no-events">Error loading events. Please try again.</div>';
+        document.getElementById('allEvents').innerHTML = 
+          '<div class="no-events">Error loading events. Please try again.</div>';
+      }
+    }
+
+    function setupMonthNavigation() {
+      // Get all unique months from events
+      const monthSet = new Set();
+      allEvents.forEach(event => {
+        const date = new Date(event.date);
+        const monthKey = `${date.getFullYear()}-${date.getMonth()}`;
+        monthSet.add(monthKey);
+      });
+
+      availableMonths = Array.from(monthSet).sort();
+      
+      // Populate dropdown
+      populateMonthDropdown();
+      
+      // Start with current month
+      const currentDate = new Date();
+      const currentMonthKey = `${currentDate.getFullYear()}-${currentDate.getMonth()}`;
+      const foundMonthIndex = availableMonths.indexOf(currentMonthKey);
+      
+      if (foundMonthIndex !== -1) {
+        currentMonthIndex = foundMonthIndex;
+      } else {
+        // If current month has no events, start with first available month
+        currentMonthIndex = availableMonths.length > 0 ? 0 : -1;
+      }
+      
+      updateMonthDisplay();
+      updateNavigationButtons();
+    }
+
+    function displayUpcomingEvents(events) {
+      const container = document.getElementById('upcomingEvents');
+      
+      if (!events || events.length === 0) {
+        container.innerHTML = '<div class="no-events">No upcoming events in the next 30 days</div>';
+        return;
+      }
+
+      const eventsHTML = events.map(event => {
+        const date = new Date(event.date);
+        const day = date.getDate();
+        const month = date.toLocaleDateString('en-US', { month: 'short' });
+        
+        return `
+          <div class="event-item" style="border-left-color: ${event.color}">
+            <div class="event-date">
+              <div class="event-day">${day}</div>
+              <div class="event-month">${month}</div>
+            </div>
+            <div class="event-details">
+              <div class="event-title">${event.title}</div>
+              <div class="event-course">${event.course}</div>
+              <div class="event-type">${event.type}</div>
+            </div>
+            <div class="event-weight">${event.weight}%</div>
+          </div>
+        `;
+      }).join('');
+
+      container.innerHTML = eventsHTML;
+    }
+
+    function displayAllEvents(events) {
+      const container = document.getElementById('allEvents');
+      
+      if (!events || events.length === 0) {
+        container.innerHTML = '<div class="no-events">No events found</div>';
+        return;
+      }
+
+      // Filter events by current month if needed
+      let filteredEvents = events;
+      if (currentMonthIndex >= 0 && currentMonthIndex < availableMonths.length) {
+        const selectedMonth = availableMonths[currentMonthIndex];
+        filteredEvents = events.filter(event => {
+          const date = new Date(event.date);
+          const monthKey = `${date.getFullYear()}-${date.getMonth()}`;
+          return monthKey === selectedMonth;
+        });
+      }
+
+      // Group events by month
+      const eventsByMonth = {};
+      filteredEvents.forEach(event => {
+        const date = new Date(event.date);
+        const monthKey = `${date.getFullYear()}-${date.getMonth()}`;
+        const monthName = date.toLocaleDateString('en-US', { 
+          year: 'numeric', 
+          month: 'long' 
+        });
+        
+        if (!eventsByMonth[monthKey]) {
+          eventsByMonth[monthKey] = {
+            name: monthName,
+            events: []
+          };
+        }
+        eventsByMonth[monthKey].events.push(event);
+      });
+
+      // Sort months chronologically
+      const sortedMonths = Object.keys(eventsByMonth).sort();
+      
+      const monthsHTML = sortedMonths.map(monthKey => {
+        const monthData = eventsByMonth[monthKey];
+        const eventsHTML = monthData.events.map(event => {
+          const date = new Date(event.date);
+          const day = date.getDate();
+          
+                  return `
+          <div class="month-event" style="border-left-color: ${event.color}" data-event-id="${event.id}">
+            <div class="month-event-date">${day}</div>
+            <div class="month-event-details ${event.completed ? 'completed' : ''}">
+              <div class="month-event-title">${event.title}</div>
+              <div class="month-event-course">${event.course} • ${event.type}</div>
+            </div>
+            <div class="event-weight">${event.weight}%</div>
+            <div class="event-checkbox">
+              <input type="checkbox" id="check-${event.id}" onchange="toggleEventComplete(${event.id})" ${event.completed ? 'checked' : ''}>
+              <label for="check-${event.id}"></label>
+            </div>
+          </div>
+        `;
+        }).join('');
+
+        return `
+          <div class="month-group">
+            <div class="month-events">${eventsHTML}</div>
+          </div>
+        `;
+      }).join('');
+
+      container.innerHTML = monthsHTML;
+      updateNavigationButtons();
+    }
+
+    function previousMonth() {
+      if (availableMonths.length === 0) return;
+      
+      if (currentMonthIndex === -1) {
+        // If currently showing "All Months", go to the last month
+        currentMonthIndex = availableMonths.length - 1;
+      } else {
+        currentMonthIndex--;
+        if (currentMonthIndex < 0) {
+          currentMonthIndex = availableMonths.length - 1;
+        }
+      }
+      updateMonthDisplay();
+    }
+
+    function nextMonth() {
+      if (availableMonths.length === 0) return;
+      
+      if (currentMonthIndex === -1) {
+        // If currently showing "All Months", go to the first month
+        currentMonthIndex = 0;
+      } else {
+        currentMonthIndex++;
+        if (currentMonthIndex >= availableMonths.length) {
+          currentMonthIndex = -1; // Back to "All Months"
+        }
+      }
+      updateMonthDisplay();
+    }
+
+    function populateMonthDropdown() {
+      const dropdown = document.getElementById('monthDropdown');
+      dropdown.innerHTML = '<div class="dropdown-item" onclick="selectMonthFromDropdown(-1)">All Events</div>';
+      
+      availableMonths.forEach((monthKey, index) => {
+        const [year, month] = monthKey.split('-');
+        const monthName = new Date(parseInt(year), parseInt(month)).toLocaleDateString('en-US', { 
+          year: 'numeric', 
+          month: 'long' 
+        });
+        dropdown.innerHTML += `<div class="dropdown-item" onclick="selectMonthFromDropdown(${index})">${monthName}</div>`;
+      });
+    }
+    
+    function toggleMonthDropdown() {
+      const dropdown = document.getElementById('monthDropdown');
+      const arrow = document.querySelector('.dropdown-arrow');
+      const triangle = document.querySelector('.dropdown-triangle');
+      
+      dropdown.classList.toggle('show');
+      
+      if (dropdown.classList.contains('show')) {
+        arrow.style.transform = 'rotate(180deg)';
+        arrow.style.color = '#4285f4';
+        arrow.style.setProperty('--arrow-color', '#4285f4');
+        triangle.style.borderTopColor = '#4285f4';
+        triangle.style.transform = 'rotate(180deg)';
+      } else {
+        arrow.style.transform = 'rotate(0deg)';
+        arrow.style.color = '#666';
+        arrow.style.setProperty('--arrow-color', '#666');
+        triangle.style.borderTopColor = '#666';
+        triangle.style.transform = 'rotate(0deg)';
+      }
+    }
+    
+    function selectMonthFromDropdown(index) {
+      currentMonthIndex = index;
+      updateMonthDisplay();
+      
+      const dropdown = document.getElementById('monthDropdown');
+      const arrow = document.querySelector('.dropdown-arrow');
+      const triangle = document.querySelector('.dropdown-triangle');
+      
+      dropdown.classList.remove('show');
+      arrow.style.transform = 'rotate(0deg)';
+      arrow.style.color = '#666';
+      arrow.style.setProperty('--arrow-color', '#666');
+      triangle.style.borderTopColor = '#666';
+      triangle.style.transform = 'rotate(0deg)';
+    }
+    
+    function updateMonthDisplay() {
+      if (currentMonthIndex === -1) {
+        document.getElementById('currentMonthTitle').textContent = '📋 All Events';
+      } else {
+        const monthKey = availableMonths[currentMonthIndex];
+        const [year, month] = monthKey.split('-');
+        const monthName = new Date(parseInt(year), parseInt(month)).toLocaleDateString('en-US', { 
+          year: 'numeric', 
+          month: 'long' 
+        });
+        document.getElementById('currentMonthTitle').textContent = `📋 ${monthName}`;
+      }
+      
+      // Re-display events
+      displayAllEvents(allEvents);
+    }
+
+    function updateNavigationButtons() {
+      const prevBtn = document.querySelector('.nav-btn:first-of-type');
+      const nextBtn = document.querySelector('.nav-btn:last-of-type');
+      
+      if (prevBtn && nextBtn) {
+        prevBtn.disabled = availableMonths.length === 0;
+        nextBtn.disabled = availableMonths.length === 0;
+      }
+    }
+    
+    function toggleEventComplete(eventId) {
+      // Find the event in allEvents array
+      const event = allEvents.find(e => e.id === eventId);
+      if (event) {
+        event.completed = !event.completed;
+        
+        // Update the event in the database
+        updateEventCompletion(eventId, event.completed);
+        
+        // Re-display events to show the visual changes
+        displayAllEvents(allEvents);
+        displayUpcomingEvents(allEvents.filter(e => {
+          const eventDate = new Date(e.date);
+          const today = new Date();
+          const thirtyDaysFromNow = new Date(today.getTime() + (30 * 24 * 60 * 60 * 1000));
+          return eventDate >= today && eventDate <= thirtyDaysFromNow;
+        }));
+      }
+    }
+    
+    async function updateEventCompletion(eventId, completed) {
+      try {
+        await fetch('/api/calendar/complete-event', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            eventId: eventId,
+            completed: completed
+          })
+        });
+      } catch (error) {
+        console.error('Error updating event completion:', error);
+      }
+    }
+
+
+  </script>
+
+  <footer class="grade-calculator-footer">
+    <div class="footer-content">
+      <p>&copy; 2024 CourseFlow. Made with ❤️ for students.</p>
+    </div>
+  </footer>
+</body>
+</html>
