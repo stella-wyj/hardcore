@@ -1,6 +1,0 @@
-// Development configuration
-// Set this to true to clear all data when the server starts (for development/testing)
-export const CLEAR_DATA_ON_START = true;
-
-// Set this to true to enable debug logging
-export const DEBUG_MODE = false; 
