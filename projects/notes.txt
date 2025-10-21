@@ -1,0 +1,13 @@
+- to use the react library, you have to make the app a react type of app using npm
+    - front end development
+    - this is using the command:  npx create-react-app my-app
+
+- Vercel is used to deploy front end apps and websites
+    - Functions by uploading the code you have to vercel and vercel will lanuch for you
+    - Compatible with react and next.js
+
+- Next.js = frontend framework
+- React = backend library
+- Node.js = runtime environment to execute javascript
+    - Run node.js code using the command "node "file-name".js" in the terminal
+
