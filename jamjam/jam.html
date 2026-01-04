@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Study Dashboard</title>
+  <link rel="stylesheet" href="jam.css" />
+</head>
+<body>
+  <!-- overlay for dimming background when a panel is open -->
+  <div class="body-overlay" id="overlay"></div>
+
+  <div class="app">
+
+    <main class="main-area">
+
+<!-- Center timer -->
+<div class="timer-wrapper">
+    <div class="logo-container">
+        <img src="assets/logo.png" id="app-logo" alt="App Logo">
+    </div>
+
+    <!-- Start session button ABOVE the timer -->
+    <div class="start-session-container">
+        <button id="open-session-btn" class="session-btn">
+            <img src="assets/startsession.png" class="session-icon" alt="">
+        </button>
+
+    </div>
+
+    <div class="timer-outer">
+        <div class="timer-inner">
+
+            <!-- timer label + time -->
+            <div id="timer-label">FOCUS</div>
+            <div id="section-label">Block 1 / 4</div>
+            <div id="timer-display">25:00</div>
+
+            <!-- timer controls -->
+            <div class="timer-controls">
+                <button id="start-btn" class="timer-icon-btn">
+                    <img src="assets/start.png" class="btn-icon" alt="">
+                </button>
+
+                <button id="pause-btn" class="timer-icon-btn">
+                    <img src="assets/pause.png" class="btn-icon" alt="">
+                </button>
+
+                <button id="reset-btn" class="timer-icon-btn">
+                    <img src="assets/reset.png" class="btn-icon" alt="">
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+      <!-- Corner icons -->
+<button class="corner corner-top-left icon-btn" data-panel="tasks-panel">
+  <img src="assets/todo.png" class="side-icon" alt="">
+</button>
+
+<button class="corner corner-top-right icon-btn" data-panel="chat-panel">
+  <img src="assets/chat.png" class="side-icon" alt="">
+</button>
+
+<button class="corner corner-bottom-left icon-btn" data-panel="quest-panel">
+  <img src="assets/quest.png" class="side-icon" alt="">
+</button>
+
+<button class="corner corner-bottom-right icon-btn" data-panel="water-panel">
+  <img src="assets/water.png" class="side-icon" alt="">
+</button>
+
+
+
+    </main>
+
+    <!-- SIDE PANELS (only one set, unique IDs) -->
+<!-- opens on the LEFT -->
+<div class="side-panel left" id="tasks-panel">
+  <h3>Session Tasks</h3>
+  <ul id="tasks-list"></ul>
+  <input id="new-task-input" placeholder="Add task…" />
+  <button id="add-task-btn">Add</button>
+</div>
+
+<div class="side-panel left" id="quest-panel">
+  <h3>Mini Quest</h3>
+  <div id="quest-content">
+    <p id="quest-text">Start your timer to begin quests!</p>
+    <p id="quest-timer" class="quest-timer"></p>
+    <button id="complete-quest-btn" class="quest-btn" style="display: none;">Complete Quest</button>
+  </div>
+</div>
+
+<!-- opens on the RIGHT -->
+<div class="side-panel right panel-chat" id="chat-panel">
+  <h3>AI Study Buddy</h3>
+  <div class="chat-messages" id="chat-messages"></div>
+  <div class="chat-input-row">
+    <input id="chat-input" placeholder="Ask anything…" />
+    <button id="chat-send-btn">Send</button>
+  </div>
+</div>
+
+<div class="side-panel right" id="water-panel">
+  <h3>Water Tracker</h3>
+  <p>Track glasses of water here.</p>
+</div>
+
+<!-- SESSION SETUP MODAL -->
+<div class="session-modal-overlay" id="session-modal-overlay">
+  <div class="session-modal">
+    <p>How long do you want to study?</p>
+
+    <label for="modal-total-min">Total study time (minutes)</label>
+    <input id="modal-total-min" type="number" min="10" value="60" />
+
+
+    <div class="session-modal-actions">
+      <button id="modal-cancel-btn">Cancel</button>
+      <button id="modal-start-btn" class="primary">Begin</button>
+    </div>
+  </div>
+</div>
+
+
+  <script src="jam.js"></script>
+</body>
+</html>
