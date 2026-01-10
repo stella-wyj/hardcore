@@ -1,131 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Study Dashboard</title>
+  <title>JamJam</title>
   <link rel="stylesheet" href="jam.css" />
 </head>
-<body>
-  <!-- overlay for dimming background when a panel is open -->
-  <div class="body-overlay" id="overlay"></div>
 
+<body>
   <div class="app">
+    <header class="header">
+      <div class="logo">
+        JamJam LockinZone
+      </div>
+    </header>
 
     <main class="main-area">
-
-<!-- Center timer -->
-<div class="timer-wrapper">
-    <div class="logo-container">
-        <img src="assets/logo.png" id="app-logo" alt="App Logo">
-    </div>
-
-    <!-- Start session button ABOVE the timer -->
-    <div class="start-session-container">
-        <button id="open-session-btn" class="session-btn">
-            <img src="assets/startsession.png" class="session-icon" alt="">
-        </button>
-
-    </div>
-
-    <div class="timer-outer">
-        <div class="timer-inner">
-
-            <!-- timer label + time -->
-            <div id="timer-label">FOCUS</div>
-            <div id="section-label">Block 1 / 4</div>
-            <div id="timer-display">25:00</div>
-
-            <!-- timer controls -->
-            <div class="timer-controls">
-                <button id="start-btn" class="timer-icon-btn">
-                    <img src="assets/start.png" class="btn-icon" alt="">
-                </button>
-
-                <button id="pause-btn" class="timer-icon-btn">
-                    <img src="assets/pause.png" class="btn-icon" alt="">
-                </button>
-
-                <button id="reset-btn" class="timer-icon-btn">
-                    <img src="assets/reset.png" class="btn-icon" alt="">
-                </button>
+      <div class="content-wrapper">
+        
+        <div style="display: flex; flex-direction: column; gap: 24px;">
+          <div class="side-card">
+            <h3><span class="card-icon">✓</span> Session Tasks</h3>
+            <ul class="tasks-list" id="tasks-list"></ul>
+            <div class="task-input-row">
+              <input type="text" class="task-input" id="task-input" placeholder="Add a task..." />
+              <button class="add-task-btn" id="add-task-btn">Add</button>
             </div>
+          </div>
+
+          <div class="side-card">
+            <h3><span class="card-icon">⚔️</span> Mini Quest</h3>
+            <div class="quest-content">
+              <div class="quest-text" id="quest-text">Start your timer to receive quests!</div>
+              <p class="quest-timer-text" id="quest-timer"></p>
+              <button class="complete-quest-btn" id="complete-quest-btn" style="display: none;">Complete Quest</button>
+            </div>
+          </div>
         </div>
-    </div>
-</div>
 
+        <div class="timer-center">
+          <button class="start-session-btn" id="start-session-btn">🎯 Start New Session</button>
 
-      <!-- Corner icons -->
-<button class="corner corner-top-left icon-btn" data-panel="tasks-panel">
-  <img src="assets/todo.png" class="side-icon" alt="">
-</button>
+          <div class="timer-card">
+            <div class="timer-label" id="timer-label">FOCUS</div>
+            <div class="timer-display" id="timer-display">25:00</div>
+            <div class="timer-controls">
+              <button class="timer-btn" id="start-btn" title="Start">Start</button>
+              <button class="timer-btn" id="pause-btn" title="Pause">Pause</button>
+              <button class="timer-btn" id="reset-btn" title="Reset">Reset</button>
+            </div>
+          </div>
+        </div>
 
-<button class="corner corner-top-right icon-btn" data-panel="chat-panel">
-  <img src="assets/chat.png" class="side-icon" alt="">
-</button>
+        <div style="display: flex; flex-direction: column; gap: 24px;">
+          <div class="side-card">
+            <h3><span class="card-icon">💧</span> Water Tracker</h3>
+            <div class="water-grid" id="water-grid"></div>
+            <div class="water-goal">
+              <strong id="water-count">0</strong> / 8 glasses
+            </div>
+          </div>
 
-<button class="corner corner-bottom-left icon-btn" data-panel="quest-panel">
-  <img src="assets/quest.png" class="side-icon" alt="">
-</button>
+          <div class="side-card">
+            <h3><span class="card-icon">💬</span> Study Buddy</h3>
+            <div class="chat-messages" id="chat-messages">
+              <div class="chat-message bot">Hi! I'm your study buddy. Ask me anything about your studies! 📚</div>
+            </div>
+            <div class="chat-input-row">
+              <input type="text" class="chat-input" id="chat-input" placeholder="Ask a question..." />
+              <button class="chat-send-btn" id="chat-send-btn">Send</button>
+            </div>
+          </div>
+        </div>
 
-<button class="corner corner-bottom-right icon-btn" data-panel="water-panel">
-  <img src="assets/water.png" class="side-icon" alt="">
-</button>
-
-
-
+      </div>
     </main>
 
-    <!-- SIDE PANELS (only one set, unique IDs) -->
-<!-- opens on the LEFT -->
-<div class="side-panel left" id="tasks-panel">
-  <h3>Session Tasks</h3>
-  <ul id="tasks-list"></ul>
-  <input id="new-task-input" placeholder="Add task…" />
-  <button id="add-task-btn">Add</button>
-</div>
-
-<div class="side-panel left" id="quest-panel">
-  <h3>Mini Quest</h3>
-  <div id="quest-content">
-    <p id="quest-text">Start your timer to begin quests!</p>
-    <p id="quest-timer" class="quest-timer"></p>
-    <button id="complete-quest-btn" class="quest-btn" style="display: none;">Complete Quest</button>
-  </div>
-</div>
-
-<!-- opens on the RIGHT -->
-<div class="side-panel right panel-chat" id="chat-panel">
-  <h3>AI Study Buddy</h3>
-  <div class="chat-messages" id="chat-messages"></div>
-  <div class="chat-input-row">
-    <input id="chat-input" placeholder="Ask anything…" />
-    <button id="chat-send-btn">Send</button>
-  </div>
-</div>
-
-<div class="side-panel right" id="water-panel">
-  <h3>Water Tracker</h3>
-  <p>Track glasses of water here.</p>
-</div>
-
-<!-- SESSION SETUP MODAL -->
-<div class="session-modal-overlay" id="session-modal-overlay">
-  <div class="session-modal">
-    <p>How long do you want to study?</p>
-
-    <label for="modal-total-min">Total study time (minutes)</label>
-    <input id="modal-total-min" type="number" min="10" value="60" />
-
-
-    <div class="session-modal-actions">
-      <button id="modal-cancel-btn">Cancel</button>
-      <button id="modal-start-btn" class="primary">Begin</button>
+    <div class="modal-overlay" id="session-modal">
+      <div class="modal">
+        <h2>🌱 Start Your Study Session</h2>
+        <div class="modal-field">
+          <label for="total-minutes">Total study time (minutes)</label>
+          <input type="number" id="total-minutes" min="10" max="240" value="60" />
+          <p class="modal-note">Recommended: 25-60 minutes for best focus</p>
+        </div>
+        <div class="modal-actions">
+          <button class="modal-btn secondary" id="modal-cancel">Cancel</button>
+          <button class="modal-btn primary" id="modal-start">Begin Session</button>
+        </div>
+      </div>
     </div>
   </div>
-</div>
 
 
   <script src="jam.js"></script>
 </body>
+
 </html>

@@ -10,7 +10,7 @@ app.use(express.json());
 
 // HEALTH CHECK
 app.get("/", (req, res) => {
-  res.send("Mood API backend is running 🎧");
+  res.send("Mood API backend is running");
 });
 
 // ------------------- MOOD ANALYZER -------------------
